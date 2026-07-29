@@ -203,6 +203,63 @@ function closeImageLightbox() {
     if (lightboxObjectUrl) { URL.revokeObjectURL(lightboxObjectUrl); lightboxObjectUrl = null; }
 }
 
+/* ===== Character gallery (uploaded fan art, IndexedDB-backed) ===== */
+let galleryObjectUrls = [];
+
+async function onGalleryUploadChange(event) {
+    const files = [...event.target.files];
+    if (files.length === 0) return;
+    if (!(await verifySekaiPassword())) { event.target.value = ''; return; }
+    for (const file of files) {
+        await addGalleryImage(file);
+    }
+    event.target.value = '';
+    renderGallery();
+    showToast(t('gallery_upload_done'));
+}
+
+async function renderGallery() {
+    const grid = document.getElementById('gallery-grid');
+    const empty = document.getElementById('gallery-empty');
+    if (!grid) return;
+
+    galleryObjectUrls.forEach(url => URL.revokeObjectURL(url));
+    galleryObjectUrls = [];
+
+    const images = await getAllGalleryImages();
+    if (images.length === 0) {
+        grid.innerHTML = '';
+        if (empty) empty.style.display = 'block';
+        return;
+    }
+    if (empty) empty.style.display = 'none';
+
+    grid.innerHTML = images.map(img => {
+        const url = URL.createObjectURL(img.blob);
+        galleryObjectUrls.push(url);
+        return `<div class="gallery-item">
+            <img src="${url}" onclick="openGalleryLightbox('${img.id}')" alt="">
+            <button class="gallery-delete-btn" onclick="event.stopPropagation(); deleteGalleryImageUI('${img.id}')">&times;</button>
+        </div>`;
+    }).join('');
+}
+
+async function openGalleryLightbox(id) {
+    const images = await getAllGalleryImages();
+    const found = images.find(i => i.id === id);
+    if (!found) return;
+    if (lightboxObjectUrl) URL.revokeObjectURL(lightboxObjectUrl);
+    lightboxObjectUrl = URL.createObjectURL(found.blob);
+    document.getElementById('image-lightbox-img').src = lightboxObjectUrl;
+    document.getElementById('image-lightbox').style.display = 'flex';
+}
+
+async function deleteGalleryImageUI(id) {
+    if (!(await verifySekaiPassword())) return;
+    await deleteGalleryImage(id);
+    renderGallery();
+}
+
 /* ===== Tab switching ===== */
 function switchSekaiTab(tab, el) {
     document.querySelectorAll('.sekai-page').forEach(p => p.style.display = 'none');
@@ -210,6 +267,7 @@ function switchSekaiTab(tab, el) {
     document.querySelectorAll('.sekai-nav-btn').forEach(b => b.classList.remove('active'));
     if (el) el.classList.add('active');
     if (tab === 'updates' && typeof loadSekaiUpdates === 'function') loadSekaiUpdates();
+    if (tab === 'characters') renderGallery();
 }
 
 /* ===== Init ===== */

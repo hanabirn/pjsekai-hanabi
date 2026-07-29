@@ -98,10 +98,11 @@ async function deleteSongScore(musicId, difficulty) {
     return true;
 }
 
-/* ===== Export / Import (bundles IndexedDB screenshots into the same JSON file) ===== */
+/* ===== Export / Import (bundles IndexedDB screenshots + gallery into the same JSON file) ===== */
 async function exportSekaiScores() {
     const images = await getAllScoreImagesAsBase64();
-    const data = { scores: getSekaiScores(), images, exportedAt: new Date().toISOString() };
+    const gallery = await getAllGalleryImagesAsBase64();
+    const data = { scores: getSekaiScores(), images, gallery, exportedAt: new Date().toISOString() };
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -123,7 +124,11 @@ async function importSekaiScores(event) {
         if (data.images && typeof data.images === 'object') {
             await restoreScoreImagesFromBase64(data.images);
         }
+        if (data.gallery && typeof data.gallery === 'object') {
+            await restoreGalleryImagesFromBase64(data.gallery);
+        }
         if (typeof renderSongTable === 'function') renderSongTable();
+        if (typeof renderGallery === 'function') renderGallery();
         showToast(t('import_done'));
     } catch (e) {
         alert(t('import_fail'));

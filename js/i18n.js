@@ -4,7 +4,7 @@ const I18N = {
         site_title: 'Hanabiの世界計畫成績簿',
         site_tagline: '個人歌曲成績記錄 ✦ 日台服更新情報',
         back_to_main: '← 返回 Hanabiの小天地',
-        nav_intro: '關於遊戲', nav_characters: '我的角色', nav_songs: '歌曲成績', nav_updates: '更新情報',
+        nav_intro: '關於遊戲', nav_characters: '角色美圖', nav_songs: '歌曲成績', nav_updates: '更新情報',
 
         intro_title: '✦ 關於世界計畫 ✦',
         intro_desc: '《世界計畫 繽紛舞台！ feat. 初音未來》是由 SEGA 與 Colorful Palette 開發的音樂節奏手遊，結合初音未來等 VOCALOID 角色與原創角色的故事。',
@@ -12,7 +12,9 @@ const I18N = {
         intro_official_tw: '台服官方網站',
         units_title: '✦ 五大團隊 ✦',
 
-        characters_title: '✦ 我在玩的角色 / 內容 ✦',
+        characters_title: '✦ 世界計畫角色美圖收藏 ✦',
+        gallery_upload_btn: '📤 上傳圖片', gallery_empty: '還沒有收藏的圖片，點上方按鈕新增！',
+        gallery_upload_done: '已新增圖片！',
 
         songs_title: '✦ 歌曲成績 ✦',
         songs_search_placeholder: '搜尋曲名...',
@@ -43,7 +45,7 @@ const I18N = {
         site_title: 'Hanabiのプロセカスコア帳',
         site_tagline: '個人楽曲スコア記録 ✦ 日台版アップデート情報',
         back_to_main: '← Hanabiの小天地に戻る',
-        nav_intro: 'ゲーム紹介', nav_characters: '推しキャラ', nav_songs: '楽曲スコア', nav_updates: '最新情報',
+        nav_intro: 'ゲーム紹介', nav_characters: 'キャラ画像', nav_songs: '楽曲スコア', nav_updates: '最新情報',
 
         intro_title: '✦ プロジェクトセカイについて ✦',
         intro_desc: '「プロジェクトセカイ カラフルステージ！ feat. 初音ミク」は、SEGAとColorful Paletteが開発した音楽リズムゲームです。初音ミクなどのVOCALOIDキャラクターとオリジナルキャラクターの物語が展開されます。',
@@ -51,7 +53,9 @@ const I18N = {
         intro_official_tw: '台湾版公式サイト',
         units_title: '✦ 5つのユニット ✦',
 
-        characters_title: '✦ 推しキャラ・遊んでいる内容 ✦',
+        characters_title: '✦ プロセカキャラ画像コレクション ✦',
+        gallery_upload_btn: '📤 画像をアップロード', gallery_empty: 'まだ画像がありません。上のボタンから追加しよう！',
+        gallery_upload_done: '画像を追加しました！',
 
         songs_title: '✦ 楽曲スコア ✦',
         songs_search_placeholder: '曲名で検索...',
