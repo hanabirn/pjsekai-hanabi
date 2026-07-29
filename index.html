@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hanabiの世界計畫成績簿</title>
+<meta name="theme-color" content="#7dd3fc">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/songs.css">
+<link rel="stylesheet" href="css/cards.css">
+</head>
+<body>
+
+<header class="sekai-header">
+    <div class="sekai-header-top">
+        <div class="sekai-title-block">
+            <h1 data-i18n="site_title">Hanabiの世界計畫成績簿</h1>
+            <p class="sekai-tagline" data-i18n="site_tagline">個人歌曲成績記錄 ✦ 日台服更新情報</p>
+        </div>
+        <div class="sekai-header-controls">
+            <button class="lang-pill" data-lang="zh" onclick="applyLang('zh')">中文</button>
+            <button class="lang-pill" data-lang="ja" onclick="applyLang('ja')">日本語</button>
+            <button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()">🌙</button>
+        </div>
+    </div>
+    <a class="back-to-main" href="https://hanabirn.github.io/" data-i18n="back_to_main">← 返回 Hanabiの小天地</a>
+    <nav class="sekai-nav">
+        <button class="sekai-nav-btn active" onclick="switchSekaiTab('intro', this)" data-i18n="nav_intro">關於遊戲</button>
+        <button class="sekai-nav-btn" onclick="switchSekaiTab('characters', this)" data-i18n="nav_characters">我的角色</button>
+        <button class="sekai-nav-btn" onclick="switchSekaiTab('songs', this)" data-i18n="nav_songs">歌曲成績</button>
+        <button class="sekai-nav-btn" onclick="switchSekaiTab('updates', this)" data-i18n="nav_updates">更新情報</button>
+    </nav>
+</header>
+
+<main class="sekai-main">
+
+    <section id="sekai-page-intro" class="sekai-page">
+        <div class="sekai-card">
+            <h2 data-i18n="intro_title">✦ 關於世界計畫 ✦</h2>
+            <p data-i18n="intro_desc">《世界計畫 繽紛舞台！ feat. 初音未來》是由 SEGA 與 Colorful Palette 開發的音樂節奏手遊，結合初音未來等 VOCALOID 角色與原創角色的故事。</p>
+            <div class="intro-links">
+                <a href="https://pjsekai.sega.jp/" target="_blank" rel="noopener" data-i18n="intro_official_jp">日服官方網站</a>
+                <a href="https://www.tw-pjsekai.com/" target="_blank" rel="noopener" data-i18n="intro_official_tw">台服官方網站</a>
+            </div>
+
+            <h3 class="units-title" data-i18n="units_title">✦ 五大團隊 ✦</h3>
+            <div class="units-grid">
+                <div class="unit-card">
+                    <img src="https://static.wikia.nocookie.net/projectsekai/images/5/5e/Ln_Group_v2.png/revision/latest?cb=20230921164123" alt="Leo/need" referrerpolicy="no-referrer">
+                    <p>Leo/need</p>
+                </div>
+                <div class="unit-card">
+                    <img src="https://static.wikia.nocookie.net/projectsekai/images/0/0e/Mmj%21_Group_v2.png/revision/latest?cb=20230922151949" alt="MORE MORE JUMP!" referrerpolicy="no-referrer">
+                    <p>MORE MORE JUMP!</p>
+                </div>
+                <div class="unit-card">
+                    <img src="https://static.wikia.nocookie.net/projectsekai/images/b/b1/Vbs_group_v2.png/revision/latest?cb=20230923152213" alt="Vivid BAD SQUAD" referrerpolicy="no-referrer">
+                    <p>Vivid BAD SQUAD</p>
+                </div>
+                <div class="unit-card">
+                    <img src="https://static.wikia.nocookie.net/projectsekai/images/b/b2/Wxs_Group_v2.png/revision/latest?cb=20230924151721" alt="ワンダーランズ×ショウタイム" referrerpolicy="no-referrer">
+                    <p>ワンダーランズ×ショウタイム</p>
+                </div>
+                <div class="unit-card">
+                    <img src="https://pjsekai.sega.jp/3rd/assets/images/common/unit/unit_chara-nightcode.png" alt="25時、ナイトコードで。">
+                    <p>25時、ナイトコードで。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sekai-page-characters" class="sekai-page" style="display:none;">
+        <div class="sekai-card">
+            <h2 data-i18n="characters_title">✦ 我在玩的角色 / 內容 ✦</h2>
+            <div class="character-grid">
+                <div class="character-card">
+                    <div class="character-card-placeholder">✎</div>
+                    <p class="character-card-note">在這裡放上你喜歡的角色、隊伍介紹！</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sekai-page-songs" class="sekai-page" style="display:none;">
+        <div class="sekai-card">
+            <h2 data-i18n="songs_title">✦ 歌曲成績 ✦</h2>
+            <div class="songs-toolbar">
+                <input type="text" id="song-search-input" data-i18n-placeholder="songs_search_placeholder" placeholder="搜尋曲名..." oninput="filterSongs(this.value)">
+                <div class="songs-actions">
+                    <button class="btn-small" onclick="exportSekaiScores()" data-i18n="export_btn">匯出成績</button>
+                    <button class="btn-small" onclick="document.getElementById('sekai-import-file').click()" data-i18n="import_btn">匯入成績</button>
+                    <input type="file" id="sekai-import-file" accept="application/json" style="display:none" onchange="importSekaiScores(event)">
+                    <button class="btn-small" onclick="setupSekaiPassword()" data-i18n="password_set_btn">🔒 設定密碼</button>
+                </div>
+            </div>
+            <p id="song-table-status" class="songs-status"></p>
+            <div class="song-table-wrap">
+                <table class="song-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="songs_col_song">曲名</th>
+                            <th data-i18n="songs_col_easy">Easy</th>
+                            <th data-i18n="songs_col_normal">Normal</th>
+                            <th data-i18n="songs_col_hard">Hard</th>
+                            <th data-i18n="songs_col_expert">Expert</th>
+                            <th data-i18n="songs_col_master">Master</th>
+                            <th data-i18n="songs_col_append">Append</th>
+                        </tr>
+                    </thead>
+                    <tbody id="song-table-body"></tbody>
+                </table>
+                <div id="song-table-empty" class="songs-empty" style="display:none;"></div>
+            </div>
+            <div id="song-pagination" class="song-pagination"></div>
+        </div>
+    </section>
+
+    <section id="sekai-page-updates" class="sekai-page" style="display:none;">
+        <div class="sekai-card">
+            <h2 data-i18n="updates_title">✦ 更新情報 ✦</h2>
+            <div class="updates-columns">
+                <div class="updates-column">
+                    <h3 data-i18n="updates_jp">日服</h3>
+                    <div id="jp-news-list" class="news-list"></div>
+                </div>
+                <div class="updates-column">
+                    <h3 data-i18n="updates_tw">台服</h3>
+                    <div id="tw-news-list" class="news-list"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<div id="score-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+        <h3 id="score-modal-song-name" data-i18n="score_modal_title">記錄成績</h3>
+        <div class="score-modal-field">
+            <label data-i18n="score_modal_rank">評級</label>
+            <div class="score-rank-row">
+                <button class="score-rank-btn" data-rank="S" onclick="selectRank(this)">S</button>
+                <button class="score-rank-btn" data-rank="A" onclick="selectRank(this)">A</button>
+                <button class="score-rank-btn" data-rank="B" onclick="selectRank(this)">B</button>
+                <button class="score-rank-btn" data-rank="C" onclick="selectRank(this)">C</button>
+            </div>
+        </div>
+        <div class="score-modal-field">
+            <label data-i18n="score_modal_score">分數</label>
+            <input type="number" id="score-modal-score-input" min="0">
+        </div>
+        <div class="score-modal-field score-modal-checkboxes">
+            <label><input type="checkbox" id="score-modal-fc-input"> <span data-i18n="score_modal_fc">Full Combo</span></label>
+            <label><input type="checkbox" id="score-modal-ap-input"> <span data-i18n="score_modal_ap">All Perfect</span></label>
+        </div>
+        <div class="score-modal-field">
+            <label data-i18n="score_modal_image">成績截圖</label>
+            <img id="score-modal-image-preview" class="score-modal-image-preview" style="display:none;" alt="">
+            <div class="score-modal-image-row">
+                <input type="file" id="score-modal-image-input" accept="image/*" onchange="onScoreImageInputChange(event)">
+                <button type="button" class="btn-small" id="score-modal-image-remove-btn" style="display:none;" onclick="removeModalImage()" data-i18n="score_modal_image_remove">移除圖片</button>
+            </div>
+        </div>
+        <div class="score-modal-buttons">
+            <button class="btn-small danger" id="score-modal-delete-btn" onclick="deleteScoreModal()" data-i18n="score_modal_delete">刪除記錄</button>
+            <button class="btn-small" onclick="closeScoreModal()" data-i18n="score_modal_cancel">取消</button>
+            <button class="btn-small primary" onclick="saveScoreModal()" data-i18n="score_modal_save">儲存</button>
+        </div>
+    </div>
+</div>
+
+<div id="image-lightbox" class="lightbox-overlay" style="display:none;" onclick="closeImageLightbox()">
+    <button class="lightbox-close" onclick="closeImageLightbox()">&times;</button>
+    <img id="image-lightbox-img" alt="" onclick="event.stopPropagation()">
+</div>
+
+<footer class="sekai-footer">
+    <p>Hanabiの世界計畫成績簿 ✦ Project SEKAI is a trademark of SEGA / Colorful Palette</p>
+</footer>
+
+<script src="js/theme.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/sekai-data.js"></script>
+<script src="js/image-store.js"></script>
+<script src="js/scores.js"></script>
+<script src="js/updates.js"></script>
+<script src="js/main.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js').catch(function() {});
+  }
+</script>
+</body>
+</html>

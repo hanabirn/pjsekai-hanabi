@@ -1,0 +1,26 @@
+{
+  "name": "Hanabiの世界計畫成績簿",
+  "short_name": "PJSekai",
+  "description": "個人世界計畫歌曲成績記錄與日台服更新情報",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#101229",
+  "theme_color": "#7dd3fc",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["entertainment", "games"],
+  "lang": "zh-TW"
+}
