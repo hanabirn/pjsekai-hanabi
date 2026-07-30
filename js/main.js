@@ -73,17 +73,16 @@ function computeSongStats() {
     let totalDifficulties = 0;
     sekaiSongs.forEach(s => { totalDifficulties += Object.keys(s.difficulties).length; });
 
-    let recorded = 0, s = 0, ap = 0, fc = 0, scoreSum = 0, scoreCount = 0;
+    let recorded = 0, s = 0, ap = 0, fc = 0;
     Object.values(scores).forEach(diffs => {
         Object.values(diffs).forEach(entry => {
             recorded++;
             if (entry.rank === 'S') s++;
             if (entry.ap) ap++;
             else if (entry.fc) fc++;
-            if (entry.score) { scoreSum += Number(entry.score); scoreCount++; }
         });
     });
-    return { recorded, totalDifficulties, s, ap, fc, avgScore: scoreCount ? Math.round(scoreSum / scoreCount) : 0 };
+    return { recorded, totalDifficulties, s, ap, fc };
 }
 
 function renderSongStats() {
@@ -95,7 +94,6 @@ function renderSongStats() {
         <div class="stat-tile"><div class="stat-num">${st.s}</div><div class="stat-label">S</div></div>
         <div class="stat-tile"><div class="stat-num">${st.ap}</div><div class="stat-label">AP</div></div>
         <div class="stat-tile"><div class="stat-num">${st.fc}</div><div class="stat-label">FC</div></div>
-        <div class="stat-tile"><div class="stat-num">${st.avgScore.toLocaleString()}</div><div class="stat-label">${t('stats_avg_score')}</div></div>
     `;
 }
 

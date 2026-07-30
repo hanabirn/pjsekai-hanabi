@@ -20,7 +20,7 @@ const I18N = {
         songs_search_placeholder: '搜尋曲名...',
         songs_col_song: '曲名', songs_col_easy: 'Easy', songs_col_normal: 'Normal',
         songs_col_hard: 'Hard', songs_col_expert: 'Expert', songs_col_master: 'Master', songs_col_append: 'Append',
-        stats_recorded: '已記錄', stats_avg_score: '平均分數',
+        stats_recorded: '已記錄',
         sort_title: '依曲名排序', sort_level_desc: '依等級（高到低）', sort_level_asc: '依等級（低到高）',
         filter_all: '全部歌曲', filter_recorded: '已記錄成績', filter_unrecorded: '尚未記錄',
         songs_loading: '載入歌曲資料中...', songs_load_fail: '歌曲資料載入失敗，稍後再試',
