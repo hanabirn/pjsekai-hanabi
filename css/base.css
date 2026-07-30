@@ -21,11 +21,16 @@ body {
     position: absolute;
     inset: 0;
     background-repeat: no-repeat;
-    background-position: right bottom;
     background-size: auto;
     opacity: 0;
     transition: opacity 2.5s ease;
     animation: bgSlideDrift 12s ease-in-out infinite;
+}
+.bg-slide-left {
+    background-position: left bottom;
+}
+.bg-slide-right {
+    background-position: right bottom;
 }
 .bg-slide.active {
     opacity: 1;
