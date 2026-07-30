@@ -137,3 +137,37 @@ async function loadSekaiSongs(onUpdate) {
         if (!cached) onUpdate([], { fromCache: false, error: true });
     }
 }
+
+/* ===== Character birthdays (today's-birthday easter egg on the intro tab) =====
+   gameCharacters.json itself has no birthday field — it lives in the sibling
+   characterProfiles.json as a Japanese-formatted string like "8月11日". */
+const SEKAI_CHARACTER_PROFILES_URL = 'https://sekai-world.github.io/sekai-master-db-diff/characterProfiles.json';
+
+async function loadTodaysBirthdayCharacters() {
+    try {
+        const [charsRes, profilesRes] = await Promise.all([
+            fetch(SEKAI_CHARACTERS_URL),
+            fetch(SEKAI_CHARACTER_PROFILES_URL),
+        ]);
+        const characters = await charsRes.json();
+        const profiles = await profilesRes.json();
+
+        const profileByCharId = {};
+        profiles.forEach(p => { profileByCharId[p.characterId] = p; });
+
+        const now = new Date();
+        const month = now.getMonth() + 1;
+        const day = now.getDate();
+
+        return characters
+            .filter(c => {
+                const profile = profileByCharId[c.id];
+                const match = profile && profile.birthday && profile.birthday.match(/(\d+)月(\d+)日/);
+                return match && Number(match[1]) === month && Number(match[2]) === day;
+            })
+            .map(c => ({ id: c.id, name: `${c.firstName}${c.givenName}`, unit: c.unit }));
+    } catch (e) {
+        console.error('Failed to load character birthday data:', e);
+        return [];
+    }
+}

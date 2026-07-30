@@ -147,19 +147,30 @@ function aggregateRankings(entries, difficulty) {
     return Object.values(byNick);
 }
 
+/* encodeURIComponent leaves ' ( ) unescaped (they're in its "safe" set), so a
+   nickname containing one breaks out of the single-quoted onclick attribute
+   below — escape those too before embedding. */
+function encodeForOnclick(str) {
+    return encodeURIComponent(str).replace(/['()]/g, c => '%' + c.charCodeAt(0).toString(16));
+}
+
 function renderRankingList(list, metric, query) {
     const sorted = list.slice().sort((a, b) => b[metric] - a[metric]).filter(p => p[metric] > 0);
     const numbered = sorted.map((p, i) => ({ ...p, place: i + 1 }));
     const visible = query ? numbered.filter(p => p.nickname.toLowerCase().includes(query.toLowerCase())) : numbered;
     if (visible.length === 0) return `<div class="ranking-empty">${t(query ? 'ranking_no_match' : 'ranking_empty')}</div>`;
     const medals = ['🥇', '🥈', '🥉'];
-    return `<ol class="ranking-list">` + visible.map(p => `
+    return `<ol class="ranking-list">` + visible.map(p => {
+        const followed = isRankingFriend(p.nickname);
+        return `
         <li class="ranking-item">
             <span class="ranking-medal">${medals[p.place - 1] || p.place}</span>
+            <button class="ranking-follow-btn ${followed ? 'active' : ''}" onclick="toggleRankingFriend(decodeURIComponent('${encodeForOnclick(p.nickname)}'))" title="${escapeHtmlSekai(t('ranking_friend_toggle_title'))}">${followed ? '★' : '☆'}</button>
             <span class="ranking-nick">${escapeHtmlSekai(p.nickname)}</span>
             <span class="ranking-count">${p[metric]}</span>
         </li>
-    `).join('') + `</ol>`;
+    `;
+    }).join('') + `</ol>`;
 }
 
 function renderRankingBoard() {
@@ -180,5 +191,83 @@ function renderRankingBoard() {
             <h3>⭐ S</h3>
             ${renderRankingList(aggregated, 's', query)}
         </div>
+    `;
+    renderFriendsCompare(aggregated);
+}
+
+/* ===== Friend tracking: follow specific nicknames from the leaderboard and
+   compare their AP/FC/S totals side by side, independent of medal placement ===== */
+const RANKING_FRIENDS_KEY = 'sekai_ranking_friends';
+
+function getRankingFriends() {
+    try {
+        return JSON.parse(localStorage.getItem(RANKING_FRIENDS_KEY)) || [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveRankingFriends(list) {
+    localStorage.setItem(RANKING_FRIENDS_KEY, JSON.stringify(list));
+}
+
+function isRankingFriend(nickname) {
+    return getRankingFriends().some(n => n.toLowerCase() === nickname.toLowerCase());
+}
+
+function toggleRankingFriend(nickname) {
+    const friends = getRankingFriends();
+    const idx = friends.findIndex(n => n.toLowerCase() === nickname.toLowerCase());
+    if (idx >= 0) friends.splice(idx, 1);
+    else friends.push(nickname);
+    saveRankingFriends(friends);
+    renderRankingBoard();
+}
+
+function addRankingFriendFromInput() {
+    const input = document.getElementById('ranking-friend-add-input');
+    if (!input) return;
+    const name = input.value.trim();
+    if (!name) return;
+    if (!isRankingFriend(name)) {
+        const friends = getRankingFriends();
+        friends.push(name);
+        saveRankingFriends(friends);
+    }
+    input.value = '';
+    renderRankingBoard();
+}
+
+function renderFriendsCompare(aggregated) {
+    const el = document.getElementById('ranking-friends-panel');
+    if (!el) return;
+    const friends = getRankingFriends();
+    const byNick = {};
+    aggregated.forEach(p => { byNick[p.nickname.toLowerCase()] = p; });
+
+    const rows = friends.map(name => {
+        const p = byNick[name.toLowerCase()];
+        const encodedName = encodeForOnclick(name);
+        return `<tr>
+            <td class="friends-compare-name">${escapeHtmlSekai(name)}</td>
+            <td>${p ? p.ap : 0}</td>
+            <td>${p ? p.fc : 0}</td>
+            <td>${p ? p.s : 0}</td>
+            <td><button class="friends-remove-btn" onclick="toggleRankingFriend(decodeURIComponent('${encodedName}'))" aria-label="remove">&times;</button></td>
+        </tr>`;
+    }).join('');
+
+    el.innerHTML = `
+        <h3 class="favorites-title">${t('ranking_friends_title')}</h3>
+        <div class="ranking-friend-add-row">
+            <input type="text" id="ranking-friend-add-input" data-i18n-placeholder="ranking_friend_add_placeholder" placeholder="${escapeHtmlSekai(t('ranking_friend_add_placeholder'))}" onkeydown="if(event.key==='Enter')addRankingFriendFromInput()">
+            <button class="btn-small" onclick="addRankingFriendFromInput()">${t('ranking_friend_add_btn')}</button>
+        </div>
+        ${friends.length === 0
+            ? `<div class="ranking-empty">${t('ranking_friends_empty')}</div>`
+            : `<table class="friends-compare-table">
+                <thead><tr><th>${t('ranking_friend_col_name')}</th><th>🌈 AP</th><th>🟣 FC</th><th>⭐ S</th><th></th></tr></thead>
+                <tbody>${rows}</tbody>
+              </table>`}
     `;
 }

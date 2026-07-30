@@ -11,6 +11,7 @@ const I18N = {
         intro_official_jp: '日服官方網站',
         intro_official_tw: '台服官方網站',
         units_title: '✦ 五大團隊 ✦',
+        birthday_banner: '🎂 今天是 {names} 的生日！生日快樂！',
 
         characters_title: '✦ 世界計畫角色美圖收藏 ✦',
         gallery_upload_btn: '📤 上傳圖片', gallery_empty: '還沒有收藏的圖片，點上方按鈕新增！',
@@ -87,6 +88,12 @@ const I18N = {
         ranking_search_placeholder: '搜尋暱稱...',
         ranking_no_match: '找不到符合的暱稱',
         ranking_not_ready: '世界排名功能尚未開放',
+        ranking_friends_title: '✦ 好友比較 ✦',
+        ranking_friend_add_placeholder: '輸入暱稱加入追蹤',
+        ranking_friend_add_btn: '追蹤',
+        ranking_friends_empty: '還沒有追蹤的好友，輸入暱稱或點排行榜上的 ☆ 開始追蹤吧！',
+        ranking_friend_col_name: '暱稱',
+        ranking_friend_toggle_title: '追蹤 / 取消追蹤',
 
         password_prompt: '請輸入密碼以進行修改：', password_wrong: '密碼錯誤！',
         password_set_prompt: '請設定成績簿密碼（留空則不設定密碼保護）：',
@@ -112,6 +119,7 @@ const I18N = {
         intro_official_jp: '日本版公式サイト',
         intro_official_tw: '台湾版公式サイト',
         units_title: '✦ 5つのユニット ✦',
+        birthday_banner: '🎂 今日は{names}の誕生日です！おめでとう！',
 
         characters_title: '✦ プロセカキャラ画像コレクション ✦',
         gallery_upload_btn: '📤 画像をアップロード', gallery_empty: 'まだ画像がありません。上のボタンから追加しよう！',
@@ -188,6 +196,12 @@ const I18N = {
         ranking_search_placeholder: 'ニックネームで検索...',
         ranking_no_match: '一致するニックネームが見つかりません',
         ranking_not_ready: '世界ランキング機能はまだ準備中です',
+        ranking_friends_title: '✦ フレンド比較 ✦',
+        ranking_friend_add_placeholder: 'ニックネームを入力してフォロー',
+        ranking_friend_add_btn: 'フォロー',
+        ranking_friends_empty: 'まだフォロー中のフレンドがいません。ニックネームを入力するか、ランキングの ☆ を押してフォローしよう！',
+        ranking_friend_col_name: 'ニックネーム',
+        ranking_friend_toggle_title: 'フォロー / 解除',
 
         password_prompt: 'パスワードを入力してください：', password_wrong: 'パスワードが違います！',
         password_set_prompt: 'スコア帳のパスワードを設定してください（空欄で保護なし）：',

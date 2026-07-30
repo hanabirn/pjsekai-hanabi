@@ -770,6 +770,17 @@ function savePlayerIds() {
     showToast(t('player_id_saved'));
 }
 
+/* ===== Character birthday easter egg (intro tab) ===== */
+async function initBirthdayBanner() {
+    const el = document.getElementById('birthday-banner');
+    if (!el) return;
+    const characters = await loadTodaysBirthdayCharacters();
+    if (characters.length === 0) return;
+    const names = characters.map(c => c.name).join('、');
+    el.querySelector('.birthday-banner-text').textContent = t('birthday_banner', { names });
+    el.style.display = 'block';
+}
+
 /* ===== Re-render already-rendered dynamic content after a language switch ===== */
 function refreshDynamicContent() {
     renderSongTable();
@@ -794,4 +805,5 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('song-table-status').textContent = '';
         renderSongTable();
     });
+    initBirthdayBanner();
 });

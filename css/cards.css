@@ -1,3 +1,23 @@
+.birthday-banner {
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto 18px;
+    padding: 10px 16px;
+    border-radius: 14px;
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border-card);
+}
+.birthday-banner-text {
+    font-weight: bold;
+    font-size: 0.95rem;
+    background: linear-gradient(90deg, var(--accent-pink), var(--accent-yellow), var(--accent-purple), var(--accent-pink));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s linear infinite;
+}
+
 .intro-center {
     text-align: center;
     max-width: 620px;

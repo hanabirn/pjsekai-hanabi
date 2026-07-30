@@ -113,6 +113,9 @@
 
     <section id="sekai-page-intro" class="sekai-page">
         <div class="sekai-card">
+            <div id="birthday-banner" class="birthday-banner" style="display:none;">
+                <span class="birthday-banner-text"></span>
+            </div>
             <div class="intro-center">
                 <h2 data-i18n="intro_title">✦ 關於世界計畫 ✦</h2>
                 <p data-i18n="intro_desc">《世界計畫 繽紛舞台！ feat. 初音未來》是由 SEGA 與 Colorful Palette 開發的音樂節奏手遊，結合初音未來等 VOCALOID 角色與原創角色的故事。</p>
@@ -256,6 +259,7 @@
         <div class="sekai-card">
             <h2 data-i18n="ranking_title">✦ 世界排名 ✦</h2>
             <p class="ranking-hint" data-i18n="ranking_hint">成績需要附截圖並經過審核才會出現在這裡；審核前會先用文字辨識自動比對截圖，但不保證能防止所有造假，僅供同好交流參考。</p>
+            <div id="ranking-friends-panel" class="ranking-friends-panel"></div>
             <div class="ranking-toolbar">
                 <input type="text" id="ranking-search-input" data-i18n-placeholder="ranking_search_placeholder" placeholder="搜尋暱稱..." oninput="onRankingSearchInput(this.value)">
                 <select id="ranking-difficulty-select" onchange="onRankingDifficultyChange(this.value)">
