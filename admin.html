@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>世界排名審核後台</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<header class="sekai-header">
+    <div class="sekai-header-top">
+        <div class="sekai-title-block">
+            <h1>世界排名審核後台</h1>
+            <p class="sekai-tagline">僅供站長使用，一般訪客請勿在此輸入資料</p>
+        </div>
+        <div class="sekai-header-controls">
+            <button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()">🌙</button>
+        </div>
+    </div>
+</header>
+
+<main class="sekai-main">
+    <section class="sekai-page">
+        <div class="sekai-card" id="admin-login-card">
+            <h2>🔒 請輸入審核密碼</h2>
+            <div class="admin-login-row">
+                <input type="password" id="admin-password-input" placeholder="審核密碼">
+                <button class="btn-small primary" onclick="adminLogin()">登入</button>
+            </div>
+            <p id="admin-login-status" class="admin-status"></p>
+        </div>
+
+        <div class="sekai-card" id="admin-list-card" style="display:none;">
+            <h2>✦ 待審核清單 ✦</h2>
+            <button class="btn-small" onclick="loadPendingList()">🔄 重新整理</button>
+            <p id="admin-list-status" class="admin-status"></p>
+            <div id="admin-pending-list" class="admin-pending-list"></div>
+        </div>
+    </section>
+</main>
+
+<script src="js/theme.js"></script>
+<script>
+let adminPassword = '';
+
+async function adminLogin() {
+    const pw = document.getElementById('admin-password-input').value;
+    if (!pw) return;
+    document.getElementById('admin-login-status').textContent = '登入中...';
+    adminPassword = pw;
+    const ok = await loadPendingList();
+    if (ok) {
+        document.getElementById('admin-login-card').style.display = 'none';
+        document.getElementById('admin-list-card').style.display = 'block';
+    } else {
+        document.getElementById('admin-login-status').textContent = '密碼錯誤或連線失敗';
+        adminPassword = '';
+    }
+}
+
+async function loadPendingList() {
+    const statusEl = document.getElementById('admin-list-status');
+    statusEl.textContent = '載入中...';
+    try {
+        const res = await fetch(SEKAI_RANKING_API, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'list', pw: adminPassword }),
+        });
+        const data = await res.json();
+        if (data.error) {
+            statusEl.textContent = '密碼錯誤';
+            return false;
+        }
+        statusEl.textContent = '';
+        renderPendingList(data);
+        return true;
+    } catch (e) {
+        console.error('Admin list load failed:', e);
+        statusEl.textContent = '連線失敗，請稍後再試';
+        return false;
+    }
+}
+
+function renderPendingList(items) {
+    const container = document.getElementById('admin-pending-list');
+    if (items.length === 0) {
+        container.innerHTML = '<div class="admin-empty">目前沒有待審核的項目</div>';
+        return;
+    }
+    container.innerHTML = items.map(function (item) {
+        const ocrBadge = item.ocrOk === true
+            ? '<span class="admin-ocr-badge ok">✅ OCR 通過</span>'
+            : '<span class="admin-ocr-badge warn">⚠️ OCR 未通過</span>';
+        const notes = item.ocrNotes ? '<div class="admin-ocr-notes">' + escapeHtmlAdmin(item.ocrNotes) + '</div>' : '';
+        const flags = [];
+        if (item.ap === true || item.ap === 'TRUE') flags.push('🌈 AP');
+        else if (item.fc === true || item.fc === 'TRUE') flags.push('🟣 FC');
+        return `<div class="admin-pending-item">
+            <img class="admin-thumb" src="${item.imageUrl}" alt="" onclick="window.open('${item.imageUrl}', '_blank')">
+            <div class="admin-pending-info">
+                <div class="admin-pending-title">${escapeHtmlAdmin(item.songTitle)} — ${escapeHtmlAdmin(String(item.difficulty).toUpperCase())}</div>
+                <div class="admin-pending-meta">暱稱：${escapeHtmlAdmin(item.nickname)} ・ 分數：${escapeHtmlAdmin(String(item.score))} ・ Rank：${escapeHtmlAdmin(item.rank)} ${flags.join(' ')}</div>
+                ${ocrBadge}
+                ${notes}
+                <div class="admin-pending-actions">
+                    <button class="btn-small primary" onclick="moderateItem('${item.id}', 'approved')">核准</button>
+                    <button class="btn-small danger" onclick="moderateItem('${item.id}', 'rejected')">退回</button>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+async function moderateItem(id, status) {
+    try {
+        await fetch(SEKAI_RANKING_API, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'moderate', pw: adminPassword, id, status }),
+        });
+        loadPendingList();
+    } catch (e) {
+        alert('操作失敗，請稍後再試');
+    }
+}
+
+function escapeHtmlAdmin(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : str;
+    return div.innerHTML;
+}
+</script>
+<script src="js/ranking.js"></script>
+</body>
+</html>

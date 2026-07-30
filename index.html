@@ -42,6 +42,7 @@
         <button class="sekai-nav-btn active" onclick="switchSekaiTab('intro', this)" data-i18n="nav_intro">關於遊戲</button>
         <button class="sekai-nav-btn" onclick="switchSekaiTab('characters', this)" data-i18n="nav_characters">我的角色</button>
         <button class="sekai-nav-btn" onclick="switchSekaiTab('songs', this)" data-i18n="nav_songs">歌曲成績</button>
+        <button class="sekai-nav-btn" onclick="switchSekaiTab('ranking', this)" data-i18n="nav_ranking">世界排名</button>
         <button class="sekai-nav-btn" onclick="switchSekaiTab('updates', this)" data-i18n="nav_updates">更新情報</button>
     </nav>
 </header>
@@ -165,6 +166,14 @@
         </div>
     </section>
 
+    <section id="sekai-page-ranking" class="sekai-page" style="display:none;">
+        <div class="sekai-card">
+            <h2 data-i18n="ranking_title">✦ 世界排名 ✦</h2>
+            <p class="ranking-hint" data-i18n="ranking_hint">成績需要附截圖並經過審核才會出現在這裡；審核前會先用文字辨識自動比對截圖，但不保證能防止所有造假，僅供同好交流參考。</p>
+            <div id="ranking-board" class="ranking-columns"></div>
+        </div>
+    </section>
+
     <section id="sekai-page-updates" class="sekai-page" style="display:none;">
         <div class="sekai-card">
             <h2 data-i18n="updates_title">✦ 更新情報 ✦</h2>
@@ -213,6 +222,7 @@
         </div>
         <div class="score-modal-buttons">
             <button class="btn-small danger" id="score-modal-delete-btn" onclick="deleteScoreModal()" data-i18n="score_modal_delete">刪除記錄</button>
+            <button class="btn-small ranking-submit-btn" id="score-modal-ranking-btn" onclick="onSubmitToRankingClick()" style="display:none;" data-i18n="ranking_submit_btn">🏆 提交到世界排名</button>
             <button class="btn-small" onclick="closeScoreModal()" data-i18n="score_modal_cancel">取消</button>
             <button class="btn-small primary" onclick="saveScoreModal()" data-i18n="score_modal_save">儲存</button>
         </div>
@@ -228,11 +238,13 @@
     <p>Hanabiの世界計畫成績簿 ✦ Project SEKAI is a trademark of SEGA / Colorful Palette</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="js/theme.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/sekai-data.js"></script>
 <script src="js/image-store.js"></script>
 <script src="js/scores.js"></script>
+<script src="js/ranking.js"></script>
 <script src="js/updates.js"></script>
 <script src="js/main.js"></script>
 <script>

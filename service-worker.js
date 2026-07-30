@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pjsekai-hanabi-v2';
+const CACHE_NAME = 'pjsekai-hanabi-v3';
 const ASSETS = [
   '/',
   '/index.html',
@@ -12,6 +12,7 @@ const ASSETS = [
   '/js/sekai-data.js',
   '/js/image-store.js',
   '/js/scores.js',
+  '/js/ranking.js',
   '/js/updates.js',
   '/js/main.js',
   '/icons/icon-192.png',

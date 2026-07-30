@@ -186,6 +186,8 @@ async function openScoreModal(musicId, difficulty) {
         btn.classList.toggle('active', btn.dataset.rank === entry.rank);
     });
     document.getElementById('score-modal-delete-btn').style.display = entry.rank || entry.score ? 'inline-block' : 'none';
+    const rankingBtn = document.getElementById('score-modal-ranking-btn');
+    if (rankingBtn) rankingBtn.style.display = (entry.rank && entry.score && entry.hasImage) ? 'inline-block' : 'none';
 
     setModalImagePreview(null);
     if (entry.hasImage) {
@@ -258,6 +260,14 @@ async function deleteScoreModal() {
         closeScoreModal();
         renderSongTable();
     }
+}
+
+async function onSubmitToRankingClick() {
+    if (!songModalTarget) return;
+    const song = sekaiSongs.find(s => s.id === songModalTarget.musicId);
+    const entry = getSongScore(songModalTarget.musicId, songModalTarget.difficulty);
+    if (!song || !entry) return;
+    await submitToRanking(songModalTarget.musicId, songModalTarget.difficulty, song.title, entry);
 }
 
 /* ===== Image lightbox (enlarged view of a recorded score screenshot) ===== */
@@ -342,6 +352,7 @@ function switchSekaiTab(tab, el) {
     if (el) el.classList.add('active');
     if (tab === 'updates' && typeof loadSekaiUpdates === 'function') loadSekaiUpdates();
     if (tab === 'characters') renderGallery();
+    if (tab === 'ranking' && typeof loadRankingBoard === 'function') loadRankingBoard();
 }
 
 /* ===== Background photo carousel (fades between curated character art, left + right sides) ===== */
