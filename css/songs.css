@@ -84,6 +84,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.song-new-badge {
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 0.62rem;
+    font-weight: bold;
+    color: #06263a;
+    background: var(--rainbow-gradient);
+    padding: 1px 5px;
+    border-radius: 6px;
+    vertical-align: middle;
+}
 .song-diff-cell {
     text-align: center;
     padding: 6px 4px;

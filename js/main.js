@@ -106,6 +106,12 @@ function renderSongStats() {
     `;
 }
 
+const NEW_SONG_WINDOW_MS = 14 * 24 * 60 * 60 * 1000; // 14 days
+
+function isNewSong(song) {
+    return song.releasedAt > 0 && (Date.now() - song.releasedAt) < NEW_SONG_WINDOW_MS;
+}
+
 function renderSongTable() {
     const body = document.getElementById('song-table-body');
     const empty = document.getElementById('song-table-empty');
@@ -135,8 +141,9 @@ function renderSongTable() {
                 ${scoreBadge(entry, song.id, diff)}
             </td>`;
         }).join('');
+        const newBadge = isNewSong(song) ? `<span class="song-new-badge">${t('song_new_badge')}</span>` : '';
         return `<tr>
-            <td class="song-title-cell">${escapeHtmlSekai(song.title)}</td>
+            <td class="song-title-cell">${escapeHtmlSekai(song.title)}${newBadge}</td>
             ${cells}
         </tr>`;
     }).join('');

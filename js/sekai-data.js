@@ -50,6 +50,7 @@ function joinSekaiSongs(musics, difficulties, musicUnits) {
             pronunciation: m.pronunciation || '',
             difficulties: diffsByMusic[m.id],
             units: musicUnits[m.id] ? [...musicUnits[m.id]] : [],
+            releasedAt: m.releasedAt || 0,
         }))
         .sort((a, b) => a.title.localeCompare(b.title, 'ja'));
 }

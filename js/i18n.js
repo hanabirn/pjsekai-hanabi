@@ -32,6 +32,7 @@ const I18N = {
         player_id_save_btn: '儲存', player_id_saved: '已儲存！',
         songs_loading: '載入歌曲資料中...', songs_load_fail: '歌曲資料載入失敗，稍後再試',
         songs_no_append: '—',
+        song_new_badge: 'NEW',
 
         score_modal_title: '記錄成績', score_modal_rank: '評級', score_modal_score: '分數',
         score_modal_fc: 'Full Combo 🟣', score_modal_ap: 'All Perfect 🌈',
@@ -98,6 +99,7 @@ const I18N = {
         player_id_save_btn: '保存', player_id_saved: '保存しました！',
         songs_loading: '楽曲データを読み込み中...', songs_load_fail: '楽曲データの読み込みに失敗しました',
         songs_no_append: '—',
+        song_new_badge: 'NEW',
 
         score_modal_title: 'スコアを記録', score_modal_rank: 'ランク', score_modal_score: 'スコア',
         score_modal_fc: 'Full Combo 🟣', score_modal_ap: 'All Perfect 🌈',
