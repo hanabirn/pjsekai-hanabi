@@ -484,6 +484,53 @@
     accent-color: var(--accent);
     cursor: pointer;
 }
+.song-preview-bar {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 250;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: 14px;
+    padding: 10px 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    max-width: 280px;
+}
+.song-preview-bar-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+.song-preview-bar-title {
+    flex: 1;
+    min-width: 50px;
+    font-size: 0.82rem;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#song-preview-volume-slider {
+    width: 70px;
+    flex-shrink: 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+.song-preview-bar-close {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 4px;
+}
+@media (max-width: 640px) {
+    .song-preview-bar { left: 10px; right: 10px; max-width: none; bottom: 10px; }
+}
 .mv-lightbox-loading {
     color: #fff;
     font-size: 0.95rem;

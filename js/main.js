@@ -175,6 +175,17 @@ function renderSongTable() {
    and <audio>/<video> don't support the referrerpolicy attribute (unlike
    <img>), so the assets are fetched as no-referrer blobs and played from
    an object URL instead of pointing src straight at the CDN. */
+const SEKAI_MUSIC_VOLUME_KEY = 'sekai_music_volume';
+
+function getSavedMusicVolume() {
+    const saved = localStorage.getItem(SEKAI_MUSIC_VOLUME_KEY);
+    return saved !== null ? Number(saved) : 1;
+}
+
+function saveMusicVolume(vol) {
+    localStorage.setItem(SEKAI_MUSIC_VOLUME_KEY, vol);
+}
+
 let songPreviewAudio = null;
 let songPreviewObjectUrl = null;
 let songPreviewBtnEl = null;
@@ -193,6 +204,14 @@ function stopSongPreview() {
         songPreviewBtnEl.classList.remove('playing', 'loading');
         songPreviewBtnEl = null;
     }
+    const bar = document.getElementById('song-preview-bar');
+    if (bar) bar.style.display = 'none';
+}
+
+function setSongPreviewVolume(value) {
+    const vol = Number(value);
+    saveMusicVolume(vol);
+    if (songPreviewAudio) songPreviewAudio.volume = vol;
 }
 
 async function toggleSongPreview(musicId, btnEl) {
@@ -216,12 +235,21 @@ async function toggleSongPreview(musicId, btnEl) {
 
         const objectUrl = URL.createObjectURL(blob);
         const audio = new Audio(objectUrl);
+        audio.volume = getSavedMusicVolume();
         audio.onended = () => stopSongPreview();
         songPreviewAudio = audio;
         songPreviewObjectUrl = objectUrl;
         btnEl.textContent = '⏸';
         btnEl.classList.remove('loading');
         btnEl.classList.add('playing');
+
+        const bar = document.getElementById('song-preview-bar');
+        const title = document.getElementById('song-preview-bar-title');
+        const slider = document.getElementById('song-preview-volume-slider');
+        if (title) title.textContent = song.title;
+        if (slider) slider.value = audio.volume;
+        if (bar) bar.style.display = 'flex';
+
         await audio.play();
     } catch (e) {
         if (songPreviewBtnEl === btnEl) stopSongPreview();
@@ -265,8 +293,11 @@ async function openSongMv(musicId) {
             const audioBlob = await audioRes.blob();
             songMvAudioObjectUrl = URL.createObjectURL(audioBlob);
             songMvAudio = new Audio(songMvAudioObjectUrl);
+            const vol = getSavedMusicVolume();
+            songMvAudio.volume = vol;
             const slider = document.getElementById('mv-volume-slider');
-            songMvAudio.volume = slider ? Number(slider.value) : 1;
+            if (slider) slider.value = vol;
+            document.getElementById('mv-volume-btn').textContent = vol === 0 ? '🔇' : '🔊';
         }
 
         if (loading) loading.style.display = 'none';
@@ -298,6 +329,7 @@ function toggleMvMute() {
 
 function setMvVolume(value) {
     const vol = Number(value);
+    saveMusicVolume(vol);
     document.getElementById('mv-volume-btn').textContent = vol === 0 ? '🔇' : '🔊';
     if (!songMvAudio) return;
     songMvAudio.volume = vol;
