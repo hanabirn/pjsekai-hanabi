@@ -122,12 +122,70 @@ function isNewSong(song) {
     return song.releasedAt > 0 && (Date.now() - song.releasedAt) < NEW_SONG_WINDOW_MS;
 }
 
+const SEKAI_DIFF_LABELS = { easy: 'Easy', normal: 'Normal', hard: 'Hard', expert: 'Expert', master: 'Master', append: 'Append' };
+
+function computeUnitProgress() {
+    const scores = getSekaiScores();
+    return Object.keys(SEKAI_UNIT_NAMES).map(unit => {
+        let total = 0, recorded = 0;
+        sekaiSongs.forEach(song => {
+            if (!song.units.includes(unit)) return;
+            Object.keys(song.difficulties).forEach(diff => {
+                total++;
+                if (scores[song.id] && scores[song.id][diff]) recorded++;
+            });
+        });
+        return { label: SEKAI_UNIT_NAMES[unit], recorded, total };
+    });
+}
+
+function computeDifficultyProgress() {
+    const scores = getSekaiScores();
+    return SEKAI_DIFF_ORDER.map(diff => {
+        let total = 0, recorded = 0;
+        sekaiSongs.forEach(song => {
+            if (!song.difficulties[diff]) return;
+            total++;
+            if (scores[song.id] && scores[song.id][diff]) recorded++;
+        });
+        return { label: SEKAI_DIFF_LABELS[diff], diff, recorded, total };
+    });
+}
+
+function progressBarRow(label, recorded, total, colorClass) {
+    const pct = total > 0 ? Math.round((recorded / total) * 100) : 0;
+    return `<div class="progress-row">
+        <div class="progress-label">${escapeHtmlSekai(label)}</div>
+        <div class="progress-track"><div class="progress-fill ${colorClass || ''}" style="width:${pct}%"></div></div>
+        <div class="progress-count">${recorded}/${total}</div>
+    </div>`;
+}
+
+function renderProgressPanel() {
+    const el = document.getElementById('song-progress-panel');
+    if (!el) return;
+    const unitRows = computeUnitProgress().map(u => progressBarRow(u.label, u.recorded, u.total)).join('');
+    const diffRows = computeDifficultyProgress().map(d => progressBarRow(d.label, d.recorded, d.total, 'diff-' + d.diff)).join('');
+    el.innerHTML = `
+        <div class="progress-group">
+            <h4 class="progress-group-title">${t('progress_by_unit')}</h4>
+            ${unitRows}
+        </div>
+        <div class="progress-group">
+            <h4 class="progress-group-title">${t('progress_by_difficulty')}</h4>
+            ${diffRows}
+        </div>
+    `;
+}
+
 function renderSongTable() {
     const body = document.getElementById('song-table-body');
     const empty = document.getElementById('song-table-empty');
     if (!body) return;
 
     renderSongStats();
+    renderProgressPanel();
+    if (typeof renderAchievements === 'function') renderAchievements();
     renderFavoritesSection();
     const filtered = getFilteredSongs();
     if (filtered.length === 0) {
@@ -380,6 +438,7 @@ function renderFavoritesSection() {
     container.innerHTML = pageSongs.map(song => {
         const cover = songCoverUrl(song);
         return `<div class="favorite-card" onclick="jumpToFavoriteSong(${song.id})">
+            <button class="favorite-card-remove-btn" onclick="toggleFavoriteUI(${song.id}, event)" aria-label="remove" title="${t('favorites_remove_title')}">&times;</button>
             <img src="${cover}" alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'">
             <div class="favorite-card-title">${escapeHtmlSekai(song.title)}</div>
         </div>`;
@@ -408,6 +467,14 @@ function jumpToFavoriteSong(musicId) {
     if (!song) return;
     filterSongs(song.title);
     document.getElementById('song-search-input').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+/* Same jump-and-filter as favorites, but callable from the achievements tab's
+   new-songs list, so it also has to switch to the songs tab first. */
+function jumpToNewSong(musicId) {
+    const songsNavBtn = document.querySelector('.sekai-nav-btn[onclick*="switchSekaiTab(\'songs\'"]');
+    switchSekaiTab('songs', songsNavBtn);
+    jumpToFavoriteSong(musicId);
 }
 
 function renderSongPagination(totalPages) {
@@ -700,6 +767,12 @@ function savePlayerIds() {
     localStorage.setItem('sekai_player_id_tw', tw);
     localStorage.setItem('sekai_player_id_jp', jp);
     showToast(t('player_id_saved'));
+}
+
+/* ===== Re-render already-rendered dynamic content after a language switch ===== */
+function refreshDynamicContent() {
+    renderSongTable();
+    if (typeof renderGallery === 'function') renderGallery();
 }
 
 /* ===== Init ===== */

@@ -103,6 +103,7 @@
         <button class="sekai-nav-btn active" onclick="switchSekaiTab('intro', this)" data-i18n="nav_intro">關於遊戲</button>
         <button class="sekai-nav-btn" onclick="switchSekaiTab('characters', this)" data-i18n="nav_characters">我的角色</button>
         <button class="sekai-nav-btn" onclick="switchSekaiTab('songs', this)" data-i18n="nav_songs">歌曲成績</button>
+        <button class="sekai-nav-btn" onclick="switchSekaiTab('achievements', this)" data-i18n="nav_achievements">成就</button>
         <button class="sekai-nav-btn" onclick="switchSekaiTab('ranking', this)" data-i18n="nav_ranking">世界排名</button>
         <button class="sekai-nav-btn" onclick="switchSekaiTab('updates', this)" data-i18n="nav_updates">更新情報</button>
     </nav>
@@ -240,6 +241,16 @@
         </div>
     </section>
 
+    <section id="sekai-page-achievements" class="sekai-page" style="display:none;">
+        <div class="sekai-card">
+            <h2 data-i18n="achievements_page_title">✦ 成就 ✦</h2>
+            <h3 class="achievements-title" data-i18n="progress_overview_title">進度總覽</h3>
+            <div id="song-progress-panel" class="progress-panel"></div>
+            <div id="achievements-panel" class="achievements-panel"></div>
+            <div id="new-songs-panel" class="new-songs-panel"></div>
+        </div>
+    </section>
+
     <section id="sekai-page-ranking" class="sekai-page" style="display:none;">
         <div class="sekai-card">
             <h2 data-i18n="ranking_title">✦ 世界排名 ✦</h2>
@@ -349,6 +360,7 @@
 <script src="js/sekai-data.js"></script>
 <script src="js/image-store.js"></script>
 <script src="js/scores.js"></script>
+<script src="js/achievements.js"></script>
 <script src="js/ranking.js"></script>
 <script src="js/updates.js"></script>
 <script src="js/main.js"></script>
