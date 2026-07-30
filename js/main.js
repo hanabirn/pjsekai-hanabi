@@ -266,6 +266,80 @@ function stopSongPreview() {
     if (bar) bar.style.display = 'none';
 }
 
+/* ===== Background music: chains the same ~20s preview clips used by the
+   per-song 🔊 button, picking a new random song each time one ends, so it
+   behaves like ambient background music without needing full-length audio.
+   Shares the songPreviewAudio/songPreviewObjectUrl/preview-bar UI with the
+   single-song preview above — stopAllMusicPlayback() is the one place that
+   turns bgMusicEnabled off, so the bar's ✕ and a manual 🔊 click both stop
+   it cleanly regardless of which mode started playback. */
+let bgMusicEnabled = false;
+let bgMusicLastId = null;
+
+function toggleBgMusic() {
+    if (bgMusicEnabled) {
+        stopAllMusicPlayback();
+        return;
+    }
+    bgMusicEnabled = true;
+    const btn = document.getElementById('bg-music-toggle');
+    if (btn) btn.classList.add('active');
+    playRandomBgSong();
+}
+
+function stopAllMusicPlayback() {
+    bgMusicEnabled = false;
+    const btn = document.getElementById('bg-music-toggle');
+    if (btn) btn.classList.remove('active');
+    stopSongPreview();
+}
+
+function playRandomBgSong() {
+    if (!bgMusicEnabled) return;
+    const playable = sekaiSongs.filter(s => songPreviewUrl(s));
+    if (playable.length === 0) return;
+    let song;
+    do {
+        song = playable[Math.floor(Math.random() * playable.length)];
+    } while (playable.length > 1 && song.id === bgMusicLastId);
+    bgMusicLastId = song.id;
+    playBgSongPreview(song);
+}
+
+async function playBgSongPreview(song) {
+    stopSongPreview();
+    const url = songPreviewUrl(song);
+    if (!url) {
+        if (bgMusicEnabled) playRandomBgSong();
+        return;
+    }
+
+    try {
+        const res = await fetch(url, { referrerPolicy: 'no-referrer' });
+        if (!res.ok) throw new Error('bad response');
+        const blob = await res.blob();
+        if (!bgMusicEnabled) return; // stopped while this clip was loading
+
+        const objectUrl = URL.createObjectURL(blob);
+        const audio = new Audio(objectUrl);
+        audio.volume = getSavedMusicVolume();
+        audio.onended = () => { if (bgMusicEnabled) playRandomBgSong(); };
+        songPreviewAudio = audio;
+        songPreviewObjectUrl = objectUrl;
+
+        const bar = document.getElementById('song-preview-bar');
+        const title = document.getElementById('song-preview-bar-title');
+        const slider = document.getElementById('song-preview-volume-slider');
+        if (title) title.textContent = song.title;
+        if (slider) slider.value = audio.volume;
+        if (bar) bar.style.display = 'flex';
+
+        await audio.play();
+    } catch (e) {
+        if (bgMusicEnabled) playRandomBgSong(); // skip this song, try another
+    }
+}
+
 function setSongPreviewVolume(value) {
     const vol = Number(value);
     saveMusicVolume(vol);
@@ -274,7 +348,7 @@ function setSongPreviewVolume(value) {
 
 async function toggleSongPreview(musicId, btnEl) {
     const wasThisButton = songPreviewBtnEl === btnEl;
-    stopSongPreview();
+    stopAllMusicPlayback();
     if (wasThisButton) return;
 
     const song = sekaiSongs.find(s => s.id === musicId);

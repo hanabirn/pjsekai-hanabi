@@ -5,6 +5,7 @@ const I18N = {
         site_tagline: '個人歌曲成績記錄 ✦ 日台服更新情報',
         back_to_main: '← 返回 Hanabiの小天地',
         nav_intro: '關於遊戲', nav_characters: '角色美圖', nav_songs: '歌曲成績', nav_achievements: '成就', nav_ranking: '世界排名', nav_updates: '更新情報',
+        bg_music_toggle_title: '隨機播放歌曲試聽片段當背景音樂',
 
         intro_title: '✦ 關於世界計畫 ✦',
         intro_desc: '《世界計畫 繽紛舞台！ feat. 初音未來》是由 SEGA 與 Colorful Palette 開發的音樂節奏手遊，結合初音未來等 VOCALOID 角色與原創角色的故事。',
@@ -113,6 +114,7 @@ const I18N = {
         site_tagline: '個人楽曲スコア記録 ✦ 日台版アップデート情報',
         back_to_main: '← Hanabiの小天地に戻る',
         nav_intro: 'ゲーム紹介', nav_characters: 'キャラ画像', nav_songs: '楽曲スコア', nav_achievements: '実績', nav_ranking: '世界ランキング', nav_updates: '最新情報',
+        bg_music_toggle_title: '楽曲の試聴クリップをランダム再生してBGMにする',
 
         intro_title: '✦ プロジェクトセカイについて ✦',
         intro_desc: '「プロジェクトセカイ カラフルステージ！ feat. 初音ミク」は、SEGAとColorful Paletteが開発した音楽リズムゲームです。初音ミクなどのVOCALOIDキャラクターとオリジナルキャラクターの物語が展開されます。',
@@ -232,6 +234,10 @@ function applyLang(lang) {
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.getAttribute('data-i18n-placeholder');
         if (dict[key]) el.placeholder = dict[key];
+    });
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        const key = el.getAttribute('data-i18n-title');
+        if (dict[key]) el.title = dict[key];
     });
     document.querySelectorAll('.lang-pill').forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);

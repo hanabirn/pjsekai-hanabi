@@ -95,6 +95,7 @@
         <div class="sekai-header-controls">
             <button class="lang-pill" data-lang="zh" onclick="applyLang('zh')">中文</button>
             <button class="lang-pill" data-lang="ja" onclick="applyLang('ja')">日本語</button>
+            <button id="bg-music-toggle" class="bg-music-toggle-btn" onclick="toggleBgMusic()" data-i18n-title="bg_music_toggle_title" title="隨機播放歌曲試聽片段當背景音樂">🎵</button>
             <button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()">🌙</button>
         </div>
     </div>
@@ -344,7 +345,7 @@
     <span class="song-preview-bar-icon">🔊</span>
     <span id="song-preview-bar-title" class="song-preview-bar-title"></span>
     <input type="range" id="song-preview-volume-slider" min="0" max="1" step="0.05" value="1" oninput="setSongPreviewVolume(this.value)">
-    <button class="song-preview-bar-close" onclick="stopSongPreview()" aria-label="close">&times;</button>
+    <button class="song-preview-bar-close" onclick="stopAllMusicPlayback()" aria-label="close">&times;</button>
 </div>
 
 <div id="mv-lightbox" class="lightbox-overlay" style="display:none;" onclick="closeMvLightbox()">
