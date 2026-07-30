@@ -185,6 +185,7 @@
                     <input type="text" id="song-search-input" data-i18n-placeholder="songs_search_placeholder" placeholder="搜尋曲名..." oninput="filterSongs(this.value)">
                     <button type="button" id="song-search-clear" class="song-search-clear-btn" onclick="clearSongSearch()" style="display:none;" aria-label="clear">&times;</button>
                 </div>
+                <button type="button" id="song-search-back-btn" class="song-search-back-btn" onclick="clearSongSearch()" style="display:none;" data-i18n="songs_search_back">← 返回歌曲列表</button>
                 <select id="song-sort-select" onchange="onSongSortChange(this.value)">
                     <option value="title" data-i18n="sort_title">依曲名排序</option>
                     <option value="level-desc" data-i18n="sort_level_desc">依等級（高到低）</option>

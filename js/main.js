@@ -15,8 +15,10 @@ function filterSongs(query) {
     renderSongTable();
     const input = document.getElementById('song-search-input');
     const clearBtn = document.getElementById('song-search-clear');
+    const backBtn = document.getElementById('song-search-back-btn');
     if (input) input.value = query;
     if (clearBtn) clearBtn.style.display = query ? 'block' : 'none';
+    if (backBtn) backBtn.style.display = query ? 'inline-flex' : 'none';
 }
 
 function clearSongSearch() {

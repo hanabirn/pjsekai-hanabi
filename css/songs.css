@@ -141,6 +141,22 @@
     background: var(--border-card);
     color: var(--text);
 }
+.song-search-back-btn {
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border-card);
+    border-radius: 10px;
+    padding: 8px 14px;
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, border-color 0.2s;
+}
+.song-search-back-btn:hover {
+    background: var(--bg-input);
+    border-color: var(--accent);
+}
 .songs-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .songs-status { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px; }
 
@@ -234,6 +250,7 @@
     gap: 6px;
     justify-content: center;
     margin-top: 16px;
+    margin-bottom: 16px;
 }
 .song-page-btn {
     background: var(--bg-card-alt);
