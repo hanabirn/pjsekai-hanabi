@@ -320,6 +320,12 @@
     <img id="image-lightbox-img" alt="" onclick="event.stopPropagation()">
 </div>
 
+<div id="mv-lightbox" class="lightbox-overlay" style="display:none;" onclick="closeMvLightbox()">
+    <button class="lightbox-close" onclick="closeMvLightbox()">&times;</button>
+    <div id="mv-lightbox-loading" class="mv-lightbox-loading" style="display:none;" data-i18n="song_mv_loading">載入 MV 中...</div>
+    <video id="mv-lightbox-video" controls playsinline onclick="event.stopPropagation()"></video>
+</div>
+
 <footer class="sekai-footer">
     <p>大家的世界計畫成績簿 ✦ Project SEKAI is a trademark of SEGA / Colorful Palette</p>
 </footer>

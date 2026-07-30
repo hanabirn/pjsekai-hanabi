@@ -181,6 +181,29 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.song-preview-btn, .song-mv-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    margin-right: 3px;
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: 0.9rem;
+    line-height: 1;
+    cursor: pointer;
+    vertical-align: middle;
+    border-radius: 6px;
+    transition: background 0.15s;
+}
+.song-preview-btn:hover, .song-mv-btn:hover {
+    background: var(--bg-card-alt);
+}
+.song-preview-btn.playing, .song-preview-btn.loading {
+    background: var(--bg-card-alt);
+}
 .song-new-badge {
     display: inline-block;
     margin-left: 6px;
@@ -418,12 +441,20 @@
     padding: 30px;
     cursor: zoom-out;
 }
-.lightbox-overlay img {
+.lightbox-overlay img,
+.lightbox-overlay video {
     max-width: 100%;
     max-height: 100%;
     border-radius: 8px;
     box-shadow: 0 8px 40px rgba(0,0,0,0.6);
     cursor: default;
+}
+.mv-lightbox-loading {
+    color: #fff;
+    font-size: 0.95rem;
+    background: rgba(0,0,0,0.5);
+    padding: 14px 20px;
+    border-radius: 12px;
 }
 .lightbox-close {
     position: absolute;

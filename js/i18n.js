@@ -36,6 +36,10 @@ const I18N = {
         songs_loading: '載入歌曲資料中...', songs_load_fail: '歌曲資料載入失敗，稍後再試',
         songs_no_append: '—',
         song_new_badge: 'NEW',
+        song_preview_title: '試聽片段',
+        song_mv_title: '觀看 MV',
+        song_mv_loading: '載入 MV 中...',
+        song_mv_load_fail: 'MV 載入失敗，請稍後再試',
 
         score_modal_title: '記錄成績', score_modal_rank: '評級', score_modal_score: '分數',
         score_modal_fc: 'Full Combo 🟣', score_modal_ap: 'All Perfect 🌈',
@@ -108,6 +112,10 @@ const I18N = {
         songs_loading: '楽曲データを読み込み中...', songs_load_fail: '楽曲データの読み込みに失敗しました',
         songs_no_append: '—',
         song_new_badge: 'NEW',
+        song_preview_title: '試聴',
+        song_mv_title: 'MVを見る',
+        song_mv_loading: 'MVを読み込み中...',
+        song_mv_load_fail: 'MVの読み込みに失敗しました',
 
         score_modal_title: 'スコアを記録', score_modal_rank: 'ランク', score_modal_score: 'スコア',
         score_modal_fc: 'Full Combo 🟣', score_modal_ap: 'All Perfect 🌈',

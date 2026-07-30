@@ -155,13 +155,118 @@ function renderSongTable() {
         const newBadge = isNewSong(song) ? `<span class="song-new-badge">${t('song_new_badge')}</span>` : '';
         const favActive = isFavorite(song.id);
         const heart = `<span class="song-fav-heart ${favActive ? 'active' : ''}" onclick="toggleFavoriteUI(${song.id}, event)">${favActive ? '♥' : '♡'}</span>`;
+        const previewBtn = songPreviewUrl(song)
+            ? `<button class="song-preview-btn" onclick="event.stopPropagation(); toggleSongPreview(${song.id}, this)" title="${t('song_preview_title')}">🔊</button>`
+            : '';
+        const mvBtn = songHasMv(song)
+            ? `<button class="song-mv-btn" onclick="event.stopPropagation(); openSongMv(${song.id})" title="${t('song_mv_title')}">🎬</button>`
+            : '';
         return `<tr>
-            <td class="song-title-cell">${heart}${escapeHtmlSekai(song.title)}${newBadge}</td>
+            <td class="song-title-cell">${heart}${previewBtn}${mvBtn}${escapeHtmlSekai(song.title)}${newBadge}</td>
             ${cells}
         </tr>`;
     }).join('');
 
     renderSongPagination(totalPages);
+}
+
+/* ===== Song preview clip + MV playback =====
+   storage.sekai.best rejects any request that carries a Referer header,
+   and <audio>/<video> don't support the referrerpolicy attribute (unlike
+   <img>), so the assets are fetched as no-referrer blobs and played from
+   an object URL instead of pointing src straight at the CDN. */
+let songPreviewAudio = null;
+let songPreviewObjectUrl = null;
+let songPreviewBtnEl = null;
+
+function stopSongPreview() {
+    if (songPreviewAudio) {
+        songPreviewAudio.pause();
+        songPreviewAudio = null;
+    }
+    if (songPreviewObjectUrl) {
+        URL.revokeObjectURL(songPreviewObjectUrl);
+        songPreviewObjectUrl = null;
+    }
+    if (songPreviewBtnEl) {
+        songPreviewBtnEl.textContent = '🔊';
+        songPreviewBtnEl.classList.remove('playing', 'loading');
+        songPreviewBtnEl = null;
+    }
+}
+
+async function toggleSongPreview(musicId, btnEl) {
+    const wasThisButton = songPreviewBtnEl === btnEl;
+    stopSongPreview();
+    if (wasThisButton) return;
+
+    const song = sekaiSongs.find(s => s.id === musicId);
+    const url = song && songPreviewUrl(song);
+    if (!url) return;
+
+    songPreviewBtnEl = btnEl;
+    btnEl.textContent = '⏳';
+    btnEl.classList.add('loading');
+
+    try {
+        const res = await fetch(url, { referrerPolicy: 'no-referrer' });
+        if (!res.ok) throw new Error('bad response');
+        const blob = await res.blob();
+        if (songPreviewBtnEl !== btnEl) return; // superseded by another click while loading
+
+        const objectUrl = URL.createObjectURL(blob);
+        const audio = new Audio(objectUrl);
+        audio.onended = () => stopSongPreview();
+        songPreviewAudio = audio;
+        songPreviewObjectUrl = objectUrl;
+        btnEl.textContent = '⏸';
+        btnEl.classList.remove('loading');
+        btnEl.classList.add('playing');
+        await audio.play();
+    } catch (e) {
+        if (songPreviewBtnEl === btnEl) stopSongPreview();
+    }
+}
+
+let songMvObjectUrl = null;
+
+async function openSongMv(musicId) {
+    const song = sekaiSongs.find(s => s.id === musicId);
+    if (!song) return;
+    stopSongPreview();
+
+    const video = document.getElementById('mv-lightbox-video');
+    const loading = document.getElementById('mv-lightbox-loading');
+    video.style.display = 'none';
+    if (loading) loading.style.display = 'block';
+    document.getElementById('mv-lightbox').style.display = 'flex';
+
+    try {
+        const res = await fetch(songMvUrl(song), { referrerPolicy: 'no-referrer' });
+        if (!res.ok) throw new Error('bad response');
+        const blob = await res.blob();
+        if (songMvObjectUrl) URL.revokeObjectURL(songMvObjectUrl);
+        songMvObjectUrl = URL.createObjectURL(blob);
+        video.src = songMvObjectUrl;
+        if (loading) loading.style.display = 'none';
+        video.style.display = 'block';
+        video.play().catch(() => {});
+    } catch (e) {
+        closeMvLightbox();
+        showToast(t('song_mv_load_fail'));
+    }
+}
+
+function closeMvLightbox() {
+    const video = document.getElementById('mv-lightbox-video');
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+    if (songMvObjectUrl) {
+        URL.revokeObjectURL(songMvObjectUrl);
+        songMvObjectUrl = null;
+    }
+    document.getElementById('mv-lightbox').style.display = 'none';
 }
 
 /* ===== Favorite songs (cover-art card grid, 7x2 per page) ===== */

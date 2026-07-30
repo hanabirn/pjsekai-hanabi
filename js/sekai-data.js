@@ -22,6 +22,43 @@ function songCoverUrl(song) {
     return `https://storage.sekai.best/sekai-jp-assets/music/jacket/${song.assetbundleName}/${song.assetbundleName}.webp`;
 }
 
+function songPreviewUrl(song) {
+    if (!song.vocalAsset) return '';
+    return `https://storage.sekai.best/sekai-jp-assets/music/short/${song.vocalAsset}/${song.vocalAsset}_short.mp3`;
+}
+
+function songHasMv(song) {
+    const cats = song.categories || [];
+    return cats.includes('mv') || cats.includes('mv_2d');
+}
+
+function songMvUrl(song) {
+    const id = String(song.id).padStart(4, '0');
+    return `https://storage.sekai.best/sekai-jp-assets/live/2dmode/sekai_mv/${id}/${id}.mp4`;
+}
+
+const VOCAL_TYPE_PRIORITY = ['sekai', 'original_song'];
+
+function buildMusicVocalMap(vocals) {
+    const byMusic = {};
+    vocals.forEach(v => {
+        if (!byMusic[v.musicId]) byMusic[v.musicId] = [];
+        byMusic[v.musicId].push(v);
+    });
+    const vocalAssets = {};
+    Object.keys(byMusic).forEach(musicId => {
+        const candidates = byMusic[musicId];
+        let chosen = null;
+        for (const type of VOCAL_TYPE_PRIORITY) {
+            chosen = candidates.find(v => v.musicVocalType === type);
+            if (chosen) break;
+        }
+        if (!chosen) chosen = candidates[0];
+        vocalAssets[musicId] = chosen.assetbundleName || '';
+    });
+    return vocalAssets;
+}
+
 function buildMusicUnitMap(vocals, characters) {
     const charUnit = {};
     characters.forEach(c => { charUnit[c.id] = c.unit; });
@@ -37,7 +74,7 @@ function buildMusicUnitMap(vocals, characters) {
     return musicUnits;
 }
 
-function joinSekaiSongs(musics, difficulties, musicUnits) {
+function joinSekaiSongs(musics, difficulties, musicUnits, musicVocals) {
     const diffsByMusic = {};
     difficulties.forEach(d => {
         if (!diffsByMusic[d.musicId]) diffsByMusic[d.musicId] = {};
@@ -57,6 +94,8 @@ function joinSekaiSongs(musics, difficulties, musicUnits) {
             units: musicUnits[m.id] ? [...musicUnits[m.id]] : [],
             releasedAt: m.releasedAt || 0,
             assetbundleName: m.assetbundleName || '',
+            categories: m.categories || [],
+            vocalAsset: musicVocals[m.id] || '',
         }))
         .sort((a, b) => a.title.localeCompare(b.title, 'ja'));
 }
@@ -84,7 +123,8 @@ async function loadSekaiSongs(onUpdate) {
         const vocals = await vocalsRes.json();
         const characters = await charsRes.json();
         const musicUnits = buildMusicUnitMap(vocals, characters);
-        sekaiSongs = joinSekaiSongs(musics, difficulties, musicUnits);
+        const musicVocals = buildMusicVocalMap(vocals);
+        sekaiSongs = joinSekaiSongs(musics, difficulties, musicUnits, musicVocals);
         localStorage.setItem(SEKAI_SONG_CACHE_KEY, JSON.stringify(sekaiSongs));
         onUpdate(sekaiSongs, { fromCache: false });
     } catch (e) {
