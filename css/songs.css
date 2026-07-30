@@ -5,9 +5,12 @@
 }
 .favorites-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    grid-template-columns: repeat(7, 1fr);
     gap: 12px;
     margin-bottom: 8px;
+}
+@media (max-width: 640px) {
+    .favorites-grid { grid-template-columns: repeat(4, 1fr); }
 }
 .favorite-card {
     cursor: pointer;
@@ -43,7 +46,7 @@
     margin-right: 5px;
     cursor: pointer;
     color: var(--text-secondary);
-    font-size: 0.95rem;
+    font-size: 1.4rem;
     vertical-align: middle;
 }
 .song-fav-heart.active {
@@ -105,15 +108,38 @@
     color: var(--text);
     font-size: 0.82rem;
 }
-#song-search-input {
+.song-search-wrap {
+    position: relative;
     flex: 1;
     min-width: 160px;
+}
+#song-search-input {
+    width: 100%;
     background: var(--bg-input);
     border: 1px solid var(--border-card);
     border-radius: 10px;
-    padding: 8px 12px;
+    padding: 8px 34px 8px 12px;
     color: var(--text);
     font-size: 0.9rem;
+}
+.song-search-clear-btn {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+}
+.song-search-clear-btn:hover {
+    background: var(--border-card);
+    color: var(--text);
 }
 .songs-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .songs-status { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px; }

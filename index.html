@@ -177,10 +177,14 @@
             <h2 data-i18n="songs_title">✦ 歌曲成績 ✦</h2>
             <h3 class="favorites-title" data-i18n="favorites_title">✦ 我的最愛 ✦</h3>
             <div id="favorites-grid" class="favorites-grid"></div>
+            <div id="favorites-pagination" class="song-pagination"></div>
             <p id="favorites-empty" class="songs-empty" data-i18n="favorites_empty">還沒有收藏的歌曲，點歌曲列表的 ♡ 加入最愛吧！</p>
             <div id="song-stats-bar" class="stats-bar"></div>
             <div class="songs-toolbar">
-                <input type="text" id="song-search-input" data-i18n-placeholder="songs_search_placeholder" placeholder="搜尋曲名..." oninput="filterSongs(this.value)">
+                <div class="song-search-wrap">
+                    <input type="text" id="song-search-input" data-i18n-placeholder="songs_search_placeholder" placeholder="搜尋曲名..." oninput="filterSongs(this.value)">
+                    <button type="button" id="song-search-clear" class="song-search-clear-btn" onclick="clearSongSearch()" style="display:none;" aria-label="clear">&times;</button>
+                </div>
                 <select id="song-sort-select" onchange="onSongSortChange(this.value)">
                     <option value="title" data-i18n="sort_title">依曲名排序</option>
                     <option value="level-desc" data-i18n="sort_level_desc">依等級（高到低）</option>

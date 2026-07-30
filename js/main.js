@@ -13,6 +13,14 @@ function filterSongs(query) {
     songSearchQuery = query;
     songPage = 0;
     renderSongTable();
+    const input = document.getElementById('song-search-input');
+    const clearBtn = document.getElementById('song-search-clear');
+    if (input) input.value = query;
+    if (clearBtn) clearBtn.style.display = query ? 'block' : 'none';
+}
+
+function clearSongSearch() {
+    filterSongs('');
 }
 
 function onSongSortChange(value) {
@@ -154,7 +162,10 @@ function renderSongTable() {
     renderSongPagination(totalPages);
 }
 
-/* ===== Favorite songs (cover-art card grid) ===== */
+/* ===== Favorite songs (cover-art card grid, 7x2 per page) ===== */
+const FAVORITES_PAGE_SIZE = 14; // 7 columns x 2 rows
+let favoritesPage = 0;
+
 function toggleFavoriteUI(musicId, event) {
     if (event) event.stopPropagation();
     toggleFavorite(musicId);
@@ -164,30 +175,52 @@ function toggleFavoriteUI(musicId, event) {
 function renderFavoritesSection() {
     const container = document.getElementById('favorites-grid');
     const empty = document.getElementById('favorites-empty');
+    const pagination = document.getElementById('favorites-pagination');
     if (!container) return;
     const favSongs = getFavorites().map(id => sekaiSongs.find(s => s.id === id)).filter(Boolean);
     if (favSongs.length === 0) {
         container.innerHTML = '';
         if (empty) empty.style.display = 'block';
+        if (pagination) pagination.innerHTML = '';
         return;
     }
     if (empty) empty.style.display = 'none';
-    container.innerHTML = favSongs.map(song => {
+
+    const totalPages = Math.ceil(favSongs.length / FAVORITES_PAGE_SIZE);
+    if (favoritesPage >= totalPages) favoritesPage = Math.max(0, totalPages - 1);
+    const pageSongs = favSongs.slice(favoritesPage * FAVORITES_PAGE_SIZE, (favoritesPage + 1) * FAVORITES_PAGE_SIZE);
+
+    container.innerHTML = pageSongs.map(song => {
         const cover = songCoverUrl(song);
         return `<div class="favorite-card" onclick="jumpToFavoriteSong(${song.id})">
             <img src="${cover}" alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'">
             <div class="favorite-card-title">${escapeHtmlSekai(song.title)}</div>
         </div>`;
     }).join('');
+
+    if (pagination) {
+        if (totalPages <= 1) {
+            pagination.innerHTML = '';
+        } else {
+            let html = '';
+            for (let i = 0; i < totalPages; i++) {
+                html += `<button class="song-page-btn ${i === favoritesPage ? 'active' : ''}" onclick="goToFavoritesPage(${i})">${i + 1}</button>`;
+            }
+            pagination.innerHTML = html;
+        }
+    }
+}
+
+function goToFavoritesPage(page) {
+    favoritesPage = page;
+    renderFavoritesSection();
 }
 
 function jumpToFavoriteSong(musicId) {
     const song = sekaiSongs.find(s => s.id === musicId);
     if (!song) return;
-    const input = document.getElementById('song-search-input');
-    input.value = song.title;
     filterSongs(song.title);
-    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('song-search-input').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 function renderSongPagination(totalPages) {
