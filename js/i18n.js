@@ -15,6 +15,7 @@ const I18N = {
         characters_title: '✦ 世界計畫角色美圖收藏 ✦',
         gallery_upload_btn: '📤 上傳圖片', gallery_empty: '還沒有收藏的圖片，點上方按鈕新增！',
         gallery_upload_done: '已新增圖片！',
+        backup_hint_gallery: '💡 上傳的圖片只存在這個瀏覽器裡，可以到「歌曲成績」頁面用「匯出成績」一起備份。',
 
         songs_title: '✦ 歌曲成績 ✦',
         songs_search_placeholder: '搜尋曲名...',
@@ -45,6 +46,7 @@ const I18N = {
 
         export_btn: '匯出成績', import_btn: '匯入成績',
         export_done: '已匯出成績！', import_done: '已匯入成績！', import_fail: '匯入失敗，請確認檔案格式正確',
+        backup_hint: '💡 資料只存在你目前使用的瀏覽器裡，不會自動同步或備份。若擔心之後被瀏覽器清除，建議定期用「匯出成績」保存一份。',
 
         updates_title: '✦ 更新情報 ✦', updates_jp: '日服', updates_tw: '台服',
         updates_loading: '載入中...', updates_empty: '暫無更新資訊', updates_load_fail: '載入失敗，稍後再試',
@@ -65,6 +67,7 @@ const I18N = {
         characters_title: '✦ プロセカキャラ画像コレクション ✦',
         gallery_upload_btn: '📤 画像をアップロード', gallery_empty: 'まだ画像がありません。上のボタンから追加しよう！',
         gallery_upload_done: '画像を追加しました！',
+        backup_hint_gallery: '💡 アップロードした画像はこのブラウザにのみ保存されます。「楽曲スコア」ページの「エクスポート」でまとめてバックアップできます。',
 
         songs_title: '✦ 楽曲スコア ✦',
         songs_search_placeholder: '曲名で検索...',
@@ -95,6 +98,7 @@ const I18N = {
 
         export_btn: 'スコアをエクスポート', import_btn: 'スコアをインポート',
         export_done: 'エクスポートしました！', import_done: 'インポートしました！', import_fail: 'インポート失敗、ファイル形式をご確認ください',
+        backup_hint: '💡 データはこのブラウザにのみ保存され、自動で同期・バックアップはされません。消えるのが心配な場合は「エクスポート」で定期的に保存しておくのがおすすめです。',
 
         updates_title: '✦ 最新情報 ✦', updates_jp: '日本版', updates_tw: '台湾版',
         updates_loading: '読み込み中...', updates_empty: '情報がありません', updates_load_fail: '読み込みに失敗しました',

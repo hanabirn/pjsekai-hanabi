@@ -104,6 +104,7 @@
                 <button class="btn-small" onclick="document.getElementById('gallery-upload-input').click()" data-i18n="gallery_upload_btn">上傳圖片</button>
                 <input type="file" id="gallery-upload-input" accept="image/png, image/jpeg, image/webp, image/gif" multiple style="display:none" onchange="onGalleryUploadChange(event)">
             </div>
+            <p class="backup-hint" data-i18n="backup_hint_gallery">💡 上傳的圖片只存在這個瀏覽器裡，可以到「歌曲成績」頁面用「匯出成績」一起備份。</p>
             <div id="gallery-grid" class="gallery-grid"></div>
             <p id="gallery-empty" class="songs-empty" data-i18n="gallery_empty">還沒有收藏的圖片，點上方按鈕新增！</p>
         </div>
@@ -141,6 +142,7 @@
                     <button class="btn-small" onclick="setupSekaiPassword()" data-i18n="password_set_btn">🔒 設定密碼</button>
                 </div>
             </div>
+            <p class="backup-hint" data-i18n="backup_hint">💡 資料只存在你目前使用的瀏覽器裡，不會自動同步或備份。若擔心之後被瀏覽器清除，建議定期用「匯出成績」保存一份。</p>
             <p id="song-table-status" class="songs-status"></p>
             <div class="song-table-wrap">
                 <table class="song-table">
