@@ -87,8 +87,19 @@
     <section id="sekai-page-songs" class="sekai-page" style="display:none;">
         <div class="sekai-card">
             <h2 data-i18n="songs_title">✦ 歌曲成績 ✦</h2>
+            <div id="song-stats-bar" class="stats-bar"></div>
             <div class="songs-toolbar">
                 <input type="text" id="song-search-input" data-i18n-placeholder="songs_search_placeholder" placeholder="搜尋曲名..." oninput="filterSongs(this.value)">
+                <select id="song-sort-select" onchange="onSongSortChange(this.value)">
+                    <option value="title" data-i18n="sort_title">依曲名排序</option>
+                    <option value="level-desc" data-i18n="sort_level_desc">依等級（高到低）</option>
+                    <option value="level-asc" data-i18n="sort_level_asc">依等級（低到高）</option>
+                </select>
+                <select id="song-filter-select" onchange="onSongFilterChange(this.value)">
+                    <option value="all" data-i18n="filter_all">全部歌曲</option>
+                    <option value="recorded" data-i18n="filter_recorded">已記錄成績</option>
+                    <option value="unrecorded" data-i18n="filter_unrecorded">尚未記錄</option>
+                </select>
                 <div class="songs-actions">
                     <button class="btn-small" onclick="exportSekaiScores()" data-i18n="export_btn">匯出成績</button>
                     <button class="btn-small" onclick="document.getElementById('sekai-import-file').click()" data-i18n="import_btn">匯入成績</button>

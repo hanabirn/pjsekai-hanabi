@@ -1,6 +1,8 @@
-/* ===== Song table rendering, search, pagination ===== */
+/* ===== Song table rendering, search, sort, filter, pagination ===== */
 const SONG_PAGE_SIZE = 30;
 let songSearchQuery = '';
+let songSortMode = 'title';
+let songFilterMode = 'all';
 let songPage = 0;
 let songModalTarget = null; // { musicId, difficulty }
 
@@ -12,12 +14,45 @@ function filterSongs(query) {
     renderSongTable();
 }
 
+function onSongSortChange(value) {
+    songSortMode = value;
+    songPage = 0;
+    renderSongTable();
+}
+
+function onSongFilterChange(value) {
+    songFilterMode = value;
+    songPage = 0;
+    renderSongTable();
+}
+
+function songMaxLevel(song) {
+    return Math.max(...Object.values(song.difficulties).map(d => d.playLevel));
+}
+
+function songHasAnyScore(song) {
+    const scores = getSekaiScores();
+    return !!scores[song.id] && Object.keys(scores[song.id]).length > 0;
+}
+
 function getFilteredSongs() {
-    if (!songSearchQuery) return sekaiSongs;
-    const q = songSearchQuery.toLowerCase();
-    return sekaiSongs.filter(s =>
-        s.title.toLowerCase().includes(q) || s.pronunciation.toLowerCase().includes(q)
-    );
+    let list = sekaiSongs;
+
+    if (songSearchQuery) {
+        const q = songSearchQuery.toLowerCase();
+        list = list.filter(s => s.title.toLowerCase().includes(q) || s.pronunciation.toLowerCase().includes(q));
+    }
+
+    if (songFilterMode === 'recorded') list = list.filter(songHasAnyScore);
+    else if (songFilterMode === 'unrecorded') list = list.filter(s => !songHasAnyScore(s));
+
+    if (songSortMode === 'level-desc' || songSortMode === 'level-asc') {
+        list = list.slice().sort((a, b) =>
+            songSortMode === 'level-desc' ? songMaxLevel(b) - songMaxLevel(a) : songMaxLevel(a) - songMaxLevel(b)
+        );
+    }
+
+    return list;
 }
 
 function scoreBadge(entry, musicId, difficulty) {
@@ -33,11 +68,43 @@ function scoreBadge(entry, musicId, difficulty) {
     return `<div class="score-badge">${parts.join('')}</div>`;
 }
 
+function computeSongStats() {
+    const scores = getSekaiScores();
+    let totalDifficulties = 0;
+    sekaiSongs.forEach(s => { totalDifficulties += Object.keys(s.difficulties).length; });
+
+    let recorded = 0, s = 0, ap = 0, fc = 0, scoreSum = 0, scoreCount = 0;
+    Object.values(scores).forEach(diffs => {
+        Object.values(diffs).forEach(entry => {
+            recorded++;
+            if (entry.rank === 'S') s++;
+            if (entry.ap) ap++;
+            else if (entry.fc) fc++;
+            if (entry.score) { scoreSum += Number(entry.score); scoreCount++; }
+        });
+    });
+    return { recorded, totalDifficulties, s, ap, fc, avgScore: scoreCount ? Math.round(scoreSum / scoreCount) : 0 };
+}
+
+function renderSongStats() {
+    const el = document.getElementById('song-stats-bar');
+    if (!el) return;
+    const st = computeSongStats();
+    el.innerHTML = `
+        <div class="stat-tile"><div class="stat-num">${st.recorded}/${st.totalDifficulties}</div><div class="stat-label">${t('stats_recorded')}</div></div>
+        <div class="stat-tile"><div class="stat-num">${st.s}</div><div class="stat-label">S</div></div>
+        <div class="stat-tile"><div class="stat-num">${st.ap}</div><div class="stat-label">AP</div></div>
+        <div class="stat-tile"><div class="stat-num">${st.fc}</div><div class="stat-label">FC</div></div>
+        <div class="stat-tile"><div class="stat-num">${st.avgScore.toLocaleString()}</div><div class="stat-label">${t('stats_avg_score')}</div></div>
+    `;
+}
+
 function renderSongTable() {
     const body = document.getElementById('song-table-body');
     const empty = document.getElementById('song-table-empty');
     if (!body) return;
 
+    renderSongStats();
     const filtered = getFilteredSongs();
     if (filtered.length === 0) {
         body.innerHTML = '';

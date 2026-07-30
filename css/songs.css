@@ -1,3 +1,29 @@
+.stats-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.stat-tile {
+    flex: 1;
+    min-width: 90px;
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border-card);
+    border-radius: 12px;
+    padding: 10px 8px;
+    text-align: center;
+}
+.stat-num {
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: var(--accent);
+}
+.stat-label {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
 .songs-toolbar {
     display: flex;
     justify-content: space-between;
@@ -5,6 +31,14 @@
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 14px;
+}
+#song-sort-select, #song-filter-select {
+    background: var(--bg-input);
+    border: 1px solid var(--border-card);
+    border-radius: 10px;
+    padding: 8px 10px;
+    color: var(--text);
+    font-size: 0.82rem;
 }
 #song-search-input {
     flex: 1;
