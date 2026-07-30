@@ -63,6 +63,30 @@ function getSongScore(musicId, difficulty) {
     return (scores[musicId] && scores[musicId][difficulty]) || null;
 }
 
+/* ===== Favorite songs (localStorage, array of musicId) ===== */
+const SEKAI_FAVORITES_KEY = 'sekai_favorites';
+
+function getFavorites() {
+    try {
+        return JSON.parse(localStorage.getItem(SEKAI_FAVORITES_KEY)) || [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function isFavorite(musicId) {
+    return getFavorites().includes(musicId);
+}
+
+function toggleFavorite(musicId) {
+    const favs = getFavorites();
+    const idx = favs.indexOf(musicId);
+    if (idx >= 0) favs.splice(idx, 1);
+    else favs.push(musicId);
+    localStorage.setItem(SEKAI_FAVORITES_KEY, JSON.stringify(favs));
+    return idx < 0;
+}
+
 async function setSongScore(musicId, difficulty, entry, imageFile) {
     if (!(await verifySekaiPassword())) return false;
     const scores = getSekaiScores();

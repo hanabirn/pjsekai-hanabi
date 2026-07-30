@@ -17,6 +17,11 @@ const SEKAI_UNIT_NAMES = {
 
 let sekaiSongs = [];
 
+function songCoverUrl(song) {
+    if (!song.assetbundleName) return '';
+    return `https://storage.sekai.best/sekai-jp-assets/music/jacket/${song.assetbundleName}/${song.assetbundleName}.webp`;
+}
+
 function buildMusicUnitMap(vocals, characters) {
     const charUnit = {};
     characters.forEach(c => { charUnit[c.id] = c.unit; });
@@ -51,6 +56,7 @@ function joinSekaiSongs(musics, difficulties, musicUnits) {
             difficulties: diffsByMusic[m.id],
             units: musicUnits[m.id] ? [...musicUnits[m.id]] : [],
             releasedAt: m.releasedAt || 0,
+            assetbundleName: m.assetbundleName || '',
         }))
         .sort((a, b) => a.title.localeCompare(b.title, 'ja'));
 }

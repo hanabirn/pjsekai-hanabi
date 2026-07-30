@@ -1,3 +1,58 @@
+.favorites-title {
+    color: var(--accent-pink);
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+.favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px;
+    margin-bottom: 8px;
+}
+.favorite-card {
+    cursor: pointer;
+    text-align: center;
+}
+.favorite-card img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--border-card);
+    background: var(--bg-card-alt);
+    transition: transform 0.15s, border-color 0.15s;
+}
+.favorite-card:hover img {
+    transform: scale(1.04);
+    border-color: var(--accent);
+}
+.favorite-card-title {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#favorites-empty {
+    margin-bottom: 18px;
+}
+
+.song-fav-heart {
+    display: inline-block;
+    margin-right: 5px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+.song-fav-heart.active {
+    color: #f472b6;
+}
+.song-fav-heart:hover {
+    color: #f472b6;
+}
+
 .backup-hint {
     font-size: 0.78rem;
     color: var(--text-secondary);

@@ -18,6 +18,8 @@ const I18N = {
         backup_hint_gallery: '💡 上傳的圖片只存在這個瀏覽器裡，可以到「歌曲成績」頁面用「匯出成績」一起備份。',
 
         songs_title: '✦ 歌曲成績 ✦',
+        favorites_title: '✦ 我的最愛 ✦',
+        favorites_empty: '還沒有收藏的歌曲，點歌曲列表的 ♡ 加入最愛吧！',
         songs_search_placeholder: '搜尋曲名...',
         songs_col_song: '曲名', songs_col_easy: 'Easy', songs_col_normal: 'Normal',
         songs_col_hard: 'Hard', songs_col_expert: 'Expert', songs_col_master: 'Master', songs_col_append: 'Append',
@@ -87,6 +89,8 @@ const I18N = {
         backup_hint_gallery: '💡 アップロードした画像はこのブラウザにのみ保存されます。「楽曲スコア」ページの「エクスポート」でまとめてバックアップできます。',
 
         songs_title: '✦ 楽曲スコア ✦',
+        favorites_title: '✦ お気に入り ✦',
+        favorites_empty: 'まだお気に入りがありません。曲一覧の ♡ を押して追加しよう！',
         songs_search_placeholder: '曲名で検索...',
         songs_col_song: '曲名', songs_col_easy: 'Easy', songs_col_normal: 'Normal',
         songs_col_hard: 'Hard', songs_col_expert: 'Expert', songs_col_master: 'Master', songs_col_append: 'Append',
