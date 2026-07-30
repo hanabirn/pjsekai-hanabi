@@ -27,6 +27,11 @@ function songPreviewUrl(song) {
     return `https://storage.sekai.best/sekai-jp-assets/music/short/${song.vocalAsset}/${song.vocalAsset}_short.mp3`;
 }
 
+function songFullAudioUrl(song) {
+    if (!song.vocalAsset) return '';
+    return `https://storage.sekai.best/sekai-jp-assets/music/long/${song.vocalAsset}/${song.vocalAsset}.mp3`;
+}
+
 function songHasMv(song) {
     const cats = song.categories || [];
     return cats.includes('mv') || cats.includes('mv_2d');

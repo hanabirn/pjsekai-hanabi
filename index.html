@@ -323,7 +323,13 @@
 <div id="mv-lightbox" class="lightbox-overlay" style="display:none;" onclick="closeMvLightbox()">
     <button class="lightbox-close" onclick="closeMvLightbox()">&times;</button>
     <div id="mv-lightbox-loading" class="mv-lightbox-loading" style="display:none;" data-i18n="song_mv_loading">載入 MV 中...</div>
-    <video id="mv-lightbox-video" controls playsinline onclick="event.stopPropagation()"></video>
+    <div class="mv-lightbox-content" onclick="event.stopPropagation()">
+        <video id="mv-lightbox-video" controls playsinline></video>
+        <div class="mv-volume-row">
+            <button id="mv-volume-btn" onclick="toggleMvMute()">🔊</button>
+            <input type="range" id="mv-volume-slider" min="0" max="1" step="0.05" value="1" oninput="setMvVolume(this.value)">
+        </div>
+    </div>
 </div>
 
 <footer class="sekai-footer">

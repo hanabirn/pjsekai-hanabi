@@ -228,33 +228,80 @@ async function toggleSongPreview(musicId, btnEl) {
     }
 }
 
+/* The 2D MV file itself has no audio track — sekai.best's own player plays
+   it silently and syncs the full-length song audio alongside it as a
+   separate track, so we do the same and expose our own volume control
+   since the (muted, silent) video's native controls won't have one. */
 let songMvObjectUrl = null;
+let songMvAudio = null;
+let songMvAudioObjectUrl = null;
 
 async function openSongMv(musicId) {
     const song = sekaiSongs.find(s => s.id === musicId);
     if (!song) return;
     stopSongPreview();
+    stopMvAudio();
 
     const video = document.getElementById('mv-lightbox-video');
     const loading = document.getElementById('mv-lightbox-loading');
     video.style.display = 'none';
+    video.muted = true;
     if (loading) loading.style.display = 'block';
     document.getElementById('mv-lightbox').style.display = 'flex';
 
     try {
-        const res = await fetch(songMvUrl(song), { referrerPolicy: 'no-referrer' });
-        if (!res.ok) throw new Error('bad response');
-        const blob = await res.blob();
+        const audioUrl = songFullAudioUrl(song);
+        const [videoRes, audioRes] = await Promise.all([
+            fetch(songMvUrl(song), { referrerPolicy: 'no-referrer' }),
+            audioUrl ? fetch(audioUrl, { referrerPolicy: 'no-referrer' }) : Promise.resolve(null),
+        ]);
+        if (!videoRes.ok) throw new Error('bad response');
+        const videoBlob = await videoRes.blob();
         if (songMvObjectUrl) URL.revokeObjectURL(songMvObjectUrl);
-        songMvObjectUrl = URL.createObjectURL(blob);
+        songMvObjectUrl = URL.createObjectURL(videoBlob);
         video.src = songMvObjectUrl;
+
+        if (audioRes && audioRes.ok) {
+            const audioBlob = await audioRes.blob();
+            songMvAudioObjectUrl = URL.createObjectURL(audioBlob);
+            songMvAudio = new Audio(songMvAudioObjectUrl);
+            const slider = document.getElementById('mv-volume-slider');
+            songMvAudio.volume = slider ? Number(slider.value) : 1;
+        }
+
         if (loading) loading.style.display = 'none';
         video.style.display = 'block';
         video.play().catch(() => {});
+        if (songMvAudio) songMvAudio.play().catch(() => {});
     } catch (e) {
         closeMvLightbox();
         showToast(t('song_mv_load_fail'));
     }
+}
+
+function stopMvAudio() {
+    if (songMvAudio) {
+        songMvAudio.pause();
+        songMvAudio = null;
+    }
+    if (songMvAudioObjectUrl) {
+        URL.revokeObjectURL(songMvAudioObjectUrl);
+        songMvAudioObjectUrl = null;
+    }
+}
+
+function toggleMvMute() {
+    if (!songMvAudio) return;
+    songMvAudio.muted = !songMvAudio.muted;
+    document.getElementById('mv-volume-btn').textContent = songMvAudio.muted ? '🔇' : '🔊';
+}
+
+function setMvVolume(value) {
+    const vol = Number(value);
+    document.getElementById('mv-volume-btn').textContent = vol === 0 ? '🔇' : '🔊';
+    if (!songMvAudio) return;
+    songMvAudio.volume = vol;
+    songMvAudio.muted = false;
 }
 
 function closeMvLightbox() {
@@ -266,6 +313,7 @@ function closeMvLightbox() {
         URL.revokeObjectURL(songMvObjectUrl);
         songMvObjectUrl = null;
     }
+    stopMvAudio();
     document.getElementById('mv-lightbox').style.display = 'none';
 }
 
@@ -626,6 +674,11 @@ function savePlayerIds() {
 document.addEventListener('DOMContentLoaded', () => {
     applyLang(siteLang);
     loadPlayerIds();
+
+    const mvVideo = document.getElementById('mv-lightbox-video');
+    mvVideo.addEventListener('play', () => { if (songMvAudio) songMvAudio.play().catch(() => {}); });
+    mvVideo.addEventListener('pause', () => { if (songMvAudio) songMvAudio.pause(); });
+    mvVideo.addEventListener('seeked', () => { if (songMvAudio) songMvAudio.currentTime = mvVideo.currentTime; });
     document.getElementById('song-table-status').textContent = t('songs_loading');
     loadSekaiSongs((songs, meta) => {
         if (meta.error) {
