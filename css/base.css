@@ -40,6 +40,15 @@ body {
     50%  { transform: translateY(-18px) scale(1.025); }
     100% { transform: translateY(0) scale(1); }
 }
+@media (max-width: 768px) {
+    .bg-slide-left {
+        display: none;
+    }
+    .bg-slide-right {
+        background-position: center bottom;
+        background-size: auto 42vh;
+    }
+}
 #bg-overlay {
     position: fixed;
     inset: 0;
