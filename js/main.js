@@ -365,9 +365,22 @@ function switchSekaiTab(tab, el) {
     if (tab === 'characters') renderGallery();
 }
 
+/* ===== Player game IDs (per-visitor, stored locally in their own browser) ===== */
+function loadPlayerIds() {
+    const tw = localStorage.getItem('sekai_player_id_tw') || '';
+    const jp = localStorage.getItem('sekai_player_id_jp') || '';
+    document.getElementById('player-id-tw-input').value = tw;
+    document.getElementById('player-id-jp-input').value = jp;
+}
+
+function onPlayerIdInput(region, value) {
+    localStorage.setItem('sekai_player_id_' + region, value);
+}
+
 /* ===== Init ===== */
 document.addEventListener('DOMContentLoaded', () => {
     applyLang(siteLang);
+    loadPlayerIds();
     document.getElementById('song-table-status').textContent = t('songs_loading');
     loadSekaiSongs((songs, meta) => {
         if (meta.error) {

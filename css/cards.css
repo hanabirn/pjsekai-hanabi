@@ -12,13 +12,44 @@
     font-size: 0.85rem;
 }
 
-.player-id {
-    margin-top: 14px;
-    font-size: 0.9rem;
+.player-id-box {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border-card);
+    border-radius: 14px;
+    max-width: 360px;
+}
+.player-id-title {
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin-bottom: 4px;
+}
+.player-id-hint {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+.player-id-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+.player-id-row label {
+    flex: 0 0 60px;
+    font-size: 0.85rem;
+    font-weight: bold;
     color: var(--text-secondary);
 }
-.player-id strong {
-    color: var(--accent);
+.player-id-row input {
+    flex: 1;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-card);
+    background: var(--bg-input);
+    color: var(--text);
+    font-size: 0.85rem;
 }
 
 .units-title {
