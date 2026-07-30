@@ -3,6 +3,7 @@ const JP_NEWS_FUNCTION_URL = '/.netlify/functions/jp-news';
 const TW_NEWS_API_URL = 'https://act.toutiaocloud.com/site/api/v2/news/search?app_id=5245&language=en-US&website=74&page=1&block=2&channel=5&page_index=1&page_size=20&top_flag=false';
 const JP_NEWS_PAGE_URL = 'https://pjsekai.sega.jp/news/index.html';
 const TW_NEWS_PAGE_URL = 'https://www.tw-pjsekai.com/news.html';
+const JP_NEWS_IMAGE_BASE = 'https://pjsekai.sega.jp/master-data/image/news/';
 
 let sekaiUpdatesLoaded = false;
 
@@ -13,14 +14,17 @@ async function loadSekaiUpdates() {
     loadTwNews();
 }
 
-function newsItemHtml(title, dateStr, category, linkUrl) {
-    return `<div class="news-item">
-        <div class="news-item-header">
-            <span class="news-date">${dateStr}</span>
-            ${category ? `<span class="news-category">${category}</span>` : ''}
+function newsItemHtml(title, dateStr, category, linkUrl, imageUrl) {
+    return `<a class="news-item" href="${linkUrl}" target="_blank" rel="noopener">
+        ${imageUrl ? `<img class="news-thumb" src="${imageUrl}" alt="" referrerpolicy="no-referrer" loading="lazy" onerror="this.style.display='none'">` : ''}
+        <div class="news-item-body">
+            <div class="news-item-header">
+                <span class="news-date">${dateStr}</span>
+                ${category ? `<span class="news-category">${category}</span>` : ''}
+            </div>
+            <span class="news-title">${escapeHtmlSekai(title)}</span>
         </div>
-        <a class="news-title" href="${linkUrl}" target="_blank" rel="noopener">${escapeHtmlSekai(title)}</a>
-    </div>`;
+    </a>`;
 }
 
 async function loadJpNews() {
@@ -38,7 +42,8 @@ async function loadJpNews() {
         container.innerHTML = items.map(n => {
             const d = new Date(n.publishedAt);
             const dateStr = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
-            return newsItemHtml(n.title, dateStr, n.categoryDisplayName, JP_NEWS_PAGE_URL);
+            const imageUrl = n.thumbImage ? JP_NEWS_IMAGE_BASE + n.thumbImage : '';
+            return newsItemHtml(n.title, dateStr, n.categoryDisplayName, JP_NEWS_PAGE_URL, imageUrl);
         }).join('');
     } catch (e) {
         console.error('JP news load failed:', e);
@@ -62,7 +67,7 @@ async function loadTwNews() {
             const d = new Date(n.update_at * 1000);
             const dateStr = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
             const title = n.title || n.news_name;
-            return newsItemHtml(title, dateStr, '', n.url || TW_NEWS_PAGE_URL);
+            return newsItemHtml(title, dateStr, '', n.url || TW_NEWS_PAGE_URL, n.image || '');
         }).join('');
     } catch (e) {
         console.error('TW news load failed:', e);
