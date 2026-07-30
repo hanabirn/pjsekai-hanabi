@@ -1,7 +1,7 @@
 /* ===== i18n (zh / ja only) ===== */
 const I18N = {
     zh: {
-        site_title: 'Hanabiの世界計畫成績簿',
+        site_title: '大家的世界計畫成績簿',
         site_tagline: '個人歌曲成績記錄 ✦ 日台服更新情報',
         back_to_main: '← 返回 Hanabiの小天地',
         nav_intro: '關於遊戲', nav_characters: '角色美圖', nav_songs: '歌曲成績', nav_ranking: '世界排名', nav_updates: '更新情報',
@@ -72,7 +72,7 @@ const I18N = {
         updates_view_original: '查看原文',
     },
     ja: {
-        site_title: 'Hanabiのプロセカスコア帳',
+        site_title: 'みんなのプロセカスコア帳',
         site_tagline: '個人楽曲スコア記録 ✦ 日台版アップデート情報',
         back_to_main: '← Hanabiの小天地に戻る',
         nav_intro: 'ゲーム紹介', nav_characters: 'キャラ画像', nav_songs: '楽曲スコア', nav_ranking: '世界ランキング', nav_updates: '最新情報',

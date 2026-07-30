@@ -1,7 +1,7 @@
 {
   "name": "世界排名審核後台",
   "short_name": "排名審核",
-  "description": "Hanabiの世界計畫成績簿 - 世界排名審核後台",
+  "description": "大家的世界計畫成績簿 - 世界排名審核後台",
   "start_url": "/admin.html",
   "display": "standalone",
   "background_color": "#101229",
