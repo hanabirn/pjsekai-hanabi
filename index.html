@@ -163,12 +163,14 @@
 
     <section id="sekai-page-characters" class="sekai-page" style="display:none;">
         <div class="sekai-card">
-            <h2 data-i18n="characters_title">✦ 世界計畫角色美圖收藏 ✦</h2>
-            <div class="gallery-toolbar">
-                <button class="btn-small" onclick="document.getElementById('gallery-upload-input').click()" data-i18n="gallery_upload_btn">上傳圖片</button>
-                <input type="file" id="gallery-upload-input" accept="image/png, image/jpeg, image/webp, image/gif" multiple style="display:none" onchange="onGalleryUploadChange(event)">
+            <div class="characters-center">
+                <h2 data-i18n="characters_title">✦ 世界計畫角色美圖收藏 ✦</h2>
+                <div class="gallery-toolbar">
+                    <button class="btn-small" onclick="document.getElementById('gallery-upload-input').click()" data-i18n="gallery_upload_btn">上傳圖片</button>
+                    <input type="file" id="gallery-upload-input" accept="image/png, image/jpeg, image/webp, image/gif" multiple style="display:none" onchange="onGalleryUploadChange(event)">
+                </div>
+                <p class="backup-hint" data-i18n="backup_hint_gallery">💡 上傳的圖片只存在這個瀏覽器裡，可以到「歌曲成績」頁面用「匯出成績」一起備份。</p>
             </div>
-            <p class="backup-hint" data-i18n="backup_hint_gallery">💡 上傳的圖片只存在這個瀏覽器裡，可以到「歌曲成績」頁面用「匯出成績」一起備份。</p>
             <div id="gallery-grid" class="gallery-grid"></div>
             <p id="gallery-empty" class="songs-empty" data-i18n="gallery_empty">還沒有收藏的圖片，點上方按鈕新增！</p>
         </div>
