@@ -303,6 +303,17 @@
     padding: 8px 12px;
     margin-bottom: 16px;
 }
+.ranking-toolbar {
+    margin-bottom: 14px;
+}
+#ranking-difficulty-select {
+    background: var(--bg-input);
+    border: 1px solid var(--border-card);
+    border-radius: 10px;
+    padding: 8px 10px;
+    color: var(--text);
+    font-size: 0.82rem;
+}
 .ranking-columns {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

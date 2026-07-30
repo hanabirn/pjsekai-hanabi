@@ -41,6 +41,7 @@ const I18N = {
 
         ranking_title: '✦ 世界排名 ✦',
         ranking_hint: '成績需要附截圖並經過審核才會出現在這裡；審核前會先用文字辨識自動比對截圖，但不保證能防止所有造假，僅供同好交流參考。',
+        ranking_diff_all: '✦ 總計 ✦',
         ranking_submit_btn: '🏆 提交到世界排名',
         ranking_nickname_prompt: '請輸入要顯示在排行榜上的暱稱：',
         ranking_checking: '驗證截圖中...',
@@ -106,6 +107,7 @@ const I18N = {
 
         ranking_title: '✦ 世界ランキング ✦',
         ranking_hint: 'スコアはスクリーンショット添付＋審査を経てここに表示されます。審査前に文字認識で自動チェックしますが、不正を完全に防ぐものではなく、あくまでファン同士の交流用の目安です。',
+        ranking_diff_all: '✦ 総合 ✦',
         ranking_submit_btn: '🏆 世界ランキングに提出',
         ranking_nickname_prompt: 'ランキングに表示するニックネームを入力してください：',
         ranking_checking: 'スクリーンショットを検証中...',

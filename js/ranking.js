@@ -122,9 +122,17 @@ async function loadRankingBoard() {
     renderRankingBoard();
 }
 
-function aggregateRankings(entries) {
+let rankingDifficultyFilter = 'all';
+
+function onRankingDifficultyChange(value) {
+    rankingDifficultyFilter = value;
+    renderRankingBoard();
+}
+
+function aggregateRankings(entries, difficulty) {
+    const filtered = (!difficulty || difficulty === 'all') ? entries : entries.filter(e => e.difficulty === difficulty);
     const byNick = {};
-    entries.forEach(e => {
+    filtered.forEach(e => {
         if (!byNick[e.nickname]) byNick[e.nickname] = { nickname: e.nickname, ap: 0, fc: 0, s: 0 };
         if (e.ap) byNick[e.nickname].ap++;
         else if (e.fc) byNick[e.nickname].fc++;
@@ -149,7 +157,7 @@ function renderRankingList(list, metric) {
 function renderRankingBoard() {
     const container = document.getElementById('ranking-board');
     if (!container) return;
-    const aggregated = aggregateRankings(rankingEntries);
+    const aggregated = aggregateRankings(rankingEntries, rankingDifficultyFilter);
     container.innerHTML = `
         <div class="ranking-column">
             <h3>🌈 AP</h3>
