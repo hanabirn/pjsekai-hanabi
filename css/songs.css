@@ -806,6 +806,76 @@
     transition: all 0.25s;
     z-index: 300;
 }
+/* Growth trend charts (achievements tab) */
+.progress-history-panel { margin-bottom: 18px; }
+.trend-chart-block { margin-bottom: 14px; }
+.trend-chart-block:last-child { margin-bottom: 0; }
+.trend-chart-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+.trend-chart-wrap {
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border-card);
+    border-radius: 10px;
+    padding: 6px 8px;
+}
+.trend-chart-svg { width: 100%; height: auto; display: block; }
+.trend-chart-grid { stroke: var(--border-card); stroke-width: 1; }
+.trend-chart-axis-label { font-size: 8px; fill: var(--text-secondary); }
+.trend-chart-value-label { font-size: 10px; font-weight: bold; }
+.trend-chart-legend {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+.trend-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+}
+.trend-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Per-song score history (score modal) */
+.score-history-list {
+    max-height: 140px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.score-history-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    padding: 4px 8px;
+    background: var(--bg-card-alt);
+    border-radius: 6px;
+}
+.score-history-date {
+    color: var(--text-secondary);
+    width: 66px;
+    flex-shrink: 0;
+}
+.score-history-num {
+    flex: 1;
+    text-align: right;
+    color: var(--text);
+}
+.score-history-empty {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+}
+
 #sekai-toast.show {
     opacity: 1;
     transform: translateX(-50%) translateY(0);

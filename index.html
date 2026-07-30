@@ -244,10 +244,11 @@
     <section id="sekai-page-achievements" class="sekai-page" style="display:none;">
         <div class="sekai-card">
             <h2 data-i18n="achievements_page_title">✦ 成就 ✦</h2>
+            <div id="new-songs-panel" class="new-songs-panel"></div>
             <h3 class="achievements-title" data-i18n="progress_overview_title">進度總覽</h3>
             <div id="song-progress-panel" class="progress-panel"></div>
+            <div id="progress-history-panel" class="progress-history-panel"></div>
             <div id="achievements-panel" class="achievements-panel"></div>
-            <div id="new-songs-panel" class="new-songs-panel"></div>
         </div>
     </section>
 
@@ -316,6 +317,10 @@
                 <input type="file" id="score-modal-image-input" accept="image/*" onchange="onScoreImageInputChange(event)">
                 <button type="button" class="btn-small" id="score-modal-image-remove-btn" style="display:none;" onclick="removeModalImage()" data-i18n="score_modal_image_remove">移除圖片</button>
             </div>
+        </div>
+        <div class="score-modal-field">
+            <label data-i18n="score_modal_history">分數歷史</label>
+            <div id="score-modal-history-list" class="score-history-list"></div>
         </div>
         <div class="score-modal-buttons">
             <button class="btn-small danger" id="score-modal-delete-btn" onclick="deleteScoreModal()" data-i18n="score_modal_delete">刪除記錄</button>

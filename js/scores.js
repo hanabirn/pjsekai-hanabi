@@ -107,7 +107,95 @@ async function setSongScore(musicId, difficulty, entry, imageFile) {
 
     scores[musicId][difficulty] = entry;
     saveSekaiScores(scores);
+    appendScoreHistory(musicId, difficulty, entry);
     return true;
+}
+
+/* ===== Per-song score history (append-only timeline behind each save, capped so it
+   can't grow unbounded) — powers the score modal's history list ===== */
+const SEKAI_SCORE_HISTORY_KEY = 'sekai_score_history';
+const SEKAI_SCORE_HISTORY_MAX = 30; // entries kept per song+difficulty
+
+function getScoreHistory() {
+    try {
+        return JSON.parse(localStorage.getItem(SEKAI_SCORE_HISTORY_KEY)) || {};
+    } catch (e) {
+        return {};
+    }
+}
+
+function saveScoreHistory(history) {
+    localStorage.setItem(SEKAI_SCORE_HISTORY_KEY, JSON.stringify(history));
+}
+
+function appendScoreHistory(musicId, difficulty, entry) {
+    if (!entry.rank && !entry.score) return;
+    const history = getScoreHistory();
+    const key = `${musicId}_${difficulty}`;
+    const list = history[key] || (history[key] = []);
+    list.push({ ts: Date.now(), rank: entry.rank, score: entry.score, fc: !!entry.fc, ap: !!entry.ap });
+    if (list.length > SEKAI_SCORE_HISTORY_MAX) history[key] = list.slice(-SEKAI_SCORE_HISTORY_MAX);
+    saveScoreHistory(history);
+}
+
+function getSongScoreHistory(musicId, difficulty) {
+    return getScoreHistory()[`${musicId}_${difficulty}`] || [];
+}
+
+function renderScoreHistoryList(musicId, difficulty) {
+    const el = document.getElementById('score-modal-history-list');
+    if (!el) return;
+    const history = getSongScoreHistory(musicId, difficulty);
+    if (history.length === 0) {
+        el.innerHTML = `<p class="score-history-empty">${t('score_modal_history_empty')}</p>`;
+        return;
+    }
+    el.innerHTML = history.slice().reverse().map(h => {
+        const d = new Date(h.ts);
+        const dateStr = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+        const rankBadge = h.rank ? `<span class="score-rank rank-${h.rank.toLowerCase()}">${h.rank}</span>` : '';
+        const flag = h.ap ? '<span class="score-flag ap">AP</span>' : (h.fc ? '<span class="score-flag fc">FC</span>' : '');
+        const scoreStr = h.score ? Number(h.score).toLocaleString() : '';
+        return `<div class="score-history-row">
+            <span class="score-history-date">${dateStr}</span>
+            ${rankBadge}
+            <span class="score-history-num">${scoreStr}</span>
+            ${flag}
+        </div>`;
+    }).join('');
+}
+
+/* ===== Daily snapshots of aggregate stats (one point/day, overwritten through the day)
+   for the achievements tab's growth chart — this necessarily only starts accumulating
+   from whenever this feature first shipped, there's no way to backfill past progress. */
+const SEKAI_PROGRESS_HISTORY_KEY = 'sekai_progress_history';
+const SEKAI_PROGRESS_HISTORY_MAX_DAYS = 90;
+
+function getProgressHistory() {
+    try {
+        return JSON.parse(localStorage.getItem(SEKAI_PROGRESS_HISTORY_KEY)) || [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveProgressHistory(history) {
+    localStorage.setItem(SEKAI_PROGRESS_HISTORY_KEY, JSON.stringify(history));
+}
+
+function recordProgressSnapshot() {
+    if (typeof computeSongStats !== 'function') return;
+    const st = computeSongStats();
+    const today = new Date().toISOString().slice(0, 10);
+    const point = { date: today, recorded: st.recorded, s: st.s, ap: st.ap, fc: st.fc };
+    const history = getProgressHistory();
+    const last = history[history.length - 1];
+    if (last && last.date === today && last.recorded === point.recorded && last.s === point.s && last.ap === point.ap && last.fc === point.fc) {
+        return; // stats haven't changed since the last write today — skip it
+    }
+    if (last && last.date === today) history[history.length - 1] = point;
+    else history.push(point);
+    saveProgressHistory(history.length > SEKAI_PROGRESS_HISTORY_MAX_DAYS ? history.slice(-SEKAI_PROGRESS_HISTORY_MAX_DAYS) : history);
 }
 
 async function deleteSongScore(musicId, difficulty) {
@@ -126,7 +214,13 @@ async function deleteSongScore(musicId, difficulty) {
 async function exportSekaiScores() {
     const images = await getAllScoreImagesAsBase64();
     const gallery = await getAllGalleryImagesAsBase64();
-    const data = { scores: getSekaiScores(), images, gallery, exportedAt: new Date().toISOString() };
+    const data = {
+        scores: getSekaiScores(),
+        scoreHistory: getScoreHistory(),
+        progressHistory: getProgressHistory(),
+        images, gallery,
+        exportedAt: new Date().toISOString(),
+    };
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -145,6 +239,8 @@ async function importSekaiScores(event) {
         const data = JSON.parse(await file.text());
         if (typeof data.scores !== 'object' || data.scores === null) throw new Error('invalid format');
         saveSekaiScores(data.scores);
+        if (data.scoreHistory && typeof data.scoreHistory === 'object') saveScoreHistory(data.scoreHistory);
+        if (Array.isArray(data.progressHistory)) saveProgressHistory(data.progressHistory);
         if (data.images && typeof data.images === 'object') {
             await restoreScoreImagesFromBase64(data.images);
         }

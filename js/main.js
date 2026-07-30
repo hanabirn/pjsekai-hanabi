@@ -521,6 +521,7 @@ async function openScoreModal(musicId, difficulty) {
     document.getElementById('score-modal-delete-btn').style.display = entry.rank || entry.score ? 'inline-block' : 'none';
     const rankingBtn = document.getElementById('score-modal-ranking-btn');
     if (rankingBtn) rankingBtn.style.display = (entry.rank && entry.score && entry.hasImage) ? 'inline-block' : 'none';
+    if (typeof renderScoreHistoryList === 'function') renderScoreHistoryList(musicId, difficulty);
 
     setModalImagePreview(null);
     if (entry.hasImage) {
