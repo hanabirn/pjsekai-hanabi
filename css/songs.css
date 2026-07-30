@@ -315,7 +315,20 @@
     margin-bottom: 16px;
 }
 .ranking-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
     margin-bottom: 14px;
+}
+#ranking-search-input {
+    flex: 1;
+    min-width: 160px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-card);
+    border-radius: 10px;
+    padding: 8px 12px;
+    color: var(--text);
+    font-size: 0.9rem;
 }
 #ranking-difficulty-select {
     background: var(--bg-input);

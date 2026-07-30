@@ -52,6 +52,8 @@ const I18N = {
         ranking_loading: '載入排行榜中...',
         ranking_load_fail: '排行榜載入失敗，稍後再試',
         ranking_empty: '目前還沒有資料',
+        ranking_search_placeholder: '搜尋暱稱...',
+        ranking_no_match: '找不到符合的暱稱',
         ranking_not_ready: '世界排名功能尚未開放',
 
         password_prompt: '請輸入密碼以進行修改：', password_wrong: '密碼錯誤！',
@@ -119,6 +121,8 @@ const I18N = {
         ranking_loading: 'ランキングを読み込み中...',
         ranking_load_fail: 'ランキングの読み込みに失敗しました',
         ranking_empty: 'まだデータがありません',
+        ranking_search_placeholder: 'ニックネームで検索...',
+        ranking_no_match: '一致するニックネームが見つかりません',
         ranking_not_ready: '世界ランキング機能はまだ準備中です',
 
         password_prompt: 'パスワードを入力してください：', password_wrong: 'パスワードが違います！',

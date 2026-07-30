@@ -123,9 +123,15 @@ async function loadRankingBoard() {
 }
 
 let rankingDifficultyFilter = 'all';
+let rankingNicknameSearch = '';
 
 function onRankingDifficultyChange(value) {
     rankingDifficultyFilter = value;
+    renderRankingBoard();
+}
+
+function onRankingSearchInput(value) {
+    rankingNicknameSearch = value.trim();
     renderRankingBoard();
 }
 
@@ -141,13 +147,15 @@ function aggregateRankings(entries, difficulty) {
     return Object.values(byNick);
 }
 
-function renderRankingList(list, metric) {
+function renderRankingList(list, metric, query) {
     const sorted = list.slice().sort((a, b) => b[metric] - a[metric]).filter(p => p[metric] > 0);
-    if (sorted.length === 0) return `<div class="ranking-empty">${t('ranking_empty')}</div>`;
+    const numbered = sorted.map((p, i) => ({ ...p, place: i + 1 }));
+    const visible = query ? numbered.filter(p => p.nickname.toLowerCase().includes(query.toLowerCase())) : numbered;
+    if (visible.length === 0) return `<div class="ranking-empty">${t(query ? 'ranking_no_match' : 'ranking_empty')}</div>`;
     const medals = ['🥇', '🥈', '🥉'];
-    return `<ol class="ranking-list">` + sorted.map((p, i) => `
+    return `<ol class="ranking-list">` + visible.map(p => `
         <li class="ranking-item">
-            <span class="ranking-medal">${medals[i] || (i + 1)}</span>
+            <span class="ranking-medal">${medals[p.place - 1] || p.place}</span>
             <span class="ranking-nick">${escapeHtmlSekai(p.nickname)}</span>
             <span class="ranking-count">${p[metric]}</span>
         </li>
@@ -158,18 +166,19 @@ function renderRankingBoard() {
     const container = document.getElementById('ranking-board');
     if (!container) return;
     const aggregated = aggregateRankings(rankingEntries, rankingDifficultyFilter);
+    const query = rankingNicknameSearch;
     container.innerHTML = `
         <div class="ranking-column">
             <h3>🌈 AP</h3>
-            ${renderRankingList(aggregated, 'ap')}
+            ${renderRankingList(aggregated, 'ap', query)}
         </div>
         <div class="ranking-column">
             <h3>🟣 FC</h3>
-            ${renderRankingList(aggregated, 'fc')}
+            ${renderRankingList(aggregated, 'fc', query)}
         </div>
         <div class="ranking-column">
             <h3>⭐ S</h3>
-            ${renderRankingList(aggregated, 's')}
+            ${renderRankingList(aggregated, 's', query)}
         </div>
     `;
 }
