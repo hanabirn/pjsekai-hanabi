@@ -357,6 +357,27 @@ function switchSekaiTab(tab, el) {
     }, 6000);
 })();
 
+/* ===== Floating colorful prism particles (Project SEKAI "colorful stage" accent) ===== */
+(function initBgParticles() {
+    const container = document.getElementById('bg-particles');
+    if (!container) return;
+    const colors = ['#39c5bb', '#ff6fa5', '#a78bfa', '#fbbf24', '#7dd3fc'];
+    function spawnParticle() {
+        const p = document.createElement('div');
+        p.className = 'bg-particle';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.color = colors[Math.floor(Math.random() * colors.length)];
+        const scale = 0.7 + Math.random() * 1.3;
+        p.style.transform = `scale(${scale})`;
+        const duration = 10 + Math.random() * 8;
+        p.style.animationDuration = duration + 's';
+        container.appendChild(p);
+        setTimeout(() => p.remove(), duration * 1000);
+    }
+    setInterval(spawnParticle, 1200);
+    for (let i = 0; i < 5; i++) setTimeout(spawnParticle, i * 400);
+})();
+
 /* ===== Player game IDs (per-visitor, stored locally in their own browser) ===== */
 function loadPlayerIds() {
     const tw = localStorage.getItem('sekai_player_id_tw') || '';

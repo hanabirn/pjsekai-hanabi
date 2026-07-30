@@ -20,13 +20,20 @@ body {
 .bg-slide {
     position: absolute;
     inset: 0;
-    background-size: cover;
-    background-position: center top;
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: auto;
     opacity: 0;
     transition: opacity 2.5s ease;
+    animation: bgSlideDrift 12s ease-in-out infinite;
 }
 .bg-slide.active {
     opacity: 1;
+}
+@keyframes bgSlideDrift {
+    0%   { transform: translateY(0) scale(1); }
+    50%  { transform: translateY(-18px) scale(1.025); }
+    100% { transform: translateY(0) scale(1); }
 }
 #bg-overlay {
     position: fixed;
@@ -35,6 +42,31 @@ body {
     background: var(--bg-body);
     opacity: 0.6;
     transition: background 0.3s;
+}
+
+#bg-particles {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+.bg-particle {
+    position: absolute;
+    bottom: -30px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 14px solid currentColor;
+    opacity: 0;
+    animation: bgParticleRise linear forwards;
+}
+@keyframes bgParticleRise {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+    8%   { opacity: 0.5; }
+    85%  { opacity: 0.35; }
+    100% { transform: translateY(-105vh) rotate(340deg); opacity: 0; }
 }
 
 a { color: var(--accent); text-decoration: none; }
