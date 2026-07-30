@@ -51,6 +51,9 @@
     color: var(--text);
     font-size: 0.85rem;
 }
+.player-id-save-btn {
+    margin-top: 12px;
+}
 
 .units-title {
     color: var(--accent-pink);

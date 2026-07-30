@@ -277,16 +277,7 @@ function closeImageLightbox() {
     if (lightboxObjectUrl) { URL.revokeObjectURL(lightboxObjectUrl); lightboxObjectUrl = null; }
 }
 
-/* ===== Character gallery (curated seed art + uploaded fan art in IndexedDB) ===== */
-const SEKAI_GALLERY_SEED = [
-    'https://pbs.twimg.com/media/FVMQBDOUEAEBNRS.png',
-    'https://pbs.twimg.com/media/FWfMsnQVsAAVqVN.png',
-    'https://pjsekai.gamedbs.jp/image/chara/member_trm/1624253679010_7tcrj3lb.webp',
-    'https://pjsekai.gamedbs.jp/image/chara/member_trm/1638251524015_x1m5ubqi.webp',
-    'https://i.pinimg.com/originals/04/d3/c9/04d3c9b267f29f17b3eb0df74ea4ff75.png',
-    'https://pbs.twimg.com/media/FGPju-zUUAQMW_u.png',
-];
-
+/* ===== Character gallery (uploaded fan art in IndexedDB) ===== */
 let galleryObjectUrls = [];
 
 async function onGalleryUploadChange(event) {
@@ -309,19 +300,15 @@ async function renderGallery() {
     galleryObjectUrls.forEach(url => URL.revokeObjectURL(url));
     galleryObjectUrls = [];
 
-    const seedHtml = SEKAI_GALLERY_SEED.map(url => `<div class="gallery-item">
-        <img src="${url}" onclick="openLightboxUrl('${url}')" alt="">
-    </div>`).join('');
-
     const images = await getAllGalleryImages();
     if (images.length === 0) {
-        grid.innerHTML = seedHtml;
-        if (empty) empty.style.display = 'none';
+        grid.innerHTML = '';
+        if (empty) empty.style.display = 'block';
         return;
     }
     if (empty) empty.style.display = 'none';
 
-    const uploadedHtml = images.map(img => {
+    grid.innerHTML = images.map(img => {
         const url = URL.createObjectURL(img.blob);
         galleryObjectUrls.push(url);
         return `<div class="gallery-item">
@@ -329,14 +316,6 @@ async function renderGallery() {
             <button class="gallery-delete-btn" onclick="event.stopPropagation(); deleteGalleryImageUI('${img.id}')">&times;</button>
         </div>`;
     }).join('');
-
-    grid.innerHTML = seedHtml + uploadedHtml;
-}
-
-function openLightboxUrl(url) {
-    if (lightboxObjectUrl) { URL.revokeObjectURL(lightboxObjectUrl); lightboxObjectUrl = null; }
-    document.getElementById('image-lightbox-img').src = url;
-    document.getElementById('image-lightbox').style.display = 'flex';
 }
 
 async function openGalleryLightbox(id) {
@@ -365,6 +344,19 @@ function switchSekaiTab(tab, el) {
     if (tab === 'characters') renderGallery();
 }
 
+/* ===== Background photo carousel (fades between curated character art) ===== */
+(function initBgCarousel() {
+    const slides = document.querySelectorAll('#bg-carousel .bg-slide');
+    if (!slides.length) return;
+    let idx = 0;
+    slides[0].classList.add('active');
+    setInterval(() => {
+        slides[idx].classList.remove('active');
+        idx = (idx + 1) % slides.length;
+        slides[idx].classList.add('active');
+    }, 6000);
+})();
+
 /* ===== Player game IDs (per-visitor, stored locally in their own browser) ===== */
 function loadPlayerIds() {
     const tw = localStorage.getItem('sekai_player_id_tw') || '';
@@ -373,8 +365,12 @@ function loadPlayerIds() {
     document.getElementById('player-id-jp-input').value = jp;
 }
 
-function onPlayerIdInput(region, value) {
-    localStorage.setItem('sekai_player_id_' + region, value);
+function savePlayerIds() {
+    const tw = document.getElementById('player-id-tw-input').value.trim();
+    const jp = document.getElementById('player-id-jp-input').value.trim();
+    localStorage.setItem('sekai_player_id_tw', tw);
+    localStorage.setItem('sekai_player_id_jp', jp);
+    showToast(t('player_id_saved'));
 }
 
 /* ===== Init ===== */

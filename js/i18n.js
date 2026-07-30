@@ -28,6 +28,7 @@ const I18N = {
         player_id_hint: '僅儲存在你自己的瀏覽器裡，只有你看得到',
         player_id_tw: '台服 ID', player_id_jp: '日服 ID',
         player_id_placeholder: '輸入你的遊戲 ID',
+        player_id_save_btn: '儲存', player_id_saved: '已儲存！',
         songs_loading: '載入歌曲資料中...', songs_load_fail: '歌曲資料載入失敗，稍後再試',
         songs_no_append: '—',
 
@@ -77,6 +78,7 @@ const I18N = {
         player_id_hint: 'あなたのブラウザにのみ保存され、他の人には見えません',
         player_id_tw: '台湾版ID', player_id_jp: '日本版ID',
         player_id_placeholder: 'ゲームIDを入力',
+        player_id_save_btn: '保存', player_id_saved: '保存しました！',
         songs_loading: '楽曲データを読み込み中...', songs_load_fail: '楽曲データの読み込みに失敗しました',
         songs_no_append: '—',
 

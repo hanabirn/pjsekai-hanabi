@@ -1,11 +1,40 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+    background: var(--bg-body);
+}
 body {
     font-family: 'Segoe UI', 'Noto Sans TC', 'Noto Sans JP', sans-serif;
-    background: var(--bg-body);
+    background: transparent;
     color: var(--text);
     min-height: 100vh;
-    transition: background 0.3s, color 0.3s;
+    transition: color 0.3s;
+}
+
+#bg-carousel {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    overflow: hidden;
+}
+.bg-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center top;
+    opacity: 0;
+    transition: opacity 2.5s ease;
+}
+.bg-slide.active {
+    opacity: 1;
+}
+#bg-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--bg-body);
+    opacity: 0.6;
+    transition: background 0.3s;
 }
 
 a { color: var(--accent); text-decoration: none; }

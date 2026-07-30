@@ -14,6 +14,16 @@
 </head>
 <body>
 
+<div id="bg-carousel" aria-hidden="true">
+    <div class="bg-slide" style="background-image:url('https://pbs.twimg.com/media/FVMQBDOUEAEBNRS.png')"></div>
+    <div class="bg-slide" style="background-image:url('https://pbs.twimg.com/media/FWfMsnQVsAAVqVN.png')"></div>
+    <div class="bg-slide" style="background-image:url('https://pjsekai.gamedbs.jp/image/chara/member_trm/1624253679010_7tcrj3lb.webp')"></div>
+    <div class="bg-slide" style="background-image:url('https://pjsekai.gamedbs.jp/image/chara/member_trm/1638251524015_x1m5ubqi.webp')"></div>
+    <div class="bg-slide" style="background-image:url('https://i.pinimg.com/originals/04/d3/c9/04d3c9b267f29f17b3eb0df74ea4ff75.png')"></div>
+    <div class="bg-slide" style="background-image:url('https://pbs.twimg.com/media/FGPju-zUUAQMW_u.png')"></div>
+</div>
+<div id="bg-overlay" aria-hidden="true"></div>
+
 <header class="sekai-header">
     <div class="sekai-header-top">
         <div class="sekai-title-block">
@@ -51,12 +61,13 @@
                 <p class="player-id-hint" data-i18n="player_id_hint">僅儲存在你自己的瀏覽器裡，只有你看得到</p>
                 <div class="player-id-row">
                     <label data-i18n="player_id_tw">台服 ID</label>
-                    <input type="text" id="player-id-tw-input" data-i18n-placeholder="player_id_placeholder" placeholder="輸入你的台服遊戲 ID" oninput="onPlayerIdInput('tw', this.value)">
+                    <input type="text" id="player-id-tw-input" data-i18n-placeholder="player_id_placeholder" placeholder="輸入你的台服遊戲 ID">
                 </div>
                 <div class="player-id-row">
                     <label data-i18n="player_id_jp">日服 ID</label>
-                    <input type="text" id="player-id-jp-input" data-i18n-placeholder="player_id_placeholder" placeholder="輸入你的日服遊戲 ID" oninput="onPlayerIdInput('jp', this.value)">
+                    <input type="text" id="player-id-jp-input" data-i18n-placeholder="player_id_placeholder" placeholder="輸入你的日服遊戲 ID">
                 </div>
+                <button class="btn-small primary player-id-save-btn" onclick="savePlayerIds()" data-i18n="player_id_save_btn">儲存</button>
             </div>
 
             <h3 class="units-title" data-i18n="units_title">✦ 五大團隊 ✦</h3>
