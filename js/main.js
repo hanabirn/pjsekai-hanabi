@@ -370,6 +370,8 @@ function closeImageLightbox() {
 
 /* ===== Character gallery (uploaded fan art in IndexedDB) ===== */
 let galleryObjectUrls = [];
+const GALLERY_PAGE_SIZE = 24; // 6 columns x 4 rows
+let galleryPage = 0;
 
 async function onGalleryUploadChange(event) {
     const files = [...event.target.files];
@@ -386,6 +388,7 @@ async function onGalleryUploadChange(event) {
 async function renderGallery() {
     const grid = document.getElementById('gallery-grid');
     const empty = document.getElementById('gallery-empty');
+    const pagination = document.getElementById('gallery-pagination');
     if (!grid) return;
 
     galleryObjectUrls.forEach(url => URL.revokeObjectURL(url));
@@ -395,11 +398,16 @@ async function renderGallery() {
     if (images.length === 0) {
         grid.innerHTML = '';
         if (empty) empty.style.display = 'block';
+        if (pagination) pagination.innerHTML = '';
         return;
     }
     if (empty) empty.style.display = 'none';
 
-    grid.innerHTML = images.map(img => {
+    const totalPages = Math.ceil(images.length / GALLERY_PAGE_SIZE);
+    if (galleryPage >= totalPages) galleryPage = Math.max(0, totalPages - 1);
+    const pageImages = images.slice(galleryPage * GALLERY_PAGE_SIZE, (galleryPage + 1) * GALLERY_PAGE_SIZE);
+
+    grid.innerHTML = pageImages.map(img => {
         const url = URL.createObjectURL(img.blob);
         galleryObjectUrls.push(url);
         return `<div class="gallery-item">
@@ -407,6 +415,23 @@ async function renderGallery() {
             <button class="gallery-delete-btn" onclick="event.stopPropagation(); deleteGalleryImageUI('${img.id}')">&times;</button>
         </div>`;
     }).join('');
+
+    if (pagination) {
+        if (totalPages <= 1) {
+            pagination.innerHTML = '';
+        } else {
+            let html = '';
+            for (let i = 0; i < totalPages; i++) {
+                html += `<button class="song-page-btn ${i === galleryPage ? 'active' : ''}" onclick="goToGalleryPage(${i})">${i + 1}</button>`;
+            }
+            pagination.innerHTML = html;
+        }
+    }
+}
+
+function goToGalleryPage(page) {
+    galleryPage = page;
+    renderGallery();
 }
 
 async function openGalleryLightbox(id) {
