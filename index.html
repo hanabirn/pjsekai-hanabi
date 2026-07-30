@@ -46,6 +46,8 @@
                 <a href="https://www.tw-pjsekai.com/" target="_blank" rel="noopener" data-i18n="intro_official_tw">台服官方網站</a>
             </div>
 
+            <p class="player-id"><span data-i18n="player_id_label">🎮 遊戲 ID</span>：<strong id="player-id-value">（請填入你的遊戲 ID）</strong></p>
+
             <h3 class="units-title" data-i18n="units_title">✦ 五大團隊 ✦</h3>
             <div class="units-grid">
                 <div class="unit-card">
@@ -99,6 +101,15 @@
                     <option value="all" data-i18n="filter_all">全部歌曲</option>
                     <option value="recorded" data-i18n="filter_recorded">已記錄成績</option>
                     <option value="unrecorded" data-i18n="filter_unrecorded">尚未記錄</option>
+                </select>
+                <select id="song-unit-select" onchange="onSongUnitChange(this.value)">
+                    <option value="all" data-i18n="unit_all">全部隊伍</option>
+                    <option value="light_sound">Leo/need</option>
+                    <option value="idol">MORE MORE JUMP!</option>
+                    <option value="street">Vivid BAD SQUAD</option>
+                    <option value="theme_park">ワンダーランズ×ショウタイム</option>
+                    <option value="school_refusal">25時、ナイトコードで。</option>
+                    <option value="piapro">Virtual Singers</option>
                 </select>
                 <div class="songs-actions">
                     <button class="btn-small" onclick="exportSekaiScores()" data-i18n="export_btn">匯出成績</button>

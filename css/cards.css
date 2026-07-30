@@ -12,6 +12,15 @@
     font-size: 0.85rem;
 }
 
+.player-id {
+    margin-top: 14px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.player-id strong {
+    color: var(--accent);
+}
+
 .units-title {
     color: var(--accent-pink);
     margin-top: 26px;

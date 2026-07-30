@@ -3,6 +3,7 @@ const SONG_PAGE_SIZE = 30;
 let songSearchQuery = '';
 let songSortMode = 'title';
 let songFilterMode = 'all';
+let songUnitFilter = 'all';
 let songPage = 0;
 let songModalTarget = null; // { musicId, difficulty }
 
@@ -26,6 +27,12 @@ function onSongFilterChange(value) {
     renderSongTable();
 }
 
+function onSongUnitChange(value) {
+    songUnitFilter = value;
+    songPage = 0;
+    renderSongTable();
+}
+
 function songMaxLevel(song) {
     return Math.max(...Object.values(song.difficulties).map(d => d.playLevel));
 }
@@ -45,6 +52,8 @@ function getFilteredSongs() {
 
     if (songFilterMode === 'recorded') list = list.filter(songHasAnyScore);
     else if (songFilterMode === 'unrecorded') list = list.filter(s => !songHasAnyScore(s));
+
+    if (songUnitFilter !== 'all') list = list.filter(s => s.units.includes(songUnitFilter));
 
     if (songSortMode === 'level-desc' || songSortMode === 'level-asc') {
         list = list.slice().sort((a, b) =>
@@ -268,7 +277,16 @@ function closeImageLightbox() {
     if (lightboxObjectUrl) { URL.revokeObjectURL(lightboxObjectUrl); lightboxObjectUrl = null; }
 }
 
-/* ===== Character gallery (uploaded fan art, IndexedDB-backed) ===== */
+/* ===== Character gallery (curated seed art + uploaded fan art in IndexedDB) ===== */
+const SEKAI_GALLERY_SEED = [
+    'https://pbs.twimg.com/media/FVMQBDOUEAEBNRS.png',
+    'https://pbs.twimg.com/media/FWfMsnQVsAAVqVN.png',
+    'https://pjsekai.gamedbs.jp/image/chara/member_trm/1624253679010_7tcrj3lb.webp',
+    'https://pjsekai.gamedbs.jp/image/chara/member_trm/1638251524015_x1m5ubqi.webp',
+    'https://i.pinimg.com/originals/04/d3/c9/04d3c9b267f29f17b3eb0df74ea4ff75.png',
+    'https://pbs.twimg.com/media/FGPju-zUUAQMW_u.png',
+];
+
 let galleryObjectUrls = [];
 
 async function onGalleryUploadChange(event) {
@@ -291,15 +309,19 @@ async function renderGallery() {
     galleryObjectUrls.forEach(url => URL.revokeObjectURL(url));
     galleryObjectUrls = [];
 
+    const seedHtml = SEKAI_GALLERY_SEED.map(url => `<div class="gallery-item">
+        <img src="${url}" onclick="openLightboxUrl('${url}')" alt="">
+    </div>`).join('');
+
     const images = await getAllGalleryImages();
     if (images.length === 0) {
-        grid.innerHTML = '';
-        if (empty) empty.style.display = 'block';
+        grid.innerHTML = seedHtml;
+        if (empty) empty.style.display = 'none';
         return;
     }
     if (empty) empty.style.display = 'none';
 
-    grid.innerHTML = images.map(img => {
+    const uploadedHtml = images.map(img => {
         const url = URL.createObjectURL(img.blob);
         galleryObjectUrls.push(url);
         return `<div class="gallery-item">
@@ -307,6 +329,14 @@ async function renderGallery() {
             <button class="gallery-delete-btn" onclick="event.stopPropagation(); deleteGalleryImageUI('${img.id}')">&times;</button>
         </div>`;
     }).join('');
+
+    grid.innerHTML = seedHtml + uploadedHtml;
+}
+
+function openLightboxUrl(url) {
+    if (lightboxObjectUrl) { URL.revokeObjectURL(lightboxObjectUrl); lightboxObjectUrl = null; }
+    document.getElementById('image-lightbox-img').src = url;
+    document.getElementById('image-lightbox').style.display = 'flex';
 }
 
 async function openGalleryLightbox(id) {

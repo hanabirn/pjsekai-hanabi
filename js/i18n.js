@@ -23,6 +23,8 @@ const I18N = {
         stats_recorded: '已記錄',
         sort_title: '依曲名排序', sort_level_desc: '依等級（高到低）', sort_level_asc: '依等級（低到高）',
         filter_all: '全部歌曲', filter_recorded: '已記錄成績', filter_unrecorded: '尚未記錄',
+        unit_all: '全部隊伍',
+        player_id_label: '🎮 遊戲 ID',
         songs_loading: '載入歌曲資料中...', songs_load_fail: '歌曲資料載入失敗，稍後再試',
         songs_no_append: '—',
 
@@ -67,6 +69,8 @@ const I18N = {
         stats_recorded: '記録済み', stats_avg_score: '平均スコア',
         sort_title: '曲名順', sort_level_desc: 'レベル（高い順）', sort_level_asc: 'レベル（低い順）',
         filter_all: 'すべての楽曲', filter_recorded: '記録済み', filter_unrecorded: '未記録',
+        unit_all: 'すべてのユニット',
+        player_id_label: '🎮 ゲームID',
         songs_loading: '楽曲データを読み込み中...', songs_load_fail: '楽曲データの読み込みに失敗しました',
         songs_no_append: '—',
 
