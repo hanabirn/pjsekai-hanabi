@@ -859,6 +859,10 @@ async function initBirthdayBanner() {
 function refreshDynamicContent() {
     renderSongTable();
     if (typeof renderGallery === 'function') renderGallery();
+    if (typeof sekaiUpdatesLoaded !== 'undefined' && sekaiUpdatesLoaded) {
+        loadJpNews();
+        loadTwNews();
+    }
 }
 
 /* ===== Init ===== */
