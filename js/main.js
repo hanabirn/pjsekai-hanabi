@@ -862,6 +862,8 @@ function refreshDynamicContent() {
     if (typeof sekaiUpdatesLoaded !== 'undefined' && sekaiUpdatesLoaded) {
         loadJpNews();
         loadTwNews();
+        loadEnNews();
+        loadKrNews();
     }
 }
 

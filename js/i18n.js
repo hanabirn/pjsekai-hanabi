@@ -105,7 +105,7 @@ const I18N = {
         export_done: '已匯出成績！', import_done: '已匯入成績！', import_fail: '匯入失敗，請確認檔案格式正確',
         backup_hint: '💡 資料只存在你目前使用的瀏覽器裡，不會自動同步或備份。若擔心之後被瀏覽器清除，建議定期用「匯出成績」保存一份。',
 
-        updates_title: '✦ 更新情報 ✦', updates_jp: '日服', updates_tw: '台服',
+        updates_title: '✦ 更新情報 ✦', updates_jp: '日服', updates_tw: '台服', updates_en: '國際服', updates_kr: '韓服',
         updates_loading: '載入中...', updates_empty: '暫無更新資訊', updates_load_fail: '載入失敗，稍後再試',
         updates_view_original: '查看原文',
     },
@@ -214,7 +214,7 @@ const I18N = {
         export_done: 'エクスポートしました！', import_done: 'インポートしました！', import_fail: 'インポート失敗、ファイル形式をご確認ください',
         backup_hint: '💡 データはこのブラウザにのみ保存され、自動で同期・バックアップはされません。消えるのが心配な場合は「エクスポート」で定期的に保存しておくのがおすすめです。',
 
-        updates_title: '✦ 最新情報 ✦', updates_jp: '日本版', updates_tw: '台湾版',
+        updates_title: '✦ 最新情報 ✦', updates_jp: '日本版', updates_tw: '台湾版', updates_en: 'グローバル版', updates_kr: '韓国版',
         updates_loading: '読み込み中...', updates_empty: '情報がありません', updates_load_fail: '読み込みに失敗しました',
         updates_view_original: '元記事を見る',
     },
@@ -323,7 +323,7 @@ const I18N = {
         export_done: 'Scores exported!', import_done: 'Scores imported!', import_fail: 'Import failed, please check the file format',
         backup_hint: '💡 Data is only stored in the browser you\'re currently using — it is not synced or backed up automatically. If you\'re worried about losing it, use "Export Scores" regularly to keep a backup.',
 
-        updates_title: '✦ Updates ✦', updates_jp: 'JP Server', updates_tw: 'TW Server',
+        updates_title: '✦ Updates ✦', updates_jp: 'JP Server', updates_tw: 'TW Server', updates_en: 'Global Server', updates_kr: 'KR Server',
         updates_loading: 'Loading...', updates_empty: 'No update info available', updates_load_fail: 'Failed to load, please try again later',
         updates_view_original: 'View Original',
     },
@@ -432,7 +432,7 @@ const I18N = {
         export_done: '성적을 내보냈습니다!', import_done: '성적을 가져왔습니다!', import_fail: '가져오기에 실패했습니다. 파일 형식을 확인해주세요',
         backup_hint: '💡 데이터는 현재 사용 중인 브라우저에만 저장되며 자동으로 동기화되거나 백업되지 않습니다. 삭제될까 걱정된다면 "성적 내보내기"로 주기적으로 백업하는 것을 추천합니다.',
 
-        updates_title: '✦ 업데이트 소식 ✦', updates_jp: '일본 서버', updates_tw: '대만 서버',
+        updates_title: '✦ 업데이트 소식 ✦', updates_jp: '일본 서버', updates_tw: '대만 서버', updates_en: '글로벌 서버', updates_kr: '한국 서버',
         updates_loading: '불러오는 중...', updates_empty: '업데이트 정보가 없습니다', updates_load_fail: '불러오지 못했습니다. 나중에 다시 시도해주세요',
         updates_view_original: '원문 보기',
     }
