@@ -4,7 +4,7 @@ const I18N = {
         site_title: '大家的世界計畫成績簿',
         site_tagline: '個人歌曲成績記錄 ✦ 日台服更新情報',
         back_to_main: '← 返回 Hanabiの小天地',
-        nav_intro: '關於遊戲', nav_characters: '角色美圖', nav_songs: '歌曲成績', nav_achievements: '成就', nav_ranking: '世界排名', nav_updates: '更新情報',
+        nav_intro: '關於遊戲', nav_characters: '角色美圖', nav_songs: '歌曲成績', nav_achievements: '成就', nav_ranking: '世界排名', nav_updates: '更新情報', nav_feedback: '建議&改進',
         bg_music_toggle_title: '隨機播放歌曲試聽片段當背景音樂',
 
         intro_title: '✦ 關於世界計畫 ✦',
@@ -106,6 +106,7 @@ const I18N = {
         backup_hint: '💡 資料只存在你目前使用的瀏覽器裡，不會自動同步或備份。若擔心之後被瀏覽器清除，建議定期用「匯出成績」保存一份。',
 
         updates_title: '✦ 更新情報 ✦', updates_jp: '日服', updates_tw: '台服', updates_en: '國際服', updates_kr: '韓服',
+        feedback_title: '✦ 建議&改進 ✦', feedback_hint: '覺得網站有哪裡可以做得更好嗎？在這裡告訴我，只有我看得到你的訊息，其他訪客不會看見。', feedback_placeholder: '寫下你的建議...', feedback_submit: '送出', feedback_success: '您的回覆訊息已傳送，感謝您的回饋！',
         updates_loading: '載入中...', updates_empty: '暫無更新資訊', updates_load_fail: '載入失敗，稍後再試',
         updates_view_original: '查看原文',
     },
@@ -113,7 +114,7 @@ const I18N = {
         site_title: 'みんなのプロセカスコア帳',
         site_tagline: '個人楽曲スコア記録 ✦ 日台版アップデート情報',
         back_to_main: '← Hanabiの小天地に戻る',
-        nav_intro: 'ゲーム紹介', nav_characters: 'キャラ画像', nav_songs: '楽曲スコア', nav_achievements: '実績', nav_ranking: '世界ランキング', nav_updates: '最新情報',
+        nav_intro: 'ゲーム紹介', nav_characters: 'キャラ画像', nav_songs: '楽曲スコア', nav_achievements: '実績', nav_ranking: '世界ランキング', nav_updates: '最新情報', nav_feedback: 'ご意見・改善',
         bg_music_toggle_title: '楽曲の試聴クリップをランダム再生してBGMにする',
 
         intro_title: '✦ プロジェクトセカイについて ✦',
@@ -215,6 +216,7 @@ const I18N = {
         backup_hint: '💡 データはこのブラウザにのみ保存され、自動で同期・バックアップはされません。消えるのが心配な場合は「エクスポート」で定期的に保存しておくのがおすすめです。',
 
         updates_title: '✦ 最新情報 ✦', updates_jp: '日本版', updates_tw: '台湾版', updates_en: 'グローバル版', updates_kr: '韓国版',
+        feedback_title: '✦ ご意見・改善 ✦', feedback_hint: 'サイトについて改善できる点があれば教えてください。あなたのメッセージは私だけが見ることができ、他の訪問者には表示されません。', feedback_placeholder: 'ご意見をお書きください...', feedback_submit: '送信', feedback_success: 'メッセージを送信しました。ご意見ありがとうございます！',
         updates_loading: '読み込み中...', updates_empty: '情報がありません', updates_load_fail: '読み込みに失敗しました',
         updates_view_original: '元記事を見る',
     },
@@ -222,7 +224,7 @@ const I18N = {
         site_title: "Everyone's Project SEKAI Score Book",
         site_tagline: 'Personal song score log ✦ JP/TW server update news',
         back_to_main: '← Back to Hanabiの小天地',
-        nav_intro: 'About', nav_characters: 'Character Art', nav_songs: 'Song Scores', nav_achievements: 'Achievements', nav_ranking: 'World Ranking', nav_updates: 'Updates',
+        nav_intro: 'About', nav_characters: 'Character Art', nav_songs: 'Song Scores', nav_achievements: 'Achievements', nav_ranking: 'World Ranking', nav_updates: 'Updates', nav_feedback: 'Feedback',
         bg_music_toggle_title: 'Randomly play song preview clips as background music',
 
         intro_title: '✦ About Project SEKAI ✦',
@@ -324,6 +326,7 @@ const I18N = {
         backup_hint: '💡 Data is only stored in the browser you\'re currently using — it is not synced or backed up automatically. If you\'re worried about losing it, use "Export Scores" regularly to keep a backup.',
 
         updates_title: '✦ Updates ✦', updates_jp: 'JP Server', updates_tw: 'TW Server', updates_en: 'Global Server', updates_kr: 'KR Server',
+        feedback_title: '✦ Feedback ✦', feedback_hint: 'Think something on this site could be better? Tell me here — only I can see your message, other visitors can\'t.', feedback_placeholder: 'Write your feedback...', feedback_submit: 'Submit', feedback_success: 'Your message has been sent, thank you for the feedback!',
         updates_loading: 'Loading...', updates_empty: 'No update info available', updates_load_fail: 'Failed to load, please try again later',
         updates_view_original: 'View Original',
     },
@@ -331,7 +334,7 @@ const I18N = {
         site_title: '모두의 프로세카 스코어북',
         site_tagline: '개인 곡 성적 기록 ✦ 일본/대만 서버 업데이트 소식',
         back_to_main: '← Hanabiの小天地로 돌아가기',
-        nav_intro: '게임 소개', nav_characters: '캐릭터 이미지', nav_songs: '곡 성적', nav_achievements: '업적', nav_ranking: '월드 랭킹', nav_updates: '업데이트 소식',
+        nav_intro: '게임 소개', nav_characters: '캐릭터 이미지', nav_songs: '곡 성적', nav_achievements: '업적', nav_ranking: '월드 랭킹', nav_updates: '업데이트 소식', nav_feedback: '건의&개선',
         bg_music_toggle_title: '곡 미리듣기를 무작위로 재생해 배경음악으로 사용',
 
         intro_title: '✦ 프로젝트 세카이 소개 ✦',
@@ -433,6 +436,7 @@ const I18N = {
         backup_hint: '💡 데이터는 현재 사용 중인 브라우저에만 저장되며 자동으로 동기화되거나 백업되지 않습니다. 삭제될까 걱정된다면 "성적 내보내기"로 주기적으로 백업하는 것을 추천합니다.',
 
         updates_title: '✦ 업데이트 소식 ✦', updates_jp: '일본 서버', updates_tw: '대만 서버', updates_en: '글로벌 서버', updates_kr: '한국 서버',
+        feedback_title: '✦ 건의&개선 ✦', feedback_hint: '사이트에서 개선할 점이 있나요? 여기에 알려주세요. 메시지는 저만 볼 수 있고 다른 방문자에게는 보이지 않습니다.', feedback_placeholder: '의견을 남겨주세요...', feedback_submit: '보내기', feedback_success: '메시지가 전송되었습니다. 소중한 의견 감사합니다!',
         updates_loading: '불러오는 중...', updates_empty: '업데이트 정보가 없습니다', updates_load_fail: '불러오지 못했습니다. 나중에 다시 시도해주세요',
         updates_view_original: '원문 보기',
     }
