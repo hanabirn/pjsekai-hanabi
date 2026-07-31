@@ -112,6 +112,12 @@
     border-radius: 14px;
     padding: 14px;
     text-align: center;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, box-shadow 0.3s;
+}
+.unit-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(var(--accent-pink-rgb), 0.5);
+    box-shadow: var(--rainbow-glow);
 }
 .unit-card img {
     width: 100%;
