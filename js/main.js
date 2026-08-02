@@ -857,6 +857,31 @@ async function initBirthdayBanner() {
     el.style.display = 'block';
 }
 
+/* ===== 🌐 Language Dropdown ===== */
+function toggleLangMenu(forceOpen) {
+    const wrap = document.getElementById('lang-globe');
+    const btn = document.getElementById('lang-globe-btn');
+    const header = document.querySelector('.sekai-header');
+    if (!wrap || !btn) return;
+    const open = typeof forceOpen === 'boolean' ? forceOpen : !wrap.classList.contains('open');
+    wrap.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    if (header) header.classList.toggle('lang-menu-open', open);
+    if (open) {
+        document.addEventListener('click', onLangMenuOutsideClick);
+        document.addEventListener('keydown', onLangMenuEscape);
+    } else {
+        document.removeEventListener('click', onLangMenuOutsideClick);
+        document.removeEventListener('keydown', onLangMenuEscape);
+    }
+}
+function onLangMenuOutsideClick(e) {
+    if (!e.target.closest('#lang-globe')) toggleLangMenu(false);
+}
+function onLangMenuEscape(e) {
+    if (e.key === 'Escape') toggleLangMenu(false);
+}
+
 /* ===== Re-render already-rendered dynamic content after a language switch ===== */
 function refreshDynamicContent() {
     renderSongTable();

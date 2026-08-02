@@ -102,16 +102,19 @@
                     <span class="title-note tn-5">&#9834;</span>
                     <span class="title-note tn-6">&#9835;</span>
                 </span>
+                <div class="lang-globe" id="lang-globe">
+                    <button class="lang-globe-btn" id="lang-globe-btn" onclick="toggleLangMenu()" aria-haspopup="true" aria-expanded="false" aria-label="Select language" title="Select language">&#127760;</button>
+                    <div class="lang-globe-menu" id="lang-globe-menu">
+                        <button class="lang-pill" data-lang="zh" onclick="applyLang('zh'); toggleLangMenu(false)">中文</button>
+                        <button class="lang-pill" data-lang="ja" onclick="applyLang('ja'); toggleLangMenu(false)">日本語</button>
+                        <button class="lang-pill" data-lang="en" onclick="applyLang('en'); toggleLangMenu(false)">EN</button>
+                        <button class="lang-pill" data-lang="ko" onclick="applyLang('ko'); toggleLangMenu(false)">한국어</button>
+                    </div>
+                </div>
+                <button id="bg-music-toggle" class="bg-music-toggle-btn" onclick="toggleBgMusic()" data-i18n-title="bg_music_toggle_title" title="隨機播放歌曲試聽片段當背景音樂">🎵</button>
+                <button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()">🌙</button>
             </div>
             <p class="sekai-tagline" data-i18n="site_tagline">個人歌曲成績記錄 ✦ 日台服更新情報</p>
-        </div>
-        <div class="sekai-header-controls">
-            <button class="lang-pill" data-lang="zh" onclick="applyLang('zh')">中文</button>
-            <button class="lang-pill" data-lang="ja" onclick="applyLang('ja')">日本語</button>
-            <button class="lang-pill" data-lang="en" onclick="applyLang('en')">EN</button>
-            <button class="lang-pill" data-lang="ko" onclick="applyLang('ko')">한국어</button>
-            <button id="bg-music-toggle" class="bg-music-toggle-btn" onclick="toggleBgMusic()" data-i18n-title="bg_music_toggle_title" title="隨機播放歌曲試聽片段當背景音樂">🎵</button>
-            <button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()">🌙</button>
         </div>
     </div>
     <a class="back-to-main" href="https://hanabirn.github.io/" data-i18n="back_to_main">← 返回 Hanabiの小天地</a>
