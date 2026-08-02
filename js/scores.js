@@ -256,3 +256,62 @@ async function importSekaiScores(event) {
         event.target.value = '';
     }
 }
+
+/* ===== Event PT calculator (solo live) =====
+   Formula ported from xfl03/sekai-calculator's EventCalculator.getEventPoint
+   (LiveType.SOLO branch) — the community-maintained reference implementation:
+     baseScore = 100 + floor(score / 20000)
+     PT = floor(baseScore * (musicRate/100) * (1 + deckBonus/100)) * boost
+   Multi/Cheerful live have their own formulas (need other players' scores,
+   life, etc.) and aren't covered — solo is what a personal score tracker's
+   entries are for anyway. */
+const PT_CALC_PREFS_KEY = 'sekai_pt_calc_prefs';
+
+function getPtCalcPrefs() {
+    try { return JSON.parse(localStorage.getItem(PT_CALC_PREFS_KEY)) || {}; }
+    catch { return {}; }
+}
+
+function savePtCalcPrefs(prefs) {
+    localStorage.setItem(PT_CALC_PREFS_KEY, JSON.stringify(prefs));
+}
+
+function calcSoloEventPoint(score, musicRatePercent, deckBonusPercent, boost) {
+    const baseScore = 100 + Math.floor(score / 20000);
+    const musicRate = musicRatePercent / 100;
+    const deckRate = 1 + deckBonusPercent / 100;
+    return Math.floor(baseScore * musicRate * deckRate) * boost;
+}
+
+function openPtCalcModal() {
+    const prefs = getPtCalcPrefs();
+    document.getElementById('pt-calc-score-input').value = '';
+    document.getElementById('pt-calc-music-rate-input').value = prefs.musicRate ?? 100;
+    document.getElementById('pt-calc-deck-bonus-input').value = prefs.deckBonus ?? 0;
+    document.getElementById('pt-calc-boost-select').value = prefs.boost ?? 1;
+    document.getElementById('pt-calc-result').style.display = 'none';
+    document.getElementById('pt-calc-modal').style.display = 'flex';
+}
+
+function closePtCalcModal() {
+    document.getElementById('pt-calc-modal').style.display = 'none';
+}
+
+function runPtCalc() {
+    const score = parseInt(document.getElementById('pt-calc-score-input').value, 10);
+    const musicRate = parseFloat(document.getElementById('pt-calc-music-rate-input').value);
+    const deckBonus = parseFloat(document.getElementById('pt-calc-deck-bonus-input').value);
+    const boost = parseInt(document.getElementById('pt-calc-boost-select').value, 10);
+    const resultEl = document.getElementById('pt-calc-result');
+
+    if (!Number.isFinite(score) || score < 0 || !Number.isFinite(musicRate) || !Number.isFinite(deckBonus)) {
+        resultEl.textContent = t('pt_calc_invalid');
+        resultEl.style.display = 'block';
+        return;
+    }
+
+    savePtCalcPrefs({ musicRate, deckBonus, boost });
+    const pt = calcSoloEventPoint(score, musicRate, deckBonus, boost);
+    resultEl.textContent = t('pt_calc_result', { n: pt.toLocaleString() });
+    resultEl.style.display = 'block';
+}

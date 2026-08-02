@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pjsekai-hanabi-v5';
+const CACHE_NAME = 'pjsekai-hanabi-v6';
 const ASSETS = [
   '/',
   '/index.html',
@@ -14,6 +14,7 @@ const ASSETS = [
   '/js/scores.js',
   '/js/achievements.js',
   '/js/ranking.js',
+  '/js/gacha.js',
   '/js/updates.js',
   '/js/feedback.js',
   '/js/main.js',

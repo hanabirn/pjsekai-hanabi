@@ -159,6 +159,20 @@ async function getCurrentJpEvent() {
     }
 }
 
+let sekaiCharactersCache = null;
+
+async function getSekaiCharacters() {
+    if (sekaiCharactersCache) return sekaiCharactersCache;
+    try {
+        const res = await fetch(SEKAI_CHARACTERS_URL);
+        sekaiCharactersCache = await res.json();
+        return sekaiCharactersCache;
+    } catch (e) {
+        console.error('Failed to load characters:', e);
+        return [];
+    }
+}
+
 /* ===== Character birthdays (today's-birthday easter egg on the intro tab) =====
    gameCharacters.json itself has no birthday field — it lives in the sibling
    characterProfiles.json as a Japanese-formatted string like "8月11日". */

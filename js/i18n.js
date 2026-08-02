@@ -18,6 +18,10 @@ const I18N = {
         gallery_upload_btn: '📤 上傳圖片', gallery_empty: '還沒有收藏的圖片，點上方按鈕新增！',
         gallery_upload_done: '已新增圖片！',
         backup_hint_gallery: '💡 上傳的圖片只存在這個瀏覽器裡，可以到「歌曲成績」頁面用「匯出成績」一起備份。',
+        gacha_sim_title: '✦ 扭蛋模擬器（純娛樂）✦',
+        gacha_sim_hint: '依照目前日服限定池的真實機率模擬抽卡，純粹好玩，跟你的實際遊戲帳號無關，也不模擬保底機制。',
+        gacha_sim_pull1: '單抽', gacha_sim_pull10: '十連抽',
+        gacha_sim_loading: '讀取中...', gacha_sim_pulling: '抽卡中...', gacha_sim_unavailable: '目前無法讀取卡池資料',
 
         songs_title: '✦ 歌曲成績 ✦',
         favorites_title: '✦ 我的最愛 ✦',
@@ -105,6 +109,10 @@ const I18N = {
         password_set_success: '密碼設定成功！', password_set_btn: '🔒 設定密碼',
 
         export_btn: '匯出成績', import_btn: '匯入成績',
+        pt_calc_btn: '🧮 PT 試算', pt_calc_title: '🧮 PT 試算',
+        pt_calc_hint: '試算單人 Live 分數換算成的活動 PT（不含多人連線/對戰 Live）。',
+        pt_calc_score: '分數', pt_calc_music_rate: '歌曲加成 %', pt_calc_deck_bonus: '隊伍加成 %', pt_calc_boost: 'Boost 消耗',
+        pt_calc_run: '計算', pt_calc_invalid: '請輸入正確的數值', pt_calc_result: '約可獲得 {n} PT',
         export_done: '已匯出成績！', import_done: '已匯入成績！', import_fail: '匯入失敗，請確認檔案格式正確',
         backup_hint: '💡 資料只存在你目前使用的瀏覽器裡，不會自動同步或備份。若擔心之後被瀏覽器清除，建議定期用「匯出成績」保存一份。',
 
@@ -131,6 +139,10 @@ const I18N = {
         gallery_upload_btn: '📤 画像をアップロード', gallery_empty: 'まだ画像がありません。上のボタンから追加しよう！',
         gallery_upload_done: '画像を追加しました！',
         backup_hint_gallery: '💡 アップロードした画像はこのブラウザにのみ保存されます。「楽曲スコア」ページの「エクスポート」でまとめてバックアップできます。',
+        gacha_sim_title: '✦ ガチャシミュレーター（お楽しみ用）✦',
+        gacha_sim_hint: '現在の日本サーバーの限定ガチャの実際の確率でシミュレートします。お楽しみ用で、実際のゲームアカウントとは無関係、天井も再現していません。',
+        gacha_sim_pull1: '1連', gacha_sim_pull10: '10連',
+        gacha_sim_loading: '読み込み中...', gacha_sim_pulling: 'ガチャ中...', gacha_sim_unavailable: 'ガチャ情報を読み込めませんでした',
 
         songs_title: '✦ 楽曲スコア ✦',
         favorites_title: '✦ お気に入り ✦',
@@ -218,6 +230,10 @@ const I18N = {
         password_set_success: 'パスワードを設定しました！', password_set_btn: '🔒 パスワード設定',
 
         export_btn: 'スコアをエクスポート', import_btn: 'スコアをインポート',
+        pt_calc_btn: '🧮 PT試算', pt_calc_title: '🧮 PT試算',
+        pt_calc_hint: 'ソロLiveのスコアから獲得できるイベントPTを試算します（マルチ/対戦Liveは対象外）。',
+        pt_calc_score: 'スコア', pt_calc_music_rate: '楽曲補正 %', pt_calc_deck_bonus: 'イベントボーナス %', pt_calc_boost: 'ブースト消費',
+        pt_calc_run: '計算', pt_calc_invalid: '正しい数値を入力してください', pt_calc_result: '約 {n} PT獲得できます',
         export_done: 'エクスポートしました！', import_done: 'インポートしました！', import_fail: 'インポート失敗、ファイル形式をご確認ください',
         backup_hint: '💡 データはこのブラウザにのみ保存され、自動で同期・バックアップはされません。消えるのが心配な場合は「エクスポート」で定期的に保存しておくのがおすすめです。',
 
@@ -244,6 +260,10 @@ const I18N = {
         gallery_upload_btn: '📤 Upload Image', gallery_empty: 'No images saved yet — click the button above to add one!',
         gallery_upload_done: 'Image added!',
         backup_hint_gallery: '💡 Uploaded images are only stored in this browser — you can back them up together with "Export Scores" on the Song Scores page.',
+        gacha_sim_title: '✦ Gacha Simulator (Just for Fun) ✦',
+        gacha_sim_hint: "Simulates pulls using the real odds from the current JP-server limited gacha. Just for fun — unrelated to any real game account, and doesn't simulate pity/guarantees.",
+        gacha_sim_pull1: 'Pull x1', gacha_sim_pull10: 'Pull x10',
+        gacha_sim_loading: 'Loading...', gacha_sim_pulling: 'Pulling...', gacha_sim_unavailable: 'Could not load gacha data right now',
 
         songs_title: '✦ Song Scores ✦',
         favorites_title: '✦ Favorites ✦',
@@ -331,6 +351,10 @@ const I18N = {
         password_set_success: 'Password set successfully!', password_set_btn: '🔒 Set Password',
 
         export_btn: 'Export Scores', import_btn: 'Import Scores',
+        pt_calc_btn: '🧮 PT Calculator', pt_calc_title: '🧮 PT Calculator',
+        pt_calc_hint: 'Estimates the event points a solo live score would earn (multi-live/battle live not covered).',
+        pt_calc_score: 'Score', pt_calc_music_rate: 'Music Bonus %', pt_calc_deck_bonus: 'Deck Bonus %', pt_calc_boost: 'Boost Used',
+        pt_calc_run: 'Calculate', pt_calc_invalid: 'Please enter valid numbers', pt_calc_result: 'About {n} PT',
         export_done: 'Scores exported!', import_done: 'Scores imported!', import_fail: 'Import failed, please check the file format',
         backup_hint: '💡 Data is only stored in the browser you\'re currently using — it is not synced or backed up automatically. If you\'re worried about losing it, use "Export Scores" regularly to keep a backup.',
 
@@ -357,6 +381,10 @@ const I18N = {
         gallery_upload_btn: '📤 이미지 업로드', gallery_empty: '아직 저장된 이미지가 없어요. 위 버튼을 눌러 추가해보세요!',
         gallery_upload_done: '이미지가 추가되었습니다!',
         backup_hint_gallery: '💡 업로드한 이미지는 이 브라우저에만 저장됩니다. "곡 성적" 페이지의 "성적 내보내기"로 함께 백업할 수 있어요.',
+        gacha_sim_title: '✦ 가챠 시뮬레이터 (재미용) ✦',
+        gacha_sim_hint: '현재 일본 서버 한정 가챠의 실제 확률로 시뮬레이션합니다. 재미로만 즐겨주세요. 실제 게임 계정과는 무관하며 천장(보장)은 재현하지 않습니다.',
+        gacha_sim_pull1: '1회 뽑기', gacha_sim_pull10: '10연 뽑기',
+        gacha_sim_loading: '불러오는 중...', gacha_sim_pulling: '뽑는 중...', gacha_sim_unavailable: '가챠 정보를 불러올 수 없습니다',
 
         songs_title: '✦ 곡 성적 ✦',
         favorites_title: '✦ 즐겨찾기 ✦',
@@ -444,6 +472,10 @@ const I18N = {
         password_set_success: '비밀번호가 설정되었습니다!', password_set_btn: '🔒 비밀번호 설정',
 
         export_btn: '성적 내보내기', import_btn: '성적 가져오기',
+        pt_calc_btn: '🧮 PT 계산', pt_calc_title: '🧮 PT 계산',
+        pt_calc_hint: '솔로 라이브 점수로 얻을 수 있는 이벤트 PT를 계산합니다 (멀티/대전 라이브는 제외).',
+        pt_calc_score: '점수', pt_calc_music_rate: '악곡 보너스 %', pt_calc_deck_bonus: '팀 보너스 %', pt_calc_boost: '부스트 소비',
+        pt_calc_run: '계산', pt_calc_invalid: '올바른 값을 입력해주세요', pt_calc_result: '약 {n} PT 획득',
         export_done: '성적을 내보냈습니다!', import_done: '성적을 가져왔습니다!', import_fail: '가져오기에 실패했습니다. 파일 형식을 확인해주세요',
         backup_hint: '💡 데이터는 현재 사용 중인 브라우저에만 저장되며 자동으로 동기화되거나 백업되지 않습니다. 삭제될까 걱정된다면 "성적 내보내기"로 주기적으로 백업하는 것을 추천합니다.',
 

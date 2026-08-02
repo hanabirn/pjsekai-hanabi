@@ -265,3 +265,79 @@
 .gallery-item:hover .gallery-delete-btn {
     opacity: 1;
 }
+
+/* Gacha simulator (fun only) */
+.gacha-sim-panel {
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border-card);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.gacha-sim-title {
+    color: var(--accent-pink);
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+.gacha-sim-hint {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+.gacha-sim-banner {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--accent);
+    margin-bottom: 12px;
+    min-height: 1.2em;
+}
+.gacha-sim-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+.gacha-sim-results {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+@media (max-width: 640px) {
+    .gacha-sim-results { grid-template-columns: repeat(3, 1fr); }
+}
+.gacha-result-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: 10px;
+    padding: 6px;
+    text-align: center;
+}
+.gacha-result-card.rare {
+    border-color: #fbbf24;
+    box-shadow: 0 0 12px rgba(251,191,36,0.4);
+    animation: gachaRareGlow 1.6s ease-in-out infinite;
+}
+@keyframes gachaRareGlow {
+    0%, 100% { box-shadow: 0 0 8px rgba(251,191,36,0.3); }
+    50% { box-shadow: 0 0 18px rgba(251,191,36,0.6); }
+}
+.gacha-result-card img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 4px;
+}
+.gacha-result-stars {
+    font-size: 0.72rem;
+    color: #fbbf24;
+}
+.gacha-result-name {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

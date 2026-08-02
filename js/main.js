@@ -785,6 +785,7 @@ function switchSekaiTab(tab, el) {
     if (el) el.classList.add('active');
     if (tab === 'updates' && typeof loadSekaiUpdates === 'function') loadSekaiUpdates();
     if (tab === 'characters') renderGallery();
+    if (tab === 'characters' && typeof renderGachaBanner === 'function') renderGachaBanner();
     if (tab === 'ranking' && typeof loadRankingBoard === 'function') loadRankingBoard();
     if (tab === 'ranking' && typeof loadBorderTracker === 'function') loadBorderTracker();
 }
