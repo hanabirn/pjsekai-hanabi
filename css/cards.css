@@ -178,7 +178,7 @@
     visibility: visible;
     pointer-events: auto;
 }
-.unit-slide img {
+.unit-slide img.unit-char-art {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -203,165 +203,151 @@
 }
 .unit-slide.screen-shake { animation: unitScreenShake 0.4s ease-in-out; }
 
-/* ── Caption base — js/units-fx.js rebuilds the inner markup per style
-   (per-character .ch spans for glow/bounce, a single .reveal-inner for
-   wipe/arc/glitch/scan) every time a slide's turn comes back around. ── */
+/* ── Caption base — now hosts the official unit logo artwork (rendered by
+   js/units-fx.js as <img class="unit-logo">) instead of hand-styled text,
+   since the real wordmarks already carry each unit's own colors/typography
+   far better than a CSS approximation could. Rebuilt every time a slide's
+   turn comes back around so its entrance animation always replays. ── */
 .unit-caption {
     position: absolute;
     left: 0; right: 0; bottom: 0;
     margin: 0;
-    padding: 16px 16px 18px;
-    text-align: center;
-    font-size: 1.6rem;
-    font-weight: 800;
-    letter-spacing: 0.02em;
-    color: #fff;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.9), 0 4px 16px rgba(0,0,0,0.85), 0 0 3px rgba(0,0,0,1);
+    padding: 14px 16px 16px;
+    display: flex;
+    justify-content: center;
     z-index: 2;
 }
-
-/* Leo/need — letters light up in sequence, like connecting constellation
-   points (stagger computed in JS so short/long names take the same total
-   time), then the whole caption keeps a slow ambient starlight pulse for
-   the rest of the slide's ~7s dwell instead of sitting static. */
-.reveal-glow .ch {
-    display: inline-block;
-    opacity: 0;
-    text-shadow: 0 0 12px rgba(96,165,250,0.9), 0 0 4px #fff;
-    animation: unitChGlow 0.7s ease-out forwards;
-}
-@keyframes unitChGlow {
-    0% { opacity: 0; transform: scale(0.4); filter: brightness(3); }
-    60% { opacity: 1; transform: scale(1.15); }
-    100% { opacity: 1; transform: scale(1); filter: brightness(1); }
-}
-.unit-caption.reveal-glow {
-    animation: unitGlowPulse 2.4s ease-in-out 2s infinite;
-}
-@keyframes unitGlowPulse {
-    0%, 100% { text-shadow: 0 2px 10px rgba(0,0,0,0.7); }
-    50% { text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 0 20px rgba(96,165,250,0.85), 0 0 34px rgba(191,219,254,0.5); }
+.unit-logo {
+    max-height: 68px;
+    max-width: 82%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.85)) drop-shadow(0 0 10px rgba(0,0,0,0.6));
 }
 
-/* MORE MORE JUMP! — letters bounce in with an elastic overshoot, then the
-   caption keeps a gentle idle bob for the rest of the slide. */
-.reveal-bounce .ch {
-    display: inline-block;
-    opacity: 0;
-    animation: unitChBounce 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards;
+/* Leo/need — the logo pops in with a soft scale/fade, then keeps a slow
+   ambient blue-violet glow pulse for the rest of the slide's ~7s dwell. */
+.reveal-glow .unit-logo {
+    animation: unitLogoPopIn 0.9s cubic-bezier(0.22,1,0.36,1) forwards,
+        unitLogoGlowPulse 2.4s ease-in-out 1s infinite;
 }
-@keyframes unitChBounce {
-    0% { opacity: 0; transform: translateY(-30px) scale(0.5); }
-    60% { opacity: 1; transform: translateY(6px) scale(1.1); }
+@keyframes unitLogoPopIn {
+    0% { opacity: 0; transform: scale(0.6); }
+    70% { opacity: 1; transform: scale(1.06); }
+    100% { opacity: 1; transform: scale(1); }
+}
+@keyframes unitLogoGlowPulse {
+    0%, 100% { filter: drop-shadow(0 3px 6px rgba(0,0,0,0.85)) drop-shadow(0 0 8px rgba(124,124,240,0.4)); }
+    50% { filter: drop-shadow(0 3px 6px rgba(0,0,0,0.85)) drop-shadow(0 0 20px rgba(124,124,240,0.9)) drop-shadow(0 0 34px rgba(167,139,250,0.5)); }
+}
+
+/* MORE MORE JUMP! — an elastic bounce-in, then a gentle idle bob for the
+   rest of the slide. */
+.reveal-bounce .unit-logo {
+    transform-origin: center bottom;
+    animation: unitLogoBounceIn 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards,
+        unitLogoBob 1.8s ease-in-out 1.6s infinite;
+}
+@keyframes unitLogoBounceIn {
+    0% { opacity: 0; transform: translateY(-40px) scale(0.5); }
+    60% { opacity: 1; transform: translateY(8px) scale(1.08); }
     100% { opacity: 1; transform: translateY(0) scale(1); }
 }
-.unit-caption.reveal-bounce {
-    animation: unitBouncePulse 1.8s ease-in-out 2.2s infinite;
-    transform-origin: center bottom;
-}
-@keyframes unitBouncePulse {
+@keyframes unitLogoBob {
     0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-3px) scale(1.03); }
+    50% { transform: translateY(-4px) scale(1.03); }
 }
 
 /* Vivid BAD SQUAD — a fast angled spray-paint wipe (kept snappy, like an
-   actual spray tag) revealing slightly skewed street-graffiti text, paired
-   with the screen-shake above, then a lingering neon flicker for the rest
-   of the slide. */
-.reveal-wipe .reveal-inner {
-    display: inline-block;
-    transform: skewX(-8deg);
-    color: #f9a8d4;
-    text-shadow: 0 0 10px rgba(244,114,182,0.8), 0 0 18px rgba(34,211,238,0.5);
+   actual spray tag) paired with the screen-shake above, then a lingering
+   neon flicker for the rest of the slide. */
+.reveal-wipe .unit-logo {
+    animation: unitLogoWipeIn 0.6s ease-out forwards,
+        unitLogoFlicker 2.2s ease-in-out 0.6s infinite;
 }
-.unit-caption.reveal-wipe {
-    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
-    animation: unitWipeIn 0.7s ease-out forwards, unitNeonFlicker 2.2s ease-in-out 0.7s infinite;
+@keyframes unitLogoWipeIn {
+    0% { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); opacity: 0.5; }
+    100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; }
 }
-@keyframes unitWipeIn {
-    0% { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); }
-    100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-}
-@keyframes unitNeonFlicker {
-    0%, 42%, 100% { filter: brightness(1); }
-    46% { filter: brightness(1.5); }
-    50% { filter: brightness(1); }
-    72% { filter: brightness(1.3); }
-    76% { filter: brightness(1); }
+@keyframes unitLogoFlicker {
+    0%, 42%, 100% { filter: brightness(1) drop-shadow(0 3px 6px rgba(0,0,0,0.85)); }
+    46% { filter: brightness(1.4) drop-shadow(0 3px 6px rgba(0,0,0,0.85)) drop-shadow(0 0 14px rgba(244,114,182,0.7)); }
+    50% { filter: brightness(1) drop-shadow(0 3px 6px rgba(0,0,0,0.85)); }
+    72% { filter: brightness(1.25) drop-shadow(0 3px 6px rgba(0,0,0,0.85)) drop-shadow(0 0 10px rgba(34,211,238,0.6)); }
+    76% { filter: brightness(1) drop-shadow(0 3px 6px rgba(0,0,0,0.85)); }
 }
 
 /* Wonderlands×Showtime — a circus-marquee swoop/arc slide-in, then a
    gentle gold sparkle pulse for the rest of the slide. */
-.reveal-arc .reveal-inner {
-    display: inline-block;
-    color: #fde68a;
-    text-shadow: 0 0 10px rgba(250,204,21,0.7);
+.reveal-arc .unit-logo {
+    animation: unitLogoArcIn 0.9s cubic-bezier(0.22,1,0.36,1) forwards,
+        unitLogoGoldSparkle 2.4s ease-in-out 0.9s infinite;
 }
-.unit-caption.reveal-arc {
-    animation: unitArcIn 1s cubic-bezier(0.22,1,0.36,1) forwards, unitGoldSparkle 2.4s ease-in-out 1s infinite;
+@keyframes unitLogoArcIn {
+    0% { opacity: 0; transform: translateX(-50px) translateY(16px) rotate(-8deg) scale(0.85); }
+    60% { opacity: 1; transform: translateX(8px) translateY(-4px) rotate(3deg) scale(1.03); }
+    100% { opacity: 1; transform: translateX(0) translateY(0) rotate(0deg) scale(1); }
 }
-@keyframes unitArcIn {
-    0% { opacity: 0; transform: translateX(-60px) translateY(20px) rotate(-10deg); }
-    60% { opacity: 1; transform: translateX(10px) translateY(-6px) rotate(3deg); }
-    100% { opacity: 1; transform: translateX(0) translateY(0) rotate(0deg); }
-}
-@keyframes unitGoldSparkle {
-    0%, 100% { text-shadow: 0 2px 10px rgba(0,0,0,0.7); }
-    50% { text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 0 18px rgba(250,204,21,0.9), 0 0 30px rgba(244,114,182,0.4); }
+@keyframes unitLogoGoldSparkle {
+    0%, 100% { filter: drop-shadow(0 3px 6px rgba(0,0,0,0.85)); }
+    50% { filter: drop-shadow(0 3px 6px rgba(0,0,0,0.85)) drop-shadow(0 0 16px rgba(250,204,21,0.8)); }
 }
 
-/* 25時、ナイトコードで。— a slower typewriter reveal, then a few
-   RGB-split glitch flickers spread across the rest of the slide's dwell
-   time (js/units-fx.js schedules the .glitching bursts). */
-.reveal-glitch .reveal-inner {
-    display: inline-block;
+/* 25時、ナイトコードで。— a slow ghostly fade-in (matching the logo's own
+   muted, pale look) with a couple of brief dim-flicker dips spread across
+   the rest of the slide (js/units-fx.js schedules these via a transient
+   !important inline opacity, so they can't fight or restart this
+   forwards-filled entrance animation). */
+.reveal-glitch .unit-logo {
+    opacity: 0;
+    animation: unitLogoGhostIn 1.6s ease-out forwards;
+}
+@keyframes unitLogoGhostIn {
+    0% { opacity: 0; filter: brightness(0.4) blur(2px); }
+    60% { opacity: 0.85; }
+    100% { opacity: 1; filter: brightness(1) blur(0); }
+}
+
+/* Virtual Singers — the logo fades/scales in, then a diagonal light-sweep
+   bar loops continuously over it, fitting the "always-on digital" theme
+   without needing to recolor the (intentionally monochrome) logo itself. */
+.reveal-scan .unit-logo {
+    animation: unitLogoFadeIn 0.8s ease-out forwards;
+}
+@keyframes unitLogoFadeIn {
+    0% { opacity: 0; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
+}
+.unit-caption.reveal-scan {
     overflow: hidden;
-    white-space: nowrap;
-    font-family: 'Courier New', monospace;
-    color: #c7d2fe;
-    border-right: 2px solid #93c5fd;
-    animation: unitTypeIn 2.2s steps(24, end) forwards;
 }
-@keyframes unitTypeIn {
-    from { width: 0; }
-    to { width: 100%; border-right-color: transparent; }
+.unit-caption.reveal-scan::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    left: -30%;
+    width: 30%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,0.55), transparent);
+    mix-blend-mode: overlay;
+    animation: unitScanSweepBar 3s ease-in-out infinite;
+    pointer-events: none;
 }
-.reveal-glitch .reveal-inner.glitching {
-    animation: unitGlitchFlicker 0.25s steps(2, end) 2;
-}
-@keyframes unitGlitchFlicker {
-    0% { text-shadow: 2px 0 #ff4d6d, -2px 0 #38bdf8; transform: translateX(0); }
-    50% { text-shadow: -2px 0 #ff4d6d, 2px 0 #38bdf8; transform: translateX(2px); }
-    100% { text-shadow: none; transform: translateX(0); }
-}
-
-/* Virtual Singers — a continuously repeating left-to-right scanning light
-   bar (rather than a one-shot reveal) fits the "always-on digital" theme
-   and naturally fills the whole slide without needing a separate sustain
-   animation layered on top. */
-.reveal-scan .reveal-inner {
-    display: inline-block;
-    background: linear-gradient(90deg, #39C5BB 0%, #39C5BB 45%, #fff 50%, #39C5BB 55%, #39C5BB 100%);
-    background-size: 300% 100%;
-    background-position: 200% 0;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: unitScanSweep 3s ease-in-out infinite;
-}
-@keyframes unitScanSweep {
-    0% { background-position: 200% 0; opacity: 0; }
+@keyframes unitScanSweepBar {
+    0% { left: -30%; opacity: 0; }
     10% { opacity: 1; }
-    100% { background-position: -20% 0; opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .unit-slide { transition: opacity 0.6s ease; }
     .unit-slide.screen-shake { animation: none; }
-    .unit-caption, .ch, .reveal-inner { animation: none !important; opacity: 1 !important; transform: none !important; clip-path: none !important; width: auto !important; }
+    .unit-logo { animation: none !important; opacity: 1 !important; transform: none !important; clip-path: none !important; }
+    .unit-caption.reveal-scan::after { animation: none; display: none; }
 }
 @media (max-width: 500px) {
-    .unit-caption { font-size: 1.3rem; padding: 12px 10px 14px; }
+    .unit-logo { max-height: 52px; }
 }
 
 .characters-center {

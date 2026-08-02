@@ -1,8 +1,8 @@
 /* ===== 🎬 Units Showcase — per-team name-intro animations =====
    Drives the 6-slide (7s each) crossfade in the "團隊與虛擬歌手" section on
    a JS interval (rather than pure CSS animation-delay) so it has a hook to
-   fire a themed canvas particle burst + a distinct caption text-reveal
-   style in sync with each team's turn, instead of one shared generic fade. */
+   fire a themed canvas particle burst + a distinct caption reveal style in
+   sync with each team's turn, instead of one shared generic fade. */
 
 const UNIT_PRESETS = {
     leoneed:   { reveal: 'reveal-glow',   particle: 'twinkle' },
@@ -14,12 +14,24 @@ const UNIT_PRESETS = {
 };
 
 const UNIT_COLORS = {
-    leoneed: ['#60a5fa', '#bfdbfe', '#ffffff'],
-    mmj: ['#84cc16', '#facc15', '#bef264'],
-    vbs: ['#f472b6', '#22d3ee', '#f9a8d4'],
+    leoneed: ['#7c7cf0', '#a78bfa', '#ffffff'],
+    mmj: ['#f472b6', '#facc15', '#4ade80', '#38bdf8'],
+    vbs: ['#f472b6', '#facc15', '#f9a8d4'],
     wonderhoi: ['#facc15', '#f472b6', '#fde68a'],
-    nightcord: ['#818cf8', '#60a5fa', '#a5b4fc'],
+    nightcord: ['#a5a3c4', '#7c7a9e', '#c9c7e0'],
     vs: ['#22d3ee', '#4ade80', '#67e8f9'],
+};
+
+/* Official unit logo wordmarks — used as the caption artwork instead of
+   hand-styled text, since these already carry each unit's real colors and
+   typography far better than a CSS approximation could. */
+const UNIT_LOGOS = {
+    leoneed: 'https://pjsekai.sega.jp/assets/data/webp/character/unite01/logo.png.webp',
+    mmj: 'https://pjsekai.sega.jp/assets/data/webp/character/unite02/logo.png.webp',
+    vbs: 'https://pjsekai.sega.jp/assets/data/webp/character/unite03/logo.png.webp',
+    wonderhoi: 'https://pjsekai.sega.jp/assets/data/webp/character/unite04/logo.png.webp',
+    nightcord: 'https://pjsekai.sega.jp/assets/data/webp/character/unite05/logo.png.webp',
+    vs: 'https://pjsekai.sega.jp/assets/data/webp/character/virtualsinger/logo.png.webp',
 };
 
 let unitsFxCanvas = null;
@@ -72,46 +84,43 @@ function playUnitSlide(slideEl) {
     if (!preset) return;
 
     const caption = slideEl.querySelector('.unit-caption');
-    if (caption) revealUnitCaption(caption, preset.reveal);
+    if (caption) revealUnitCaption(caption, team, preset.reveal);
 
     if (!unitsReducedMotion) spawnUnitParticles(preset.particle, team);
 }
 
-/* ---- Caption text reveal ----
-   First call caches the original plain-text label on the element so every
-   later replay (each 42s loop) rebuilds from the real name, not from
-   whatever markup the previous reveal style left behind. */
-function revealUnitCaption(caption, style) {
-    const text = caption.dataset.text || caption.textContent.trim();
-    caption.dataset.text = text;
+/* ---- Caption logo reveal ----
+   Renders the official unit logo artwork (UNIT_LOGOS) instead of styled
+   text — the real wordmarks already carry each unit's actual colors and
+   typography, which a CSS approximation can't match. Rebuilt fresh on
+   every replay (each 42s loop) so the entrance animation always restarts;
+   the alt text keeps the original caption's name for accessibility. */
+function revealUnitCaption(caption, team, style) {
+    const label = caption.dataset.text || caption.textContent.trim();
+    caption.dataset.text = label;
     caption.className = 'unit-caption ' + style;
+    caption.innerHTML = '';
 
-    if (style === 'reveal-glow' || style === 'reveal-bounce') {
-        caption.innerHTML = '';
-        const chars = Array.from(text);
-        const entranceSpanMs = 1600;
-        const stagger = chars.length > 1 ? entranceSpanMs / (chars.length - 1) : 0;
-        chars.forEach((ch, i) => {
-            const span = document.createElement('span');
-            span.className = 'ch';
-            span.style.animationDelay = (i * stagger) + 'ms';
-            span.textContent = ch === ' ' ? ' ' : ch;
-            caption.appendChild(span);
+    const img = document.createElement('img');
+    img.className = 'unit-logo';
+    img.src = UNIT_LOGOS[team];
+    img.alt = label;
+    img.referrerPolicy = 'no-referrer';
+    caption.appendChild(img);
+
+    if (style === 'reveal-glitch') {
+        // A few subtle brightness dips, like a dim light struggling on —
+        // matches Nightcord's muted, ghostly logo instead of a loud
+        // RGB-split glitch. Uses a transient !important inline opacity
+        // (not a CSS class) so it can't fight with or restart the
+        // forwards-filled unitLogoGhostIn entrance animation, which also
+        // animates opacity.
+        [1800, 3400, 5000].forEach(delay => {
+            setTimeout(() => {
+                img.style.setProperty('opacity', '0.35', 'important');
+                setTimeout(() => img.style.removeProperty('opacity'), 180);
+            }, delay);
         });
-    } else {
-        const inner = document.createElement('span');
-        inner.className = 'reveal-inner';
-        inner.textContent = text;
-        caption.innerHTML = '';
-        caption.appendChild(inner);
-        if (style === 'reveal-glitch') {
-            [2400, 4000, 5600].forEach(delay => {
-                setTimeout(() => {
-                    inner.classList.add('glitching');
-                    setTimeout(() => inner.classList.remove('glitching'), 250);
-                }, delay);
-            });
-        }
     }
 }
 
