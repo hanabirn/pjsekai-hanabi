@@ -54,7 +54,7 @@ function gachaCardThumbUrl(card) {
 
 function gachaCharacterName(characterId) {
     const c = gachaCharacters.find(ch => ch.id === characterId);
-    return c ? `${c.firstName}${c.givenName}` : '';
+    return c ? `${c.firstName || ''}${c.givenName}` : '';
 }
 
 async function renderGachaBanner() {
@@ -82,7 +82,7 @@ async function runGachaPull(count) {
         const isRare = stars >= 4;
         return `
         <div class="gacha-result-card ${isRare ? 'rare' : ''}">
-            <img src="${gachaCardThumbUrl(card)}" alt="" loading="lazy">
+            <img src="${gachaCardThumbUrl(card)}" alt="" loading="lazy" referrerpolicy="no-referrer">
             <div class="gacha-result-stars">${'★'.repeat(stars)}</div>
             <div class="gacha-result-name">${escapeHtmlSekai(gachaCharacterName(card.characterId))}</div>
         </div>`;
