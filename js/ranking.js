@@ -271,3 +271,147 @@ function renderFriendsCompare(aggregated) {
               </table>`}
     `;
 }
+
+/* ===== Official border tracker =====
+   Shows the real T1/T100/T1000/T2000 event score over time on the JP server,
+   via the event-border function (which proxies api.sekai.best). This is
+   separate from the friend leaderboard above — that's self-reported scores,
+   this is the actual live event standings. JP only: TW/EN/KR run the same
+   events on a delay under different event ids we'd have to map separately,
+   and JP is what every community border tracker defaults to anyway. */
+const BORDER_RANKS = [1, 100, 1000, 2000];
+let borderCurrentEvent = null;
+let borderCurrentRank = 1;
+let borderPointsCache = {};
+
+function formatBorderEventWindow(event) {
+    const fmt = ms => {
+        const d = new Date(ms);
+        return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+    };
+    return `${fmt(event.startAt)} - ${fmt(event.aggregateAt)}`;
+}
+
+function formatBorderTimeLabel(isoString) {
+    const d = new Date(isoString);
+    return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+
+/* Downsamples to keep the SVG light even when an event's been running for
+   days (a 3-minute snapshot interval over 10 days is ~4800 points). */
+function downsampleBorderPoints(points, maxPoints) {
+    if (points.length <= maxPoints) return points;
+    const step = points.length / maxPoints;
+    const out = [];
+    for (let i = 0; i < maxPoints; i++) out.push(points[Math.floor(i * step)]);
+    out.push(points[points.length - 1]);
+    return out;
+}
+
+function borderTrendChartSvg(points) {
+    const width = 600, height = 150;
+    const padL = 46, padR = 14, padT = 14, padB = 22;
+    const innerW = width - padL - padR;
+    const innerH = height - padT - padB;
+
+    const xs = points.map(p => new Date(p.t).getTime());
+    const xMin = xs[0];
+    const xSpan = Math.max(1, xs[xs.length - 1] - xMin);
+    const yMax = Math.max(1, ...points.map(p => p.s));
+
+    const xPos = t => padL + (xs.length === 1 ? innerW / 2 : ((t - xMin) / xSpan) * innerW);
+    const yPos = v => padT + innerH - (v / yMax) * innerH;
+
+    const baseline = `<line x1="${padL}" y1="${padT + innerH}" x2="${padL + innerW}" y2="${padT + innerH}" class="trend-chart-grid" />`;
+    const yLabels = `<text x="${padL - 6}" y="${padT + innerH + 3}" text-anchor="end" class="trend-chart-axis-label">0</text>
+        <text x="${padL - 6}" y="${padT + 8}" text-anchor="end" class="trend-chart-axis-label">${yMax.toLocaleString()}</text>`;
+    const xLabels = `<text x="${padL}" y="${height - 4}" text-anchor="start" class="trend-chart-axis-label">${formatBorderTimeLabel(points[0].t)}</text>
+        <text x="${padL + innerW}" y="${height - 4}" text-anchor="end" class="trend-chart-axis-label">${formatBorderTimeLabel(points[points.length - 1].t)}</text>`;
+
+    const pts = points.map(p => `${xPos(new Date(p.t).getTime())},${yPos(p.s)}`);
+    const line = points.length > 1
+        ? `<polyline points="${pts.join(' ')}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />`
+        : '';
+    const last = points[points.length - 1];
+    const lastX = xPos(new Date(last.t).getTime());
+    const lastY = yPos(last.s);
+    const valueLabel = `<circle cx="${lastX}" cy="${lastY}" r="4" fill="var(--accent)"><title>${formatBorderTimeLabel(last.t)}: ${last.s.toLocaleString()}</title></circle>
+        <text x="${lastX + 6}" y="${lastY - 6}" class="trend-chart-value-label" fill="var(--accent)">${last.s.toLocaleString()}</text>`;
+
+    return `<svg viewBox="0 0 ${width} ${height}" class="trend-chart-svg" preserveAspectRatio="none">
+        ${baseline}${yLabels}${xLabels}${line}${valueLabel}
+    </svg>`;
+}
+
+function renderBorderRankTabs() {
+    const el = document.getElementById('border-rank-tabs');
+    if (!el) return;
+    el.innerHTML = BORDER_RANKS.map(rank =>
+        `<button class="border-rank-tab ${rank === borderCurrentRank ? 'active' : ''}" onclick="switchBorderRank(${rank}, this)">Top ${rank.toLocaleString()}</button>`
+    ).join('');
+}
+
+async function renderBorderChart() {
+    const wrap = document.getElementById('border-chart-wrap');
+    const status = document.getElementById('border-status');
+    if (!wrap || !status || !borderCurrentEvent) return;
+
+    wrap.style.display = 'none';
+    status.style.display = 'block';
+    status.textContent = t('border_loading');
+
+    try {
+        let points = borderPointsCache[borderCurrentRank];
+        if (!points) {
+            const params = new URLSearchParams({ eventId: borderCurrentEvent.id, rank: borderCurrentRank, region: 'jp' });
+            const res = await fetch(`/.netlify/functions/event-border?${params.toString()}`);
+            const data = await res.json();
+            points = data.points || [];
+            borderPointsCache[borderCurrentRank] = points;
+        }
+
+        if (points.length === 0) {
+            wrap.style.display = 'none';
+            status.style.display = 'block';
+            status.textContent = t('border_empty');
+            return;
+        }
+
+        wrap.innerHTML = borderTrendChartSvg(downsampleBorderPoints(points, 200));
+        wrap.style.display = 'block';
+        status.style.display = 'none';
+    } catch (e) {
+        console.error('Border chart fetch failed:', e);
+        wrap.style.display = 'none';
+        status.style.display = 'block';
+        status.textContent = t('border_error');
+    }
+}
+
+function switchBorderRank(rank, el) {
+    borderCurrentRank = rank;
+    document.querySelectorAll('.border-rank-tab').forEach(b => b.classList.remove('active'));
+    if (el) el.classList.add('active');
+    renderBorderChart();
+}
+
+let borderTrackerLoaded = false;
+
+async function loadBorderTracker() {
+    const infoEl = document.getElementById('border-event-info');
+    if (!infoEl) return;
+    if (borderTrackerLoaded) return;
+
+    infoEl.textContent = t('border_loading');
+    borderCurrentEvent = await getCurrentJpEvent();
+
+    if (!borderCurrentEvent) {
+        infoEl.textContent = t('border_no_event');
+        return;
+    }
+
+    infoEl.innerHTML = `<strong>${escapeHtmlSekai(borderCurrentEvent.name)}</strong><br>${formatBorderEventWindow(borderCurrentEvent)}`;
+    renderBorderRankTabs();
+    borderTrackerLoaded = true;
+    renderBorderChart();
+}

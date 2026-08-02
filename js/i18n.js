@@ -75,6 +75,9 @@ const I18N = {
         score_modal_image: '成績截圖', score_modal_image_remove: '移除圖片',
 
         ranking_title: '✦ 世界排名 ✦',
+        border_title: '✦ 官方活動 Border 趨勢（日服） ✦',
+        border_loading: '讀取中...', border_empty: '目前沒有可顯示的 Border 資料', border_no_event: '目前沒有進行中的活動',
+        border_error: '讀取 Border 資料失敗，請稍後再試',
         ranking_hint: '成績需要附截圖並經過審核才會出現在這裡；審核前會先用文字辨識自動比對截圖，但不保證能防止所有造假，僅供同好交流參考。',
         ranking_diff_all: '✦ 總計 ✦',
         ranking_submit_btn: '🏆 提交到世界排名',
@@ -185,6 +188,9 @@ const I18N = {
         score_modal_image: 'スコア画像', score_modal_image_remove: '画像を削除',
 
         ranking_title: '✦ 世界ランキング ✦',
+        border_title: '✦ 公式イベントBorder推移（日本サーバー） ✦',
+        border_loading: '読み込み中...', border_empty: '表示できるBorderデータがありません', border_no_event: '現在開催中のイベントはありません',
+        border_error: 'Borderデータの読み込みに失敗しました。しばらくしてから再試行してください',
         ranking_hint: 'スコアはスクリーンショット添付＋審査を経てここに表示されます。審査前に文字認識で自動チェックしますが、不正を完全に防ぐものではなく、あくまでファン同士の交流用の目安です。',
         ranking_diff_all: '✦ 総合 ✦',
         ranking_submit_btn: '🏆 世界ランキングに提出',
@@ -295,6 +301,9 @@ const I18N = {
         score_modal_image: 'Score Screenshot', score_modal_image_remove: 'Remove Image',
 
         ranking_title: '✦ World Ranking ✦',
+        border_title: '✦ Official Event Border Trend (JP Server) ✦',
+        border_loading: 'Loading...', border_empty: 'No border data available right now', border_no_event: 'No event is currently running',
+        border_error: 'Failed to load border data, please try again later',
         ranking_hint: 'Scores require an attached screenshot and go through review before appearing here. Screenshots are auto-checked with text recognition before review, but this cannot guarantee all fakes are caught — for fan reference only.',
         ranking_diff_all: '✦ Total ✦',
         ranking_submit_btn: '🏆 Submit to World Ranking',
@@ -405,6 +414,9 @@ const I18N = {
         score_modal_image: '성적 스크린샷', score_modal_image_remove: '이미지 제거',
 
         ranking_title: '✦ 월드 랭킹 ✦',
+        border_title: '✦ 공식 이벤트 Border 추이 (일본 서버) ✦',
+        border_loading: '불러오는 중...', border_empty: '표시할 수 있는 Border 데이터가 없습니다', border_no_event: '현재 진행 중인 이벤트가 없습니다',
+        border_error: 'Border 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요',
         ranking_hint: '성적은 스크린샷 첨부 및 검수를 거쳐야 이곳에 표시됩니다. 검수 전 문자 인식으로 자동 대조하지만 모든 부정행위를 막을 수는 없으며, 팬들끼리의 참고용입니다.',
         ranking_diff_all: '✦ 종합 ✦',
         ranking_submit_btn: '🏆 월드 랭킹에 제출',

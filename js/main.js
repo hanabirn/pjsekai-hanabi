@@ -786,6 +786,7 @@ function switchSekaiTab(tab, el) {
     if (tab === 'updates' && typeof loadSekaiUpdates === 'function') loadSekaiUpdates();
     if (tab === 'characters') renderGallery();
     if (tab === 'ranking' && typeof loadRankingBoard === 'function') loadRankingBoard();
+    if (tab === 'ranking' && typeof loadBorderTracker === 'function') loadBorderTracker();
 }
 
 /* ===== Background photo carousel (fades between curated character art, left + right sides) ===== */

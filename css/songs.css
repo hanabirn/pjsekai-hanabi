@@ -894,6 +894,46 @@
     display: inline-block;
 }
 
+/* Official event border tracker */
+.border-tracker-panel {
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border-card);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+}
+.border-tracker-title {
+    color: var(--accent-pink);
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.border-event-info {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+.border-rank-tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+.border-rank-tab {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    color: var(--text);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+.border-rank-tab.active { background: var(--accent); color: #06263a; border-color: var(--accent); }
+
 /* Per-song score history (score modal) */
 .score-history-list {
     max-height: 140px;

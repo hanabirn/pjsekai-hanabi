@@ -138,6 +138,27 @@ async function loadSekaiSongs(onUpdate) {
     }
 }
 
+/* ===== Current JP event (for the official border tracker) =====
+   events.json covers all past/future events; the "current" one is whichever
+   has already started but hasn't finished aggregating yet. Falls back to the
+   most recently-started event if none is technically live (e.g. the brief
+   gap between an event ending and the next one starting). */
+const SEKAI_EVENTS_URL = 'https://sekai-world.github.io/sekai-master-db-diff/events.json';
+
+async function getCurrentJpEvent() {
+    try {
+        const res = await fetch(SEKAI_EVENTS_URL);
+        const events = await res.json();
+        const now = Date.now();
+        const live = events.find(e => e.startAt <= now && e.aggregateAt >= now);
+        if (live) return live;
+        return events.filter(e => e.startAt <= now).sort((a, b) => b.startAt - a.startAt)[0] || null;
+    } catch (e) {
+        console.error('Failed to load current event:', e);
+        return null;
+    }
+}
+
 /* ===== Character birthdays (today's-birthday easter egg on the intro tab) =====
    gameCharacters.json itself has no birthday field — it lives in the sibling
    characterProfiles.json as a Japanese-formatted string like "8月11日". */
