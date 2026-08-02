@@ -151,55 +151,182 @@
     margin-bottom: 14px;
     font-size: 1rem;
 }
-.units-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 18px;
-}
-.unit-card {
-    background: var(--bg-card-alt);
-    border: 1px solid var(--border-card);
+.units-slideshow {
+    position: relative;
+    max-width: 640px;
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
     border-radius: 14px;
-    padding: 14px;
-    text-align: center;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, box-shadow 0.3s;
-}
-.unit-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(var(--accent-pink-rgb), 0.5);
+    overflow: hidden;
+    border: 1px solid var(--border-card);
     box-shadow: var(--rainbow-glow);
+    background: var(--bg-card-alt);
 }
-.unit-card img {
+/* js/units-fx.js drives which slide is .active on a 7s JS interval (instead
+   of pure CSS animation-delay) so it has a hook to fire a themed particle
+   burst on #units-fx-canvas in sync with each team's turn. */
+.unit-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease, visibility 0.6s;
+    pointer-events: none;
+}
+.unit-slide.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+.unit-slide img {
     width: 100%;
-    aspect-ratio: 1152 / 1725;
+    height: 100%;
     object-fit: contain;
-    object-position: center;
-    border-radius: 8px;
     display: block;
-    background: rgba(255,255,255,0.06);
 }
-.unit-card p {
-    font-size: 1.35rem;
+#units-fx-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ── Screen-shake, used by VBS's spray-paint reveal ── */
+@keyframes unitScreenShake {
+    0%, 100% { transform: translate(0, 0); }
+    20% { transform: translate(-4px, 2px); }
+    40% { transform: translate(3px, -3px); }
+    60% { transform: translate(-3px, 3px); }
+    80% { transform: translate(4px, -2px); }
+}
+.unit-slide.screen-shake { animation: unitScreenShake 0.4s ease-in-out; }
+
+/* ── Caption base — js/units-fx.js rebuilds the inner markup per style
+   (per-character .ch spans for glow/bounce, a single .reveal-inner for
+   wipe/arc/glitch/scan) every time a slide's turn comes back around. ── */
+.unit-caption {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    margin: 0;
+    padding: 10px 16px 12px;
+    text-align: center;
+    font-size: 1.15rem;
     font-weight: 800;
-    line-height: 1.3;
-    margin-bottom: 10px;
     letter-spacing: 0.02em;
-    background-size: 200% auto;
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+    background: linear-gradient(to top, rgba(0,0,0,0.65), transparent);
+    z-index: 2;
+}
+
+/* Leo/need — letters light up in sequence, like connecting constellation
+   points, each with a brief blue glow flash. */
+.reveal-glow .ch {
+    display: inline-block;
+    opacity: 0;
+    text-shadow: 0 0 12px rgba(96,165,250,0.9), 0 0 4px #fff;
+    animation: unitChGlow 0.5s ease-out forwards;
+    animation-delay: calc(var(--ci) * 0.06s);
+}
+@keyframes unitChGlow {
+    0% { opacity: 0; transform: scale(0.4); filter: brightness(3); }
+    60% { opacity: 1; transform: scale(1.15); }
+    100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+}
+
+/* MORE MORE JUMP! — letters bounce in with an elastic overshoot. */
+.reveal-bounce .ch {
+    display: inline-block;
+    opacity: 0;
+    animation: unitChBounce 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    animation-delay: calc(var(--ci) * 0.05s);
+}
+@keyframes unitChBounce {
+    0% { opacity: 0; transform: translateY(-30px) scale(0.5); }
+    60% { opacity: 1; transform: translateY(6px) scale(1.1); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Vivid BAD SQUAD — an angled spray-paint wipe reveals the (slightly
+   skewed, street-graffiti-ish) text, paired with the screen-shake above. */
+.reveal-wipe .reveal-inner {
+    display: inline-block;
+    transform: skewX(-8deg);
+    color: #f9a8d4;
+    text-shadow: 0 0 10px rgba(244,114,182,0.8), 0 0 18px rgba(34,211,238,0.5);
+}
+.reveal-wipe {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    animation: unitWipeIn 0.5s ease-out forwards;
+}
+@keyframes unitWipeIn {
+    0% { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); }
+    100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+}
+
+/* Wonderlands×Showtime — a circus-marquee swoop/arc slide-in. */
+.reveal-arc .reveal-inner {
+    display: inline-block;
+    color: #fde68a;
+    text-shadow: 0 0 10px rgba(250,204,21,0.7);
+}
+.reveal-arc {
+    animation: unitArcIn 0.8s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+@keyframes unitArcIn {
+    0% { opacity: 0; transform: translateX(-60px) translateY(20px) rotate(-10deg); }
+    60% { opacity: 1; transform: translateX(10px) translateY(-6px) rotate(3deg); }
+    100% { opacity: 1; transform: translateX(0) translateY(0) rotate(0deg); }
+}
+
+/* 25時、ナイトコードで。— a typewriter reveal followed by a brief
+   RGB-split glitch flicker. */
+.reveal-glitch .reveal-inner {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: 'Courier New', monospace;
+    color: #c7d2fe;
+    border-right: 2px solid #93c5fd;
+    animation: unitTypeIn 1s steps(24, end) forwards;
+}
+@keyframes unitTypeIn {
+    from { width: 0; }
+    to { width: 100%; border-right-color: transparent; }
+}
+.reveal-glitch .reveal-inner.glitching {
+    animation: unitGlitchFlicker 0.25s steps(2, end) 2;
+}
+@keyframes unitGlitchFlicker {
+    0% { text-shadow: 2px 0 #ff4d6d, -2px 0 #38bdf8; transform: translateX(0); }
+    50% { text-shadow: -2px 0 #ff4d6d, 2px 0 #38bdf8; transform: translateX(2px); }
+    100% { text-shadow: none; transform: translateX(0); }
+}
+
+/* Virtual Singers — a left-to-right scanning light bar reveals the text. */
+.reveal-scan .reveal-inner {
+    display: inline-block;
+    background: linear-gradient(90deg, #22d3ee 0%, #22d3ee 45%, #fff 50%, #22d3ee 55%, #22d3ee 100%);
+    background-size: 300% 100%;
+    background-position: 200% 0;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: shimmer 3.5s linear infinite;
+    animation: unitScanIn 1.1s ease-out forwards;
 }
-.units-grid .unit-card:nth-child(1) p { background-image: linear-gradient(90deg, #4fc3f7, #b3e5fc, #4fc3f7); }
-.units-grid .unit-card:nth-child(2) p { background-image: linear-gradient(90deg, #aed581, #fff59d, #aed581); }
-.units-grid .unit-card:nth-child(3) p { background-image: linear-gradient(90deg, #ff5f6d, #ffc371, #ff5f6d); }
-.units-grid .unit-card:nth-child(4) p { background-image: linear-gradient(90deg, #ffb74d, #ff8a80, #ffb74d); }
-.units-grid .unit-card:nth-child(5) p { background-image: linear-gradient(90deg, #b388ff, #82b1ff, #b388ff); }
-[data-theme="light"] .units-grid .unit-card:nth-child(1) p { background-image: linear-gradient(90deg, #0288d1, #00838f, #0288d1); }
-[data-theme="light"] .units-grid .unit-card:nth-child(2) p { background-image: linear-gradient(90deg, #558b2f, #9e9d24, #558b2f); }
-[data-theme="light"] .units-grid .unit-card:nth-child(3) p { background-image: linear-gradient(90deg, #d32f2f, #ef6c00, #d32f2f); }
-[data-theme="light"] .units-grid .unit-card:nth-child(4) p { background-image: linear-gradient(90deg, #ef6c00, #d84315, #ef6c00); }
-[data-theme="light"] .units-grid .unit-card:nth-child(5) p { background-image: linear-gradient(90deg, #6a1b9a, #283593, #6a1b9a); }
+@keyframes unitScanIn {
+    0% { background-position: 200% 0; opacity: 0; }
+    15% { opacity: 1; }
+    100% { background-position: -20% 0; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .unit-slide { transition: opacity 0.6s ease; }
+    .unit-slide.screen-shake { animation: none; }
+    .ch, .reveal-inner { animation: none !important; opacity: 1 !important; transform: none !important; clip-path: none !important; width: auto !important; }
+}
 
 .characters-center {
     text-align: center;

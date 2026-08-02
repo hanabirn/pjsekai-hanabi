@@ -159,28 +159,33 @@
                 <button class="btn-small primary player-id-save-btn" onclick="savePlayerIds()" data-i18n="player_id_save_btn">儲存</button>
             </div>
 
-            <h3 class="units-title" data-i18n="units_title">✦ 五大團隊 ✦</h3>
-            <div class="units-grid">
-                <div class="unit-card">
-                    <p>Leo/need</p>
-                    <img src="https://static.wikia.nocookie.net/projectsekai/images/5/5e/Ln_Group_v2.png/revision/latest?cb=20230921164123" alt="Leo/need" referrerpolicy="no-referrer">
+            <h3 class="units-title" data-i18n="units_title">✦ 團隊與虛擬歌手 ✦</h3>
+            <div class="units-slideshow" id="units-slideshow">
+                <div class="unit-slide active" data-team="leoneed">
+                    <img src="https://pjsekai.sega.jp/assets/data/webp/character/unite01/list/chara.png.webp" alt="Leo/need" referrerpolicy="no-referrer">
+                    <p class="unit-caption">Leo/need</p>
                 </div>
-                <div class="unit-card">
-                    <p>MORE MORE JUMP!</p>
-                    <img src="https://static.wikia.nocookie.net/projectsekai/images/0/0e/Mmj%21_Group_v2.png/revision/latest?cb=20230922151949" alt="MORE MORE JUMP!" referrerpolicy="no-referrer">
+                <div class="unit-slide" data-team="mmj">
+                    <img src="https://pjsekai.sega.jp/assets/data/webp/character/unite02/list/chara.png.webp" alt="MORE MORE JUMP!" referrerpolicy="no-referrer">
+                    <p class="unit-caption">MORE MORE JUMP!</p>
                 </div>
-                <div class="unit-card">
-                    <p>Vivid BAD SQUAD</p>
-                    <img src="https://static.wikia.nocookie.net/projectsekai/images/b/b1/Vbs_group_v2.png/revision/latest?cb=20230923152213" alt="Vivid BAD SQUAD" referrerpolicy="no-referrer">
+                <div class="unit-slide" data-team="vbs">
+                    <img src="https://pjsekai.sega.jp/assets/data/webp/character/unite03/list/chara.png.webp" alt="Vivid BAD SQUAD" referrerpolicy="no-referrer">
+                    <p class="unit-caption">Vivid BAD SQUAD</p>
                 </div>
-                <div class="unit-card">
-                    <p>ワンダーランズ×ショウタイム</p>
-                    <img src="https://static.wikia.nocookie.net/projectsekai/images/b/b2/Wxs_Group_v2.png/revision/latest?cb=20230924151721" alt="ワンダーランズ×ショウタイム" referrerpolicy="no-referrer">
+                <div class="unit-slide" data-team="wonderhoi">
+                    <img src="https://pjsekai.sega.jp/assets/data/webp/character/unite04/list/chara.png.webp" alt="ワンダーランズ×ショウタイム" referrerpolicy="no-referrer">
+                    <p class="unit-caption">ワンダーランズ×ショウタイム</p>
                 </div>
-                <div class="unit-card">
-                    <p>25時、ナイトコードで。</p>
-                    <img src="https://pjsekai.sega.jp/3rd/assets/images/common/unit/unit_chara-nightcode.png" alt="25時、ナイトコードで。">
+                <div class="unit-slide" data-team="nightcord">
+                    <img src="https://pjsekai.sega.jp/assets/data/webp/character/unite05/list/chara.png.webp" alt="25時、ナイトコードで。" referrerpolicy="no-referrer">
+                    <p class="unit-caption">25時、ナイトコードで。</p>
                 </div>
+                <div class="unit-slide" data-team="vs">
+                    <img src="https://pjsekai.sega.jp/assets/data/webp/character/virtualsinger/list/chara.png.webp" alt="Virtual Singers" referrerpolicy="no-referrer">
+                    <p class="unit-caption">Virtual Singers</p>
+                </div>
+                <canvas id="units-fx-canvas" aria-hidden="true"></canvas>
             </div>
         </div>
     </section>
@@ -471,6 +476,7 @@
 <script src="js/gacha.js"></script>
 <script src="js/updates.js"></script>
 <script src="js/feedback.js"></script>
+<script src="js/units-fx.js"></script>
 <script src="js/main.js"></script>
 <script>
   if ('serviceWorker' in navigator) {

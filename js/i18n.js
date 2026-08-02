@@ -11,7 +11,7 @@ const I18N = {
         intro_desc: '《世界計畫 繽紛舞台！ feat. 初音未來》是由 SEGA 與 Colorful Palette 開發的音樂節奏手遊，結合初音未來等 VOCALOID 角色與原創角色的故事。',
         intro_official_jp: '日服官方網站',
         intro_official_tw: '台服官方網站',
-        units_title: '✦ 五大團隊 ✦',
+        units_title: '✦ 團隊與虛擬歌手 ✦',
         birthday_banner: '🎂 今天是 {names} 的生日！生日快樂！',
 
         characters_title: '✦ 世界計畫角色美圖收藏 ✦',
@@ -132,7 +132,7 @@ const I18N = {
         intro_desc: '「プロジェクトセカイ カラフルステージ！ feat. 初音ミク」は、SEGAとColorful Paletteが開発した音楽リズムゲームです。初音ミクなどのVOCALOIDキャラクターとオリジナルキャラクターの物語が展開されます。',
         intro_official_jp: '日本版公式サイト',
         intro_official_tw: '台湾版公式サイト',
-        units_title: '✦ 5つのユニット ✦',
+        units_title: '✦ ユニット & バーチャル・シンガー ✦',
         birthday_banner: '🎂 今日は{names}の誕生日です！おめでとう！',
 
         characters_title: '✦ プロセカキャラ画像コレクション ✦',
@@ -253,7 +253,7 @@ const I18N = {
         intro_desc: '"Project SEKAI COLORFUL STAGE! feat. Hatsune Miku" is a rhythm game developed by SEGA and Colorful Palette, combining VOCALOID characters like Hatsune Miku with original characters and stories.',
         intro_official_jp: 'JP Official Site',
         intro_official_tw: 'TW Official Site',
-        units_title: '✦ The Five Units ✦',
+        units_title: '✦ Units & Virtual Singers ✦',
         birthday_banner: "🎂 It's {names}'s birthday today! Happy birthday!",
 
         characters_title: '✦ Project SEKAI Character Art Collection ✦',
@@ -374,7 +374,7 @@ const I18N = {
         intro_desc: '《프로젝트 세카이 컬러풀 스테이지! feat. 하츠네 미쿠》는 SEGA와 Colorful Palette가 개발한 음악 리듬 게임으로, 하츠네 미쿠 등 VOCALOID 캐릭터와 오리지널 캐릭터들의 이야기를 담고 있습니다.',
         intro_official_jp: '일본 서버 공식 사이트',
         intro_official_tw: '대만 서버 공식 사이트',
-        units_title: '✦ 5개 유닛 ✦',
+        units_title: '✦ 유닛 & 버추얼 싱어 ✦',
         birthday_banner: '🎂 오늘은 {names}의 생일입니다! 생일 축하해요!',
 
         characters_title: '✦ 프로세카 캐릭터 이미지 모음 ✦',
