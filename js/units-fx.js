@@ -88,10 +88,13 @@ function revealUnitCaption(caption, style) {
 
     if (style === 'reveal-glow' || style === 'reveal-bounce') {
         caption.innerHTML = '';
-        Array.from(text).forEach((ch, i) => {
+        const chars = Array.from(text);
+        const entranceSpanMs = 1600;
+        const stagger = chars.length > 1 ? entranceSpanMs / (chars.length - 1) : 0;
+        chars.forEach((ch, i) => {
             const span = document.createElement('span');
             span.className = 'ch';
-            span.style.setProperty('--ci', i);
+            span.style.animationDelay = (i * stagger) + 'ms';
             span.textContent = ch === ' ' ? ' ' : ch;
             caption.appendChild(span);
         });
@@ -102,10 +105,12 @@ function revealUnitCaption(caption, style) {
         caption.innerHTML = '';
         caption.appendChild(inner);
         if (style === 'reveal-glitch') {
-            setTimeout(() => {
-                inner.classList.add('glitching');
-                setTimeout(() => inner.classList.remove('glitching'), 250);
-            }, 1100);
+            [2400, 4000, 5600].forEach(delay => {
+                setTimeout(() => {
+                    inner.classList.add('glitching');
+                    setTimeout(() => inner.classList.remove('glitching'), 250);
+                }, delay);
+            });
         }
     }
 }

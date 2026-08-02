@@ -222,67 +222,98 @@
 }
 
 /* Leo/need — letters light up in sequence, like connecting constellation
-   points, each with a brief blue glow flash. */
+   points (stagger computed in JS so short/long names take the same total
+   time), then the whole caption keeps a slow ambient starlight pulse for
+   the rest of the slide's ~7s dwell instead of sitting static. */
 .reveal-glow .ch {
     display: inline-block;
     opacity: 0;
     text-shadow: 0 0 12px rgba(96,165,250,0.9), 0 0 4px #fff;
-    animation: unitChGlow 0.5s ease-out forwards;
-    animation-delay: calc(var(--ci) * 0.06s);
+    animation: unitChGlow 0.7s ease-out forwards;
 }
 @keyframes unitChGlow {
     0% { opacity: 0; transform: scale(0.4); filter: brightness(3); }
     60% { opacity: 1; transform: scale(1.15); }
     100% { opacity: 1; transform: scale(1); filter: brightness(1); }
 }
+.unit-caption.reveal-glow {
+    animation: unitGlowPulse 2.4s ease-in-out 2s infinite;
+}
+@keyframes unitGlowPulse {
+    0%, 100% { text-shadow: 0 2px 10px rgba(0,0,0,0.7); }
+    50% { text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 0 20px rgba(96,165,250,0.85), 0 0 34px rgba(191,219,254,0.5); }
+}
 
-/* MORE MORE JUMP! — letters bounce in with an elastic overshoot. */
+/* MORE MORE JUMP! — letters bounce in with an elastic overshoot, then the
+   caption keeps a gentle idle bob for the rest of the slide. */
 .reveal-bounce .ch {
     display: inline-block;
     opacity: 0;
-    animation: unitChBounce 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
-    animation-delay: calc(var(--ci) * 0.05s);
+    animation: unitChBounce 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards;
 }
 @keyframes unitChBounce {
     0% { opacity: 0; transform: translateY(-30px) scale(0.5); }
     60% { opacity: 1; transform: translateY(6px) scale(1.1); }
     100% { opacity: 1; transform: translateY(0) scale(1); }
 }
+.unit-caption.reveal-bounce {
+    animation: unitBouncePulse 1.8s ease-in-out 2.2s infinite;
+    transform-origin: center bottom;
+}
+@keyframes unitBouncePulse {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-3px) scale(1.03); }
+}
 
-/* Vivid BAD SQUAD — an angled spray-paint wipe reveals the (slightly
-   skewed, street-graffiti-ish) text, paired with the screen-shake above. */
+/* Vivid BAD SQUAD — a fast angled spray-paint wipe (kept snappy, like an
+   actual spray tag) revealing slightly skewed street-graffiti text, paired
+   with the screen-shake above, then a lingering neon flicker for the rest
+   of the slide. */
 .reveal-wipe .reveal-inner {
     display: inline-block;
     transform: skewX(-8deg);
     color: #f9a8d4;
     text-shadow: 0 0 10px rgba(244,114,182,0.8), 0 0 18px rgba(34,211,238,0.5);
 }
-.reveal-wipe {
+.unit-caption.reveal-wipe {
     clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
-    animation: unitWipeIn 0.5s ease-out forwards;
+    animation: unitWipeIn 0.7s ease-out forwards, unitNeonFlicker 2.2s ease-in-out 0.7s infinite;
 }
 @keyframes unitWipeIn {
     0% { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); }
     100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
 }
+@keyframes unitNeonFlicker {
+    0%, 42%, 100% { filter: brightness(1); }
+    46% { filter: brightness(1.5); }
+    50% { filter: brightness(1); }
+    72% { filter: brightness(1.3); }
+    76% { filter: brightness(1); }
+}
 
-/* Wonderlands×Showtime — a circus-marquee swoop/arc slide-in. */
+/* Wonderlands×Showtime — a circus-marquee swoop/arc slide-in, then a
+   gentle gold sparkle pulse for the rest of the slide. */
 .reveal-arc .reveal-inner {
     display: inline-block;
     color: #fde68a;
     text-shadow: 0 0 10px rgba(250,204,21,0.7);
 }
-.reveal-arc {
-    animation: unitArcIn 0.8s cubic-bezier(0.22,1,0.36,1) forwards;
+.unit-caption.reveal-arc {
+    animation: unitArcIn 1s cubic-bezier(0.22,1,0.36,1) forwards, unitGoldSparkle 2.4s ease-in-out 1s infinite;
 }
 @keyframes unitArcIn {
     0% { opacity: 0; transform: translateX(-60px) translateY(20px) rotate(-10deg); }
     60% { opacity: 1; transform: translateX(10px) translateY(-6px) rotate(3deg); }
     100% { opacity: 1; transform: translateX(0) translateY(0) rotate(0deg); }
 }
+@keyframes unitGoldSparkle {
+    0%, 100% { text-shadow: 0 2px 10px rgba(0,0,0,0.7); }
+    50% { text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 0 18px rgba(250,204,21,0.9), 0 0 30px rgba(244,114,182,0.4); }
+}
 
-/* 25時、ナイトコードで。— a typewriter reveal followed by a brief
-   RGB-split glitch flicker. */
+/* 25時、ナイトコードで。— a slower typewriter reveal, then a few
+   RGB-split glitch flickers spread across the rest of the slide's dwell
+   time (js/units-fx.js schedules the .glitching bursts). */
 .reveal-glitch .reveal-inner {
     display: inline-block;
     overflow: hidden;
@@ -290,7 +321,7 @@
     font-family: 'Courier New', monospace;
     color: #c7d2fe;
     border-right: 2px solid #93c5fd;
-    animation: unitTypeIn 1s steps(24, end) forwards;
+    animation: unitTypeIn 2.2s steps(24, end) forwards;
 }
 @keyframes unitTypeIn {
     from { width: 0; }
@@ -305,7 +336,10 @@
     100% { text-shadow: none; transform: translateX(0); }
 }
 
-/* Virtual Singers — a left-to-right scanning light bar reveals the text. */
+/* Virtual Singers — a continuously repeating left-to-right scanning light
+   bar (rather than a one-shot reveal) fits the "always-on digital" theme
+   and naturally fills the whole slide without needing a separate sustain
+   animation layered on top. */
 .reveal-scan .reveal-inner {
     display: inline-block;
     background: linear-gradient(90deg, #22d3ee 0%, #22d3ee 45%, #fff 50%, #22d3ee 55%, #22d3ee 100%);
@@ -314,18 +348,18 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: unitScanIn 1.1s ease-out forwards;
+    animation: unitScanSweep 3s ease-in-out infinite;
 }
-@keyframes unitScanIn {
+@keyframes unitScanSweep {
     0% { background-position: 200% 0; opacity: 0; }
-    15% { opacity: 1; }
+    10% { opacity: 1; }
     100% { background-position: -20% 0; opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .unit-slide { transition: opacity 0.6s ease; }
     .unit-slide.screen-shake { animation: none; }
-    .ch, .reveal-inner { animation: none !important; opacity: 1 !important; transform: none !important; clip-path: none !important; width: auto !important; }
+    .unit-caption, .ch, .reveal-inner { animation: none !important; opacity: 1 !important; transform: none !important; clip-path: none !important; width: auto !important; }
 }
 
 .characters-center {
